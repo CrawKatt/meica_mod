@@ -14,7 +14,7 @@ public class ModItems {
             DeferredRegister.create(ForgeRegistries.ITEMS, ExampleMod.MODID);
 
     public static final RegistryObject<Item> BROTECITO_SPAWN_EGG = ITEMS.register("brotecito_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntityTypes.BROTECITO, 0x000000, 0xFFFFFF,
+            () -> new ForgeSpawnEggItem(ModEntityTypes.BROTECITO, 0xadd262, 0x111111,
                     new Item.Properties().tab(ModCreativeModeTab.EXAMPLE_TAB)));
 
     public static void register(IEventBus eventBus) {
