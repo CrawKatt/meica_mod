@@ -23,7 +23,9 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -43,7 +45,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class BrotecitoEntity extends TamableAnimal implements IAnimatable {
+public class BrotecitoEntity extends TamableAnimal implements IAnimatable, RangedAttackMob {
     private AnimationFactory factory = new AnimationFactory(this);
 
     private static final EntityDataAccessor<Boolean> SITTING =
@@ -65,11 +67,16 @@ public class BrotecitoEntity extends TamableAnimal implements IAnimatable {
             return;
         }
 
+        if (!this.hasItemInSlot(EquipmentSlot.OFFHAND)) {
+            this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ARROW, 1));
+        }
+
         List<ItemEntity> itemsNearby = this.level.getEntitiesOfClass(ItemEntity.class, this.getBoundingBox().inflate(0));
 
         for (ItemEntity itemEntity : itemsNearby) {
-            if (itemEntity.getItem().getItem() == Items.DIAMOND_SWORD) {
-                // Recoger la espada
+            Item item = itemEntity.getItem().getItem();
+            if (item == Items.DIAMOND_SWORD || item == Items.BOW) {
+                // Recoger el Objeto
                 this.take(itemEntity, itemEntity.getItem().getCount());
 
                 // Equipar la espada
@@ -80,29 +87,72 @@ public class BrotecitoEntity extends TamableAnimal implements IAnimatable {
         }
     }
 
+    // Método para que el Brotecito pueda atacar a distancia
+    @Override
+    public void performRangedAttack(LivingEntity target, float distanceFactor) {
+        Arrow arrow = new Arrow(this.level, this);
+        double d0 = target.getX() - this.getX();
+        double d1 = target.getBoundingBox().minY + (double)(target.getBbHeight() / 3.0F) - arrow.getY();
+        double d2 = target.getZ() - this.getZ();
+        double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+        arrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.level.getDifficulty().getId() * 4));
+        this.playSound(SoundEvents.ARROW_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+        this.level.addFreshEntity(arrow);
+    }
+
     // Método para definir los atributos del Brotecito (vida, daño, velocidad, etc.)
     public static AttributeSupplier setAttributes() {
         return TamableAnimal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 20.00)
                 .add(Attributes.ATTACK_DAMAGE, 3.0f)
                 .add(Attributes.ATTACK_SPEED, 2.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.3f)
+                .add(Attributes.MOVEMENT_SPEED, 0.2f)
                 .build();
     }
 
     // Define el comportamiento de los Brotecitos en el juego (atacar, seguir al jugador, etc.)
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, true));
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
-        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(6, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+        this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.targetSelector.addGoal(6, (new HurtByTargetGoal(this)).setAlertOthers());
+        this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
+        this.goalSelector.addGoal(7, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
+        this.setAttackGoals(); // Método personalizado para intercambiar entre ataque a distancia y cuerpo a cuerpo
+    }
+
+    private void setAttackGoals() {
+        // Verificar si el Brotecito tiene un arco equipado
+        if (this.getItemBySlot(EquipmentSlot.MAINHAND).getItem() == Items.BOW) {
+            // Si tiene un arco, priorizar el ataque a distancia
+            this.goalSelector.addGoal(10, new RangedBowAttackGoal<>(this, 1.0D, 20, 15.0F));
+            this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0D, true));
+        } else {
+            // Si no tiene un arco, priorizar el ataque cuerpo a cuerpo
+            this.goalSelector.addGoal(10, new MeleeAttackGoal(this, 1.0D, true));
+            this.goalSelector.addGoal(1, new RangedBowAttackGoal<>(this, 1.0D, 20, 15.0F));
+        }
+    }
+
+    // Define el comportamiento de los Brotecitos al atacar a otros mobs e impide que los Brotecitos domesticados se ataquen entre sí
+    @Override
+    public boolean canAttack(LivingEntity target) {
+        // Si el objetivo es una instancia de BrotecitoEntity
+        if (target instanceof BrotecitoEntity) {
+            BrotecitoEntity brotecitoTarget = (BrotecitoEntity) target;
+
+            // Si ambos Brotecitos tienen el mismo dueño, no pueden atacarse
+            if (this.getOwner() != null && this.getOwner().equals(brotecitoTarget.getOwner())) {
+                return false;
+            }
+        }
+
+        // Para cualquier otro caso, se utiliza el comportamiento predeterminado
+        return super.canAttack(target);
     }
 
     @Nullable
