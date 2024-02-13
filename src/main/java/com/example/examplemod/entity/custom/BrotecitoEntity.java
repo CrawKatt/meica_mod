@@ -1,5 +1,8 @@
 package com.example.examplemod.entity.custom;
 
+import com.example.examplemod.entity.ModEntityTypes;
+import com.example.examplemod.entity.variant.BrotecitoVariant;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -8,26 +11,24 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -47,6 +48,9 @@ public class BrotecitoEntity extends TamableAnimal implements IAnimatable {
 
     private static final EntityDataAccessor<Boolean> SITTING =
             SynchedEntityData.defineId(BrotecitoEntity.class, EntityDataSerializers.BOOLEAN);
+
+    private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
+            SynchedEntityData.defineId(BrotecitoEntity.class, EntityDataSerializers.INT);
 
     public BrotecitoEntity(EntityType<? extends TamableAnimal> entityTpe, Level level) {
         super(entityTpe, level);
@@ -90,6 +94,7 @@ public class BrotecitoEntity extends TamableAnimal implements IAnimatable {
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
+        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
@@ -103,7 +108,15 @@ public class BrotecitoEntity extends TamableAnimal implements IAnimatable {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-        return null;
+        BrotecitoEntity baby = ModEntityTypes.BROTECITO.get().create(serverLevel);
+        BrotecitoVariant variant = Util.getRandom(BrotecitoVariant.values(), this.random);
+        baby.setVariant(variant);
+        return baby;
+    }
+
+    @Override
+    public boolean isFood(ItemStack pStack) {
+        return pStack.getItem() == Items.CARROT;
     }
 
     private<E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -160,6 +173,10 @@ public class BrotecitoEntity extends TamableAnimal implements IAnimatable {
 
         Item itemForTaming = Items.APPLE;
 
+        if(isFood(itemstack)) {
+            return super.mobInteract(player, hand);
+        }
+
         if (item == itemForTaming && !isTame()) {
             if (this.level.isClientSide) {
                 return InteractionResult.CONSUME;
@@ -204,6 +221,7 @@ public class BrotecitoEntity extends TamableAnimal implements IAnimatable {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("isSitting", this.isSitting());
+        tag.putInt("Variant", this.getTypeVariant());
     }
 
     // Método para que el Brotecito pueda sentarse y levantarse
@@ -211,6 +229,7 @@ public class BrotecitoEntity extends TamableAnimal implements IAnimatable {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(SITTING, false);
+        this.entityData.define(DATA_ID_TYPE_VARIANT, 0);
     }
 
     public void setSitting(boolean sitting) {
@@ -243,5 +262,26 @@ public class BrotecitoEntity extends TamableAnimal implements IAnimatable {
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(2D);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue((double)0.25f);
         }
+    }
+
+    /* VARIANTS */
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746, DifficultyInstance p_146747_,
+                                        MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_,
+                                        @Nullable CompoundTag p_146750_) {
+        BrotecitoVariant variant = Util.getRandom(BrotecitoVariant.values(), this.random);
+        setVariant(variant);
+        return super.finalizeSpawn(p_146746, p_146747_, p_146748_, p_146749_, p_146750_);
+    }
+
+    public BrotecitoVariant getVariant() {
+        return BrotecitoVariant.byId(this.getTypeVariant() & 255);
+    }
+
+    private int getTypeVariant() {
+        return this.entityData.get(DATA_ID_TYPE_VARIANT);
+    }
+
+    private void setVariant(BrotecitoVariant variant) {
+        this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
     }
 }
