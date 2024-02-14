@@ -3,6 +3,7 @@ package com.example.examplemod;
 import com.example.examplemod.entity.ModEntityTypes;
 import com.example.examplemod.entity.client.BrotecitoRenderer;
 import com.example.examplemod.item.ModItems;
+import com.example.examplemod.particle.ModParticles;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -31,6 +32,7 @@ public class ExampleMod {
 
         ModItems.register(eventBus);
         ModEntityTypes.register(eventBus);
+        ModParticles.register(eventBus);
 
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);

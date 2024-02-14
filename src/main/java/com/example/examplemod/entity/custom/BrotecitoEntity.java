@@ -2,6 +2,7 @@ package com.example.examplemod.entity.custom;
 
 import com.example.examplemod.entity.ModEntityTypes;
 import com.example.examplemod.entity.variant.BrotecitoVariant;
+import com.example.examplemod.particle.ModParticles;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -115,13 +116,13 @@ public class BrotecitoEntity extends TamableAnimal implements IAnimatable, Range
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
-        this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.targetSelector.addGoal(6, (new HurtByTargetGoal(this)).setAlertOthers());
         this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(7, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
+        this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
         this.setAttackGoals(); // Método personalizado para intercambiar entre ataque a distancia y cuerpo a cuerpo
     }
 
@@ -129,12 +130,12 @@ public class BrotecitoEntity extends TamableAnimal implements IAnimatable, Range
         // Verificar si el Brotecito tiene un arco equipado
         if (this.getItemBySlot(EquipmentSlot.MAINHAND).getItem() == Items.BOW) {
             // Si tiene un arco, priorizar el ataque a distancia
-            this.goalSelector.addGoal(10, new RangedBowAttackGoal<>(this, 1.0D, 20, 15.0F));
-            this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0D, true));
+            this.goalSelector.addGoal(1, new RangedBowAttackGoal<>(this, 1.0D, 20, 15.0F));
+            this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, true));
         } else {
             // Si no tiene un arco, priorizar el ataque cuerpo a cuerpo
-            this.goalSelector.addGoal(10, new MeleeAttackGoal(this, 1.0D, true));
-            this.goalSelector.addGoal(1, new RangedBowAttackGoal<>(this, 1.0D, 20, 15.0F));
+            this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0D, true));
+            this.goalSelector.addGoal(2, new RangedBowAttackGoal<>(this, 1.0D, 20, 15.0F));
         }
     }
 
@@ -155,13 +156,30 @@ public class BrotecitoEntity extends TamableAnimal implements IAnimatable, Range
         return super.canAttack(target);
     }
 
+    // Método para aparear a los Brotecitos y generar un nuevo Brotecito con una variante aleatoria
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
         BrotecitoEntity baby = ModEntityTypes.BROTECITO.get().create(serverLevel);
         BrotecitoVariant variant = Util.getRandom(BrotecitoVariant.values(), this.random);
         baby.setVariant(variant);
+
         return baby;
+    }
+
+    // Método para que los Brotecitos puedan emitir partículas personalizadas al aparearse
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == 18) {
+            for(int i = 0; i < 7; ++i) {
+                double d0 = this.random.nextGaussian() * 0.02;
+                double d1 = this.random.nextGaussian() * 0.02;
+                double d2 = this.random.nextGaussian() * 0.02;
+                this.level.addParticle(ModParticles.KAPPA_PRIDE_PARTICLES.get(), this.getRandomX(1.0), this.getRandomY() + 0.5, this.getRandomZ(1.0), d0, d1, d2);
+            }
+        } else {
+            super.handleEntityEvent(id);
+        }
     }
 
     @Override
