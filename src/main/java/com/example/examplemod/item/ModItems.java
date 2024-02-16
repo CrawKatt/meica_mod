@@ -17,6 +17,10 @@ public class ModItems {
             () -> new ForgeSpawnEggItem(ModEntityTypes.BROTECITO, 0xadd262, 0x111111,
                     new Item.Properties().tab(ModCreativeModeTab.EXAMPLE_TAB)));
 
+    public static final RegistryObject<Item> MEICA_SPAWN_EGG = ITEMS.register("meica_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.MEICA, 0x175450, 0x111111,
+                    new Item.Properties().tab(ModCreativeModeTab.MEICA_TAB)));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

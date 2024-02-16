@@ -2,6 +2,7 @@ package com.example.examplemod;
 
 import com.example.examplemod.entity.ModEntityTypes;
 import com.example.examplemod.entity.client.BrotecitoRenderer;
+import com.example.examplemod.entity.client.MeicaRenderer;
 import com.example.examplemod.item.ModItems;
 import com.example.examplemod.particle.ModParticles;
 import com.mojang.logging.LogUtils;
@@ -45,11 +46,17 @@ public class ExampleMod {
 
     private void clientSetup(final FMLClientSetupEvent event) {
         EntityRenderers.register(ModEntityTypes.BROTECITO.get(), BrotecitoRenderer::new);
+        EntityRenderers.register(ModEntityTypes.MEICA.get(), MeicaRenderer::new);
     }
 
      private void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             SpawnPlacements.register(ModEntityTypes.BROTECITO.get(),
+                    SpawnPlacements.Type.ON_GROUND,
+                    Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    Animal::checkAnimalSpawnRules);
+
+            SpawnPlacements.register(ModEntityTypes.MEICA.get(),
                     SpawnPlacements.Type.ON_GROUND,
                     Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                     Animal::checkAnimalSpawnRules);
