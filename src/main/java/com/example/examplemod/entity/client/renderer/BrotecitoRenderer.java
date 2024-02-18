@@ -1,6 +1,7 @@
-package com.example.examplemod.entity.client;
+package com.example.examplemod.entity.client.renderer;
 
 import com.example.examplemod.ExampleMod;
+import com.example.examplemod.entity.client.model.BrotecitoModel;
 import com.example.examplemod.entity.custom.BrotecitoEntity;
 import com.example.examplemod.entity.variant.BrotecitoVariant;
 import com.google.common.collect.Maps;

@@ -53,9 +53,11 @@ public class MeicaEntity extends TamableAnimal implements IAnimatable, RangedAtt
         super(entityTpe, level);
     }
 
+    /*
     protected void populateDefaultEquipmentSlots(RandomSource src, DifficultyInstance difficulty) {
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
     }
+    */
 
     // Método para que Meica pueda atacar a distancia
     @Override

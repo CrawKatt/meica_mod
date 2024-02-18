@@ -1,8 +1,8 @@
 package com.example.examplemod;
 
 import com.example.examplemod.entity.ModEntityTypes;
-import com.example.examplemod.entity.client.BrotecitoRenderer;
-import com.example.examplemod.entity.client.MeicaRenderer;
+import com.example.examplemod.entity.client.renderer.BrotecitoRenderer;
+import com.example.examplemod.entity.client.renderer.MeicaRenderer;
 import com.example.examplemod.item.ModItems;
 import com.example.examplemod.particle.ModParticles;
 import com.mojang.logging.LogUtils;
@@ -18,8 +18,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
-
-import java.util.stream.Collectors;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(ExampleMod.MODID)

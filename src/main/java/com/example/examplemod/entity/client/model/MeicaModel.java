@@ -1,4 +1,4 @@
-package com.example.examplemod.entity.client;
+package com.example.examplemod.entity.client.model;
 
 import com.example.examplemod.ExampleMod;
 import com.example.examplemod.entity.custom.MeicaEntity;
@@ -9,7 +9,6 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 public class MeicaModel extends AnimatedGeoModel<MeicaEntity> {
-
     @Override
     public ResourceLocation getModelLocation(MeicaEntity object) {
         return new ResourceLocation(ExampleMod.MODID, "geo/meica.geo.json");
@@ -18,7 +17,6 @@ public class MeicaModel extends AnimatedGeoModel<MeicaEntity> {
     @Override
     public ResourceLocation getTextureLocation(MeicaEntity object) {
         return new ResourceLocation(ExampleMod.MODID, "textures/entity/meica/meica.png");
-        //return MeicaRenderer.LOCATION_BY_VARIANT.get(object.getVariant());
     }
 
     // Define el comportamiento de mirar al jugador que lo haya tameado

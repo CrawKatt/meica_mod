@@ -1,4 +1,7 @@
 {
   "item.examplemod.brotecito_spawn_egg": "Brotecito Spawn Egg",
-  "item.examplemod.meica_spawn_egg": "Meica Spawn Egg"
+  "item.examplemod.meica_spawn_egg": "Meica Spawn Egg",
+
+  "entity.examplemod.brotecito": "Brotecito",
+  "entity.examplemod.meica": "Meica"
 }
