@@ -333,10 +333,14 @@ public class BrotecitoEntity extends TamableAnimal implements IAnimatable, Range
     }
 
     /* VARIANTS */
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746, DifficultyInstance p_146747_,
-                                        MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_,
-                                        @Nullable CompoundTag p_146750_) {
-        BrotecitoVariant variant = Util.getRandom(BrotecitoVariant.values(), this.random);
+    public SpawnGroupData finalizeSpawn(
+            ServerLevelAccessor p_146746,
+            DifficultyInstance p_146747_,
+            MobSpawnType p_146748_,
+            @Nullable SpawnGroupData p_146749_,
+            @Nullable CompoundTag p_146750_
+    ) {
+        BrotecitoVariant variant = BrotecitoVariant.getRandomVariant();
         setVariant(variant);
         return super.finalizeSpawn(p_146746, p_146747_, p_146748_, p_146749_, p_146750_);
     }

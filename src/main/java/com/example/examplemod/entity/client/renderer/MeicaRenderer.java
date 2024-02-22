@@ -32,7 +32,7 @@ public class MeicaRenderer extends ExtendedGeoEntityRenderer<MeicaEntity> {
 
     @Nullable
     @Override
-    protected ResourceLocation getTextureForBone(String s, MeicaEntity meicaEntity) {
+    protected ResourceLocation getTextureForBone(String boneName, MeicaEntity meicaEntity) {
         return null;
     }
 
@@ -40,13 +40,12 @@ public class MeicaRenderer extends ExtendedGeoEntityRenderer<MeicaEntity> {
     @Nullable
     @Override
     protected ItemStack getHeldItemForBone(String boneName, MeicaEntity meicaEntity) {
-        if ("RightHand".equals(boneName)) {
+        if ("RightArm".equals(boneName)) {
             return new ItemStack(Items.BOW);
         }
         return ItemStack.EMPTY;
     }
 
-    // Define la posición de la mano derecha del modelo de Meica
     @Override
     protected ItemTransforms.TransformType getCameraTransformForItemAtBone(ItemStack itemStack, String boneName) {
         if (itemStack.getItem() == Items.BOW) {

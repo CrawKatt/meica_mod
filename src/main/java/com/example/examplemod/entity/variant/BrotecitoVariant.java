@@ -2,6 +2,7 @@ package com.example.examplemod.entity.variant;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Random;
 
 public enum BrotecitoVariant {
     DEFAULT(0),
@@ -21,5 +22,15 @@ public enum BrotecitoVariant {
 
     public static BrotecitoVariant byId(int id) {
         return BY_ID[id % BY_ID.length];
+    }
+
+    public static BrotecitoVariant getRandomVariant() {
+        int randomNum = new Random().nextInt(100);
+
+        if (randomNum < 95) {
+            return DEFAULT;
+        } else {
+            return DARK;
+        }
     }
 }

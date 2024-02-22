@@ -45,7 +45,7 @@ public class BrotecitoRenderer extends GeoEntityRenderer<BrotecitoEntity> {
         if(animatable.isBaby()) {
             stack.scale(0.65F, 0.65F, 0.65F);
         } else {
-            stack.scale(1.3F, 1.3F, 1.3F);
+            stack.scale(1.0F, 1.0F, 1.0F);
         }
 
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
