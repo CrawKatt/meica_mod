@@ -1,9 +1,14 @@
 package com.example.examplemod.entity.custom;
 
 import com.example.examplemod.entity.ModEntities;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -16,9 +21,17 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BrotecitoEntity extends TamableAnimal {
+import java.util.UUID;
+
+public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
+    @Nullable
+    private UUID persistentAngerTarget;
+    private static final UniformInt PERSISTENT_ANGER_TIME = UniformInt.of(20, 39);
+    private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BrotecitoEntity.class, EntityDataSerializers.INT);
+
     public BrotecitoEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
@@ -39,10 +52,10 @@ public class BrotecitoEntity extends TamableAnimal {
         this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers(new Class[0]));
-        this.targetSelector.addGoal(6, new NonTameRandomTargetGoal(this, Turtle.class, false, Turtle.BABY_ON_LAND_SELECTOR));
-        this.targetSelector.addGoal(7, new NearestAttackableTargetGoal(this, AbstractSkeleton.class, false));
-        this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal(this, true));
+        this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
+        this.targetSelector.addGoal(6, new NonTameRandomTargetGoal<>(this, Turtle.class, false, Turtle.BABY_ON_LAND_SELECTOR));
+        this.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(this, AbstractSkeleton.class, false));
+        this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal<>(this, true));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -57,12 +70,38 @@ public class BrotecitoEntity extends TamableAnimal {
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel pLevel, AgeableMob pOtherParent) {
+    public AgeableMob getBreedOffspring(@NotNull ServerLevel pLevel, @NotNull AgeableMob pOtherParent) {
         return ModEntities.BROTECITO.get().create(pLevel);
     }
 
     @Override
     public boolean isFood(ItemStack pStack) {
         return pStack.is(Items.COOKED_BEEF);
+    }
+
+    @Override
+    public int getRemainingPersistentAngerTime() {
+        return this.entityData.get(DATA_REMAINING_ANGER_TIME);
+    }
+
+    @Override
+    public void setRemainingPersistentAngerTime(int i) {
+        this.entityData.set(DATA_REMAINING_ANGER_TIME, i);
+    }
+
+    @Nullable
+    @Override
+    public UUID getPersistentAngerTarget() {
+        return this.persistentAngerTarget;
+    }
+
+    @Override
+    public void setPersistentAngerTarget(@Nullable UUID uuid) {
+        this.persistentAngerTarget = uuid;
+    }
+
+    @Override
+    public void startPersistentAngerTimer() {
+        this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
     }
 }

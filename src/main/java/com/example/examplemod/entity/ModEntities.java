@@ -15,7 +15,7 @@ public class ModEntities {
 
     public static final RegistryObject<EntityType<BrotecitoEntity>> BROTECITO =
             ENTITY_TYPES.register("brotecito", () -> EntityType.Builder.of(BrotecitoEntity::new, MobCategory.CREATURE)
-                    .sized(1.3f, 1.3f).build("brotecito"));
+                    .sized(0.6f, 0.6f).build("brotecito"));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
