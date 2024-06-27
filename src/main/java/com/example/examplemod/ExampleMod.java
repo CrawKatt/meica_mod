@@ -2,6 +2,7 @@ package com.example.examplemod;
 
 import com.example.examplemod.entity.ModEntities;
 import com.example.examplemod.entity.client.BrotecitoRenderer;
+import com.example.examplemod.particle.ModParticles;
 import com.example.examplemod.worldgen.biome.ModTerrablender;
 import com.example.examplemod.worldgen.biome.surface.ModSurfaceRules;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -26,6 +27,9 @@ public class ExampleMod {
 
         // Registra las entidades
         ModEntities.register(modEventBus);
+
+        // Registra las partículas
+        ModParticles.register(modEventBus);
 
         // Registra el Bioma
         ModTerrablender.registerBiomes();
