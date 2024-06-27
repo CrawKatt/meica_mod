@@ -1,25 +1,24 @@
 package com.example.examplemod.entity.client;
 
-import com.example.examplemod.ExampleMod;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.HierarchicalModel;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
 
-public class BrotecitoModel<T extends Entity> extends HierarchicalModel<T> {
-	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(ExampleMod.MODID, "brotecito"), "main");
+public class BrotecitoModel<T extends LivingEntity> extends HierarchicalModel<T> implements ArmedModel {
 	private final ModelPart root;
 	public final ModelPart armRight;
 
 	public BrotecitoModel(ModelPart root) {
 		this.root = root.getChild("bone");
-		this.armRight = root.getChild("bone2");
+		ModelPart bone2 = root.getChild("bone2");
+		this.armRight = bone2.getChild("arm_r1");
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -64,11 +63,6 @@ public class BrotecitoModel<T extends Entity> extends HierarchicalModel<T> {
 	}
 
 	@Override
-	public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-
-	}
-
-	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 		//bone2.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
@@ -81,5 +75,15 @@ public class BrotecitoModel<T extends Entity> extends HierarchicalModel<T> {
 
 	public ModelPart getArmRight() {
 		return this.armRight;
+	}
+
+	@Override
+	public void translateToHand(HumanoidArm p_102108_, PoseStack p_102109_) {
+		this.armRight.translateAndRotate(p_102109_);
+	}
+
+	@Override
+	public void setupAnim(T p_102618_, float p_102619_, float p_102620_, float p_102621_, float p_102622_, float p_102623_) {
+
 	}
 }

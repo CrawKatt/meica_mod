@@ -14,7 +14,7 @@ public class BrotecitoRenderer extends MobRenderer<BrotecitoEntity, BrotecitoMod
     public static final ResourceLocation TEXTURE = new ResourceLocation(ExampleMod.MODID, "textures/entity/brotecito.png");
     public BrotecitoRenderer(EntityRendererProvider.Context pContext) {
         super(pContext, new BrotecitoModel<>(pContext.bakeLayer(ModModelLayers.BROTECITO_LAYER)), 0.6f);
-        this.addLayer(new ItemInHandLayer(this, pContext.getItemInHandRenderer()));
+        this.addLayer(new ItemInHandLayer<>(this, pContext.getItemInHandRenderer()));
     }
 
     @Override
