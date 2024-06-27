@@ -1,29 +1,37 @@
 package com.example.examplemod.entity.custom;
 
 import com.example.examplemod.entity.ModEntities;
+import com.example.examplemod.particle.ModParticles;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.NeutralMob;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Turtle;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.scores.Team;
+import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.UUID;
 
 public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
@@ -31,9 +39,39 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
     private UUID persistentAngerTarget;
     private static final UniformInt PERSISTENT_ANGER_TIME = UniformInt.of(20, 39);
     private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BrotecitoEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(BrotecitoEntity.class, EntityDataSerializers.BOOLEAN);
 
     public BrotecitoEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+    }
+
+    // Método para que el Brotecito pueda obtener espadas de diamante y equiparlas
+    @Override
+    public void tick() {
+        super.tick();
+
+        if (!this.isAlive()) {
+            return;
+        }
+
+        if (!this.hasItemInSlot(EquipmentSlot.OFFHAND)) {
+            this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ARROW, 1));
+        }
+
+        List<ItemEntity> itemsNearby = this.level().getEntitiesOfClass(ItemEntity.class, this.getBoundingBox().inflate(0));
+
+        for (ItemEntity itemEntity : itemsNearby) {
+            Item item = itemEntity.getItem().getItem();
+            if (item == Items.DIAMOND_SWORD || item == Items.BOW) {
+                // Recoger el Objeto
+                this.take(itemEntity, itemEntity.getItem().getCount());
+
+                // Equipar la espada
+                this.setItemSlot(EquipmentSlot.MAINHAND, itemEntity.getItem());
+                itemEntity.discard();
+                break;
+            }
+        }
     }
 
     /**
@@ -74,9 +112,24 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
         return ModEntities.BROTECITO.get().create(pLevel);
     }
 
+    // Método para que los Brotecitos puedan emitir partículas personalizadas al aparearse
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == 18) {
+            for(int i = 0; i < 7; i++) {
+                double d0 = this.random.nextGaussian() * 0.02;
+                double d1 = this.random.nextGaussian() * 0.02;
+                double d2 = this.random.nextGaussian() * 0.02;
+                this.level().addParticle(ModParticles.KAPPA_PRIDE_PARTICLES.get(), this.getRandomX(1.0), this.getRandomY() + 0.5, this.getRandomZ(1.0), d0, d1, d2);
+            }
+        } else {
+            super.handleEntityEvent(id);
+        }
+    }
+
     @Override
     public boolean isFood(ItemStack pStack) {
-        return pStack.is(Items.COOKED_BEEF);
+        return pStack.is(Items.CARROT);
     }
 
     @Override
@@ -103,5 +156,102 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
     @Override
     public void startPersistentAngerTimer() {
         this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
+    }
+
+    /* TAMEABLE */
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemStack = player.getItemInHand(hand);
+        Item item = itemStack.getItem();
+
+        Item itemForTaming = Items.APPLE;
+
+        if (isFood(itemStack)) {
+            return super.mobInteract(player, hand);
+        }
+
+        if (item == itemForTaming && !isTame()) {
+            if (this.level().isClientSide) {
+                return InteractionResult.CONSUME;
+            } else {
+                if (!player.getAbilities().instabuild) {
+                    itemStack.shrink(1);
+                }
+
+                if (!ForgeEventFactory.onAnimalTame(this, player)) {
+                    if (!this.level().isClientSide) {
+                        super.tame(player);
+                        this.navigation.recomputePath();
+                        this.setTarget(null);
+                        this.level().broadcastEntityEvent(this, (byte) 7);
+                        setSitting(false);
+                    }
+                }
+
+                return InteractionResult.SUCCESS;
+            }
+        }
+
+        if (isTame() && !this.level().isClientSide && hand == InteractionHand.MAIN_HAND) {
+            setSitting(!isSitting());
+            return InteractionResult.SUCCESS;
+        }
+
+        if (itemStack.getItem() == itemForTaming) {
+            return InteractionResult.PASS;
+        }
+        
+        return super.mobInteract(player, hand);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        setSitting(tag.getBoolean("isSitting"));
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("isSitting", this.isSitting());
+    }
+
+    // Método para que el Brotecito pueda sentarse y levantarse
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(SITTING, false);
+    }
+
+    public void setSitting(boolean sitting) {
+        this.entityData.set(SITTING, sitting);
+        this.setOrderedToSit(sitting);
+    }
+
+    public boolean isSitting() {
+        return this.entityData.get(SITTING);
+    }
+
+    @Override
+    public Team getTeam() {
+        return super.getTeam();
+    }
+
+    public boolean canBeLeashed(Player player) {
+        return false;
+    }
+
+    @Override
+    public void setTame(boolean tamed) {
+        super.setTame(tamed);
+        if (tamed) {
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(60.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4D);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue((double)0.5f);
+        } else {
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(30.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(2D);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue((double)0.25f);
+        }
     }
 }
