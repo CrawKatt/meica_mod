@@ -1,4 +1,4 @@
-package com.example.examplemod.entity.custom;
+package com.example.examplemod.entity.custom.brotecito;
 
 import com.example.examplemod.entity.ModEntities;
 import com.example.examplemod.particle.ModParticles;

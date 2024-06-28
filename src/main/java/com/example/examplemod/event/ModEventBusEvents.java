@@ -2,7 +2,8 @@ package com.example.examplemod.event;
 
 import com.example.examplemod.ExampleMod;
 import com.example.examplemod.entity.ModEntities;
-import com.example.examplemod.entity.custom.BrotecitoEntity;
+import com.example.examplemod.entity.custom.brotecito.BrotecitoEntity;
+import com.example.examplemod.entity.custom.meica.MeicaEntity;
 import com.example.examplemod.particle.ModParticles;
 import com.example.examplemod.particle.custom.KappaPrideParticles;
 import net.minecraft.client.Minecraft;
@@ -17,6 +18,7 @@ public class ModEventBusEvents {
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(ModEntities.BROTECITO.get(), BrotecitoEntity.createAttributes().build());
+        event.put(ModEntities.MEICA.get(), MeicaEntity.createMobAttributes().build());
     }
 
     @SubscribeEvent

@@ -2,6 +2,7 @@ package com.example.examplemod;
 
 import com.example.examplemod.entity.ModEntities;
 import com.example.examplemod.entity.client.BrotecitoRenderer;
+import com.example.examplemod.entity.client.MeicaRenderer;
 import com.example.examplemod.particle.ModParticles;
 import com.example.examplemod.worldgen.biome.ModTerrablender;
 import com.example.examplemod.worldgen.biome.surface.ModSurfaceRules;
@@ -59,6 +60,7 @@ public class ExampleMod {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(ModEntities.BROTECITO.get(), BrotecitoRenderer::new);
+            EntityRenderers.register(ModEntities.MEICA.get(), MeicaRenderer::new);
         }
     }
 }
