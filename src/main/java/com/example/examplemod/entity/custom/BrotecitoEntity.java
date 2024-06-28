@@ -7,9 +7,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
@@ -19,8 +17,10 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Turtle;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -54,11 +54,13 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
             return;
         }
 
+        /* Añadir flechas en caso de que el Brotecito sea arquero
         if (!this.hasItemInSlot(EquipmentSlot.OFFHAND)) {
             this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ARROW, 1));
         }
+        */
 
-        List<ItemEntity> itemsNearby = this.level().getEntitiesOfClass(ItemEntity.class, this.getBoundingBox().inflate(0));
+        List<ItemEntity> itemsNearby = this.level().getEntitiesOfClass(ItemEntity.class, this.getBoundingBox().inflate(1.0));
 
         for (ItemEntity itemEntity : itemsNearby) {
             Item item = itemEntity.getItem().getItem();
@@ -149,8 +151,8 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
     }
 
     @Override
-    public void setPersistentAngerTarget(@Nullable UUID uuid) {
-        this.persistentAngerTarget = uuid;
+    public void setPersistentAngerTarget(@Nullable UUID pTarget) {
+        this.persistentAngerTarget = pTarget;
     }
 
     @Override
@@ -202,6 +204,36 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
         }
         
         return super.mobInteract(player, hand);
+    }
+
+    // Método para que el Brotecito pueda atacar a entidades hostiles excepto a:
+    // - Ghasts
+    // - Brotecitos que no son suyos
+    // - jugadores que no pueden ser dañados
+    @Override
+    public boolean wantsToAttack(@NotNull LivingEntity pTarget, @NotNull LivingEntity pOwner) {
+        if (!(pTarget instanceof Ghast)) {
+            if (pTarget instanceof BrotecitoEntity brotecitoEntity) {
+                return !brotecitoEntity.isTame() || brotecitoEntity.getOwner() != pOwner;
+            } else if (pTarget instanceof Player && pOwner instanceof Player && !((Player)pOwner).canHarmPlayer((Player)pTarget)) {
+                return false;
+            } else if (pTarget instanceof AbstractHorse && ((AbstractHorse)pTarget).isTamed()) {
+                return false;
+            } else {
+                return !(pTarget instanceof TamableAnimal) || !((TamableAnimal)pTarget).isTame();
+            }
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isAlliedTo(Entity pEntity) {
+        if (this.isTame() && this.getOwner() != null) {
+            return pEntity == this.getOwner();
+        } else {
+            return super.isAlliedTo(pEntity);
+        }
     }
 
     @Override
