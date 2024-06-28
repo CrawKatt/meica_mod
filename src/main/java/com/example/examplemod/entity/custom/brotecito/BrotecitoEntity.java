@@ -7,6 +7,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -26,6 +28,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
@@ -43,6 +46,7 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
 
     public BrotecitoEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.moveControl = new BrotecitoMoveControl(this);
     }
 
     // Método para que el Brotecito pueda obtener espadas de diamante y equiparlas
@@ -81,13 +85,14 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
      */
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new BrotecitoFloatGoal(this));
         this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
         this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0, true));
         this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(7, new BreedGoal(this, 1.0));
-        this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0));
+        this.goalSelector.addGoal(8, new BrotecitoRandomDirectionGoal(this));
+        this.goalSelector.addGoal(9, new BrotecitoKeepOnJumpingGoal(this));
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
@@ -122,7 +127,7 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
                 double d0 = this.random.nextGaussian() * 0.02;
                 double d1 = this.random.nextGaussian() * 0.02;
                 double d2 = this.random.nextGaussian() * 0.02;
-                this.level().addParticle(ModParticles.KAPPA_PRIDE_PARTICLES.get(), this.getRandomX(1.0), this.getRandomY() + 0.5, this.getRandomZ(1.0), d0, d1, d2);
+                this.level().addParticle(ModParticles.KAPPA_PRIDE_PARTICLES.get(), this.getRandomX(1.0),this.getRandomY() + 0.5, this.getRandomZ(1.0), d0, d1, d2);
             }
         } else {
             super.handleEntityEvent(id);
@@ -286,4 +291,36 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue((double)0.25f);
         }
     }
+
+    public int getJumpDelay() {
+        return this.random.nextInt(20) + 10;
+    }
+
+    protected void jumpFromGround() {
+        Vec3 vec3 = this.getDeltaMovement();
+        this.setDeltaMovement(vec3.x, (double)this.getJumpPower(), vec3.z);
+        this.hasImpulse = true;
+    }
+
+    protected float getJumpPower() {
+        return 0.42F;
+    }
+
+    protected SoundEvent getJumpSound() {
+        return SoundEvents.SLIME_JUMP;
+    }
+
+    protected float getSoundVolume() {
+        return 0.4F;
+    }
+
+    protected float getSoundPitch() {
+        float f = this.isTiny() ? 1.4F : 0.8F;
+        return ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) * f;
+    }
+
+    public boolean isTiny() {
+        return false; // Puedes ajustar esta lógica según las necesidades de tu entidad
+    }
+
 }
