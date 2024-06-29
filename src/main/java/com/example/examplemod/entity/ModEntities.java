@@ -17,7 +17,7 @@ public class ModEntities {
     // Define la HitBox de los Brotecitos
     public static final RegistryObject<EntityType<BrotecitoEntity>> BROTECITO =
             ENTITY_TYPES.register("brotecito", () -> EntityType.Builder.of(BrotecitoEntity::new, MobCategory.CREATURE)
-                    .sized(0.6f, 0.6f).build("brotecito"));
+                    .sized(1f, 1f).build("brotecito"));
 
     // Define la HitBox de Meica
     public static final RegistryObject<EntityType<MeicaEntity>> MEICA =

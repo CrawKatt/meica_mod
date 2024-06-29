@@ -12,6 +12,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -88,7 +89,7 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
         this.goalSelector.addGoal(1, new BrotecitoFloatGoal(this));
         this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
-        this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0, true));
+        this.goalSelector.addGoal(5, new BrotecitoAttackGoal(this));
         this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(7, new BreedGoal(this, 1.0));
         this.goalSelector.addGoal(8, new BrotecitoRandomDirectionGoal(this));
@@ -284,11 +285,11 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
         if (tamed) {
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(60.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4D);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue((double)0.5f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.5f);
         } else {
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(30.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(2D);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue((double)0.25f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25f);
         }
     }
 
@@ -298,7 +299,7 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
 
     protected void jumpFromGround() {
         Vec3 vec3 = this.getDeltaMovement();
-        this.setDeltaMovement(vec3.x, (double)this.getJumpPower(), vec3.z);
+        this.setDeltaMovement(vec3.x, this.getJumpPower(), vec3.z);
         this.hasImpulse = true;
     }
 
@@ -323,4 +324,13 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
         return false; // Puedes ajustar esta lógica según las necesidades de tu entidad
     }
 
+    public void dealDamage(LivingEntity target) {
+        if (this.isAlive() && this.distanceToSqr(target) < this.getBbWidth() * this.getBbWidth() && this.hasLineOfSight(target)) {
+            boolean flag = target.hurt(target.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+            if (flag) {
+                this.doEnchantDamageEffects(this, target);
+                this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
+            }
+        }
+    }
 }

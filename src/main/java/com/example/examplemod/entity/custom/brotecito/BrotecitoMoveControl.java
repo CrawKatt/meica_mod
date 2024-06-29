@@ -12,7 +12,7 @@ public class BrotecitoMoveControl extends MoveControl {
     public BrotecitoMoveControl(BrotecitoEntity brotecito) {
         super(brotecito);
         this.brotecito = brotecito;
-        this.yRot = 180.0F * brotecito.getYRot() / (float)Math.PI;
+        this.yRot = 180.0F * brotecito.getYRot() / (float) Math.PI;
     }
 
     public void setDirection(float yRot, boolean isAggressive) {
