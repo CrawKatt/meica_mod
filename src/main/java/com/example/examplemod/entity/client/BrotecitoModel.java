@@ -2,7 +2,9 @@ package com.example.examplemod.entity.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.ArmedModel;
+import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -10,7 +12,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 
-public class BrotecitoModel<T extends Entity> extends HierarchicalModel<T> implements ArmedModel {
+public class BrotecitoModel<T extends Entity> extends HierarchicalModel<T> implements ArmedModel, HeadedModel {
 	private final ModelPart brotecito;
 	private final ModelPart arms;
 	private final ModelPart pot;
@@ -67,8 +69,10 @@ public class BrotecitoModel<T extends Entity> extends HierarchicalModel<T> imple
 				.texOffs(10, 19).addBox(3.0714F, -2.3571F, -4.5F, 3.0F, 6.0F, 9.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0714F, -6.6429F, -0.5F, -3.1416F, 0.0F, 3.1416F));
 		PartDefinition backFace_r1 = head.addOrReplaceChild("backFace_r1", CubeListBuilder.create().texOffs(28, 0).addBox(4.0F, -8.0F, -5.0F, 1.0F, 6.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0714F, 5.6429F, -0.5F, 0.0F, 1.5708F, 0.0F));
 		PartDefinition arms = brotecito.addOrReplaceChild("arms", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
-		PartDefinition rightArm = arms.addOrReplaceChild("rightArm", CubeListBuilder.create().texOffs(21, 1).addBox(-1.0F, -1.0F, 2.0F, 2.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-7.0F, -5.0767F, -6.9556F));
-		PartDefinition leftArm = arms.addOrReplaceChild("leftArm", CubeListBuilder.create().texOffs(7, 1).addBox(-1.0F, -1.0F, 2.0F, 2.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(7.0F, -5.0767F, -6.9556F));
+		PartDefinition rightArm = arms.addOrReplaceChild("rightArm", CubeListBuilder.create(), PartPose.offsetAndRotation(-7.0F, -5.0767F, -2.9556F, -0.2182F, 0.0F, 0.0F));
+		PartDefinition rightArm_r1 = rightArm.addOrReplaceChild("rightArm_r1", CubeListBuilder.create().texOffs(21, 1).addBox(-1.0F, -1.0F, -2.0F, 2.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.2182F, 0.0F, 0.0F));
+		PartDefinition leftArm = arms.addOrReplaceChild("leftArm", CubeListBuilder.create(), PartPose.offsetAndRotation(7.0F, -5.0767F, -2.9556F, -0.2182F, 0.0F, 0.0F));
+		PartDefinition leftArm_r1 = leftArm.addOrReplaceChild("leftArm_r1", CubeListBuilder.create().texOffs(7, 1).addBox(-1.0F, -1.0F, -2.0F, 2.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.2182F, 0.0F, 0.0F));
 		PartDefinition pot = brotecito.addOrReplaceChild("pot", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -3.1416F, 0.0F, 3.1416F));
 		PartDefinition frontPot = pot.addOrReplaceChild("frontPot", CubeListBuilder.create().texOffs(33, 62).addBox(-7.0F, -2.0F, 6.0F, 14.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 		PartDefinition backPot = pot.addOrReplaceChild("backPot", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
@@ -98,13 +102,28 @@ public class BrotecitoModel<T extends Entity> extends HierarchicalModel<T> imple
 		return brotecito;
 	}
 
-	public ModelPart getArmRight() {
-		return brotecito.getChild("arms").getChild("rightArm");
+	public void translateToRightArm(PoseStack poseStack) {
+		// Ajustar los valores según sea necesario para la ubicación/posición correcta de la espada
+		// X: Ok (-0.4F)
+		// Y: Ok (0.6F)
+		// Z: Ok (0.0F) [Aumentar el valor de Z en Negativo hace que la espada se vaya hacia adelante, hacer lo mismo en Positivo hace que vaya hacia atrás]
+		poseStack.translate(-0.4F, 0.6F, 0.0F);
+
+		// Ok(-20.5F) [Aumentar el valor de X en Negativo hace que la espada se incline hacia arriba, hacer lo mismo en Positivo hace que se incline hacia abajo]
+		poseStack.mulPose(Axis.XP.rotationDegrees(-20.5F)); // Usar rotaciones del modelo
+		poseStack.mulPose(Axis.YP.rotationDegrees(0.0F));
+		poseStack.mulPose(Axis.ZP.rotationDegrees(0.0F));
 	}
 
 	@Override
 	public void translateToHand(HumanoidArm p_102108_, PoseStack p_102109_) {
-		this.getArmRight().translateAndRotate(p_102109_);
+		System.out.println("RightArm: " + p_102108_);
+		this.translateToRightArm(p_102109_);
+	}
+
+	@Override
+	public ModelPart getHead() {
+		return this.head;
 	}
 
 	@Override
