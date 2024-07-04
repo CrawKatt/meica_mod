@@ -117,7 +117,7 @@ public class BrotecitoModel<T extends Entity> extends HierarchicalModel<T> imple
 
 	@Override
 	public void translateToHand(HumanoidArm p_102108_, PoseStack p_102109_) {
-		System.out.println("RightArm: " + p_102108_);
+		System.out.println("RightArm: " + p_102109_);
 		this.translateToRightArm(p_102109_);
 	}
 

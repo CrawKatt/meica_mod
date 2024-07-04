@@ -1,14 +1,19 @@
 package com.example.examplemod;
 
+import com.example.examplemod.block.ModBlocks;
 import com.example.examplemod.entity.ModEntities;
 import com.example.examplemod.entity.client.BrotecitoRenderer;
 import com.example.examplemod.entity.client.MeicaRenderer;
+import com.example.examplemod.item.ModCreativeModTabs;
+import com.example.examplemod.item.ModItems;
 import com.example.examplemod.particle.ModParticles;
 import com.example.examplemod.worldgen.biome.ModTerrablender;
 import com.example.examplemod.worldgen.biome.surface.ModSurfaceRules;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,6 +34,9 @@ public class ExampleMod {
         // Registra las entidades
         ModEntities.register(modEventBus);
 
+        // Registra los items
+        ModItems.register(modEventBus);
+
         // Registra las partículas
         ModParticles.register(modEventBus);
 
@@ -38,6 +46,15 @@ public class ExampleMod {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
+        // Registra los bloques
+        ModBlocks.register(modEventBus);
+
+        // Registra las pestañas del modo creativo
+        ModCreativeModTabs.register(modEventBus);
+
+        // Registra el evento para añadir items al modo creativo
+        modEventBus.addListener(this::addCreative);
+
         // Registra el setup (Necesario para que cargue las reglas de superficie)
         modEventBus.addListener(this::commonSetup);
     }
@@ -46,6 +63,13 @@ public class ExampleMod {
         event.enqueueWork(() -> {
             SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
         });
+    }
+
+    private void addCreative(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItems.BROTENITA_INGOT);
+            event.accept(ModItems.RAW_BROTENITA);
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
