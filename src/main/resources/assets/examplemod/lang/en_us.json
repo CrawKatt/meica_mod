@@ -9,6 +9,11 @@
   "item.examplemod.brotenita_shovel": "Brotenita Shovel",
   "item.examplemod.brotenita_hoe": "Brotenita Hoe",
 
+  "item.examplemod.brotenita_helmet": "Brotenita Helmet",
+  "item.examplemod.brotenita_chestplate": "Brotenita Chestplate",
+  "item.examplemod.brotenita_leggings": "Brotenita Leggings",
+  "item.examplemod.brotenita_boots": "Brotenita Boots",
+
   "block.examplemod.brotenita_block": "Block of Brotenita",
   "block.examplemod.raw_brotenita_block": "Block of raw Brotenita",
 

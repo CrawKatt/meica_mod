@@ -28,6 +28,11 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModItems.BROTENITA_SHOVEL.get());
                         pOutput.accept(ModItems.BROTENITA_HOE.get());
 
+                        pOutput.accept(ModItems.BROTENITA_HELMET.get());
+                        pOutput.accept(ModItems.BROTENITA_CHESTPLATE.get());
+                        pOutput.accept(ModItems.BROTENITA_LEGGINGS.get());
+                        pOutput.accept(ModItems.BROTENITA_BOOTS.get());
+
                         //pOutput.accept(ModBlocks.BROTENITA_BLOCK.get());
                         pOutput.accept(ModBlocks.BROTENITA_BLOCK.get());
                         pOutput.accept(ModBlocks.RAW_BROTENITA_BLOCK.get());
