@@ -18,6 +18,9 @@ public class ModItems {
     public static final RegistryObject<Item> RAW_BROTENITA = ITEMS.register("raw_brotenita",
             () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> MEICA_BOW = ITEMS.register("meica_bow",
+            () -> new BowItem(new Item.Properties().durability(500)));
+
     // todo: Cambiar texturas por texturas de Brotenita
     public static final RegistryObject<Item> BROTENITA_STAFF = ITEMS.register("brotenita_staff",
             () -> new Item(new Item.Properties().stacksTo(1)));

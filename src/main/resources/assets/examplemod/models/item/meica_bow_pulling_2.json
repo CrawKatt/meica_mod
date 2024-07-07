@@ -1,0 +1,6 @@
+{
+    "parent": "examplemod:item/meica_bow",
+    "textures": {
+        "layer0": "examplemod:item/meica_bow_pulling_2"
+    }
+}

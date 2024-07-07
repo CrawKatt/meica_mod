@@ -20,7 +20,9 @@ public class ModCreativeModTabs {
                     .displayItems((pParameters, pOutput) -> {
                         pOutput.accept(ModItems.BROTENITA_INGOT.get());
                         pOutput.accept(ModItems.RAW_BROTENITA.get());
+
                         pOutput.accept(ModItems.BROTENITA_STAFF.get());
+                        pOutput.accept(ModItems.MEICA_BOW.get());
 
                         pOutput.accept(ModItems.BROTENITA_SWORD.get());
                         pOutput.accept(ModItems.BROTENITA_PICKAXE.get());
