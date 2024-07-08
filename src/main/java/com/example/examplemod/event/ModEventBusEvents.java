@@ -6,7 +6,6 @@ import com.example.examplemod.entity.custom.brotecito.BrotecitoEntity;
 import com.example.examplemod.entity.custom.meica.MeicaEntity;
 import com.example.examplemod.particle.ModParticles;
 import com.example.examplemod.particle.custom.KappaPrideParticles;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
