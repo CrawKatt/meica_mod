@@ -23,7 +23,6 @@ public class ModEventBusEvents {
 
     @SubscribeEvent
     public static void registerParticleFactories(final RegisterParticleProvidersEvent event) {
-        Minecraft.getInstance().particleEngine.register(ModParticles.KAPPA_PRIDE_PARTICLES.get(),
-                KappaPrideParticles.Provider::new);
+        event.registerSpriteSet(ModParticles.KAPPA_PRIDE_PARTICLES.get(), KappaPrideParticles.Provider::new);
     }
 }
