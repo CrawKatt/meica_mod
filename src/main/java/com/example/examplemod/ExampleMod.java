@@ -6,7 +6,6 @@ import com.example.examplemod.entity.client.BrotecitoRenderer;
 import com.example.examplemod.entity.client.MeicaRenderer;
 import com.example.examplemod.item.ModCreativeModTabs;
 import com.example.examplemod.item.ModItems;
-import com.example.examplemod.loot.ModLootModifiers;
 import com.example.examplemod.particle.ModParticles;
 import com.example.examplemod.worldgen.biome.ModTerrablender;
 import com.example.examplemod.worldgen.biome.surface.ModSurfaceRules;
@@ -37,9 +36,6 @@ public class ExampleMod {
 
         // Registra los items
         ModItems.register(modEventBus);
-
-        // Registra el loot
-        ModLootModifiers.register(modEventBus);
 
         // Registra las partículas
         ModParticles.register(modEventBus);
