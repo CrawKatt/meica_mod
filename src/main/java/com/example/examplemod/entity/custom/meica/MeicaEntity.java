@@ -1,12 +1,17 @@
 package com.example.examplemod.entity.custom.meica;
 
 import com.example.examplemod.entity.custom.brotecito.BrotecitoEntity;
+import com.example.examplemod.item.ModItems;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -20,7 +25,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,6 +35,9 @@ public class MeicaEntity extends Monster implements NeutralMob, RangedAttackMob 
     private UUID persistentAngerTarget;
     private static final UniformInt PERSISTENT_ANGER_TIME = UniformInt.of(20, 39);
     private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BrotecitoEntity.class, EntityDataSerializers.INT);
+    /* Boss Bar */
+    private final ServerBossEvent bossEvent =
+            new ServerBossEvent(Component.literal("Meica"), BossEvent.BossBarColor.GREEN, BossEvent.BossBarOverlay.NOTCHED_12);
 
     public MeicaEntity(EntityType<? extends Monster> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
@@ -38,7 +45,7 @@ public class MeicaEntity extends Monster implements NeutralMob, RangedAttackMob 
 
     // Método para definir el equipo de Meica (arco por defecto)
     protected void populateDefaultEquipmentSlots(RandomSource src, DifficultyInstance difficulty) {
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModItems.MEICA_BOW.get()));
     }
 
     @Override
@@ -64,7 +71,7 @@ public class MeicaEntity extends Monster implements NeutralMob, RangedAttackMob 
         arrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.level().getDifficulty().getId() * 4));
         this.playSound(SoundEvents.ARROW_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
         this.level().addFreshEntity(arrow);
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModItems.MEICA_BOW.get()));
     }
 
     // Método para definir los atributos de Meica (vida, daño, velocidad, etc.)
@@ -112,5 +119,28 @@ public class MeicaEntity extends Monster implements NeutralMob, RangedAttackMob 
         this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
+    }
+
+    /* Boss Bar*/
+
+    // Método para añadir el "evento jefe" al jugador (Muestra la barra de progreso cuando el jugador ve a Meica)
+    @Override
+    public void startSeenByPlayer(ServerPlayer pServerPlayer) {
+        super.startSeenByPlayer(pServerPlayer);
+        this.bossEvent.addPlayer(pServerPlayer);
+    }
+
+    // Método para remover el "evento jefe" del jugador (Quita la barra de progreso cuando el jugador o Meica muere)
+    @Override
+    public void stopSeenByPlayer(ServerPlayer pServerPlayer) {
+        super.stopSeenByPlayer(pServerPlayer);
+        this.bossEvent.removePlayer(pServerPlayer);
+    }
+
+    // Actualiza la barra de progreso del jefe (Cuantos corazones le quedan)
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
     }
 }

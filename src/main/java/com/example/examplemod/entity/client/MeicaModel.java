@@ -1,5 +1,6 @@
 package com.example.examplemod.entity.client;
 
+import com.example.examplemod.item.ModItems;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.ArmedModel;
@@ -10,7 +11,6 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 public class MeicaModel<T extends LivingEntity> extends HierarchicalModel<T> implements ArmedModel {
 	private final ModelPart head;
@@ -79,7 +79,7 @@ public class MeicaModel<T extends LivingEntity> extends HierarchicalModel<T> imp
 
 		// Animación de apuntar con el arco
 		ItemStack itemstack = entity.getMainHandItem();
-		if (itemstack.getItem() == Items.BOW && entity.isUsingItem()) {
+		if (itemstack.getItem() == ModItems.MEICA_BOW.get() && entity.isUsingItem()) {
 			this.right_arm.yRot = -0.1F + this.head.yRot;
 			this.right_arm.xRot = -((float)Math.PI / 2F) + this.head.xRot;
 			this.right_sleve.yRot = -0.1F + this.head.yRot;
