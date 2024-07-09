@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class MeicaRenderer extends MobRenderer<MeicaEntity, MeicaModel<MeicaEntity>> {
     public static final ResourceLocation TEXTURE = new ResourceLocation(ExampleMod.MODID, "textures/entity/meica.png");
     public MeicaRenderer(EntityRendererProvider.Context pContext) {
-        super(pContext, new MeicaModel<>(pContext.bakeLayer(ModModelLayers.MEICA_LAYER)), 1.0f);
+        super(pContext, new MeicaModel<>(pContext.bakeLayer(ModModelLayers.MEICA_LAYER)), 0.6f); // Tamaño de la sombra de la Entidad
         this.addLayer(new ItemInHandLayer<>(this, pContext.getItemInHandRenderer()));
     }
 
