@@ -3,18 +3,47 @@ package com.example.examplemod.entity.client;
 import com.example.examplemod.ExampleMod;
 import com.example.examplemod.entity.custom.brotecito.BrotecitoEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
 
-public class BrotecitoRenderer extends MobRenderer<BrotecitoEntity, BrotecitoModel<BrotecitoEntity>> {
+import java.util.Objects;
+
+public class BrotecitoRenderer extends GeoEntityRenderer<BrotecitoEntity> {
     public static final ResourceLocation TEXTURE = new ResourceLocation(ExampleMod.MODID, "textures/entity/brotecito.png");
     public BrotecitoRenderer(EntityRendererProvider.Context pContext) {
-        super(pContext, new BrotecitoModel<>(pContext.bakeLayer(ModModelLayers.BROTECITO_LAYER)), 0.6f);
-        this.addLayer(new ItemInHandLayer<>(this, pContext.getItemInHandRenderer()));
+        super(pContext, new BrotecitoModel());
+        this.shadowRadius = 0.6f; // Tamaño de la sombra de la Entidad
+
+        this.addRenderLayer(new BlockAndItemGeoLayer<>(this, (bone, animatable) -> {
+            if (Objects.equals(bone.getName(), "rightArm")) //right hand
+                return animatable.getItemInHand(InteractionHand.MAIN_HAND);
+            return null;
+        }, (bone, animatable) -> null) {
+            @Override
+            protected ItemDisplayContext getTransformTypeForStack(GeoBone bone, ItemStack stack, BrotecitoEntity animatable) {
+                return ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
+            }
+
+            @Override
+            protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack, BrotecitoEntity animatable, MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay) {
+                // Traslación del objeto
+                poseStack.translate(bone.getPosX(), -bone.getPosY() - 0.20F, bone.getPosZ() - 0.15F);
+
+                // Rotación del objeto
+                poseStack.mulPose(Axis.XP.rotationDegrees(bone.getRotX() - 40.5F)); // Ok (-40.5)
+
+                super.renderStackForBone(poseStack, bone, stack, animatable, bufferSource, partialTick, packedLight, packedOverlay);
+            }
+        });
     }
 
     @Override
@@ -22,31 +51,6 @@ public class BrotecitoRenderer extends MobRenderer<BrotecitoEntity, BrotecitoMod
         return TEXTURE;
     }
 
-/*
-    @Override
-    public void render(BrotecitoEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
-        super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
-
-        if (!entity.isInvisible()) {
-            poseStack.pushPose();
-
-            // Ajusta la posición del ítem en la mano derecha
-            poseStack.translate(0.0D, 1.2D, -0.2D); // Ajusta la posición según sea necesario
-            poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
-
-            ModelPart armRight = this.getModel().armRight;
-            armRight.translateAndRotate(poseStack);
-
-            ItemStack itemstack = entity.getMainHandItem();
-            if (itemstack.isEmpty()) {
-                itemstack = new ItemStack(Items.STONE_SWORD);
-            }
-
-            Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, entity.level(), entity.getId());
-            poseStack.popPose();
-        }
-    }
-    */
     @Override
     public void render(BrotecitoEntity pEntity, float pEntityYaw, float pPartialTicks, @NotNull PoseStack pMatrixStack,
                        @NotNull MultiBufferSource pBuffer, int pPackedLight) {

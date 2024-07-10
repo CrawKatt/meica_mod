@@ -16,7 +16,7 @@ public class ModEventBusEvents {
 
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
-        event.put(ModEntities.BROTECITO.get(), BrotecitoEntity.createAttributes().build());
+        event.put(ModEntities.BROTECITO.get(), BrotecitoEntity.createAttributes());
         event.put(ModEntities.MEICA.get(), MeicaEntity.createMobAttributes().build());
     }
 

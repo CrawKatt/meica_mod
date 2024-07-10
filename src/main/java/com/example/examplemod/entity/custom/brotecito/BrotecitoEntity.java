@@ -12,7 +12,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -34,20 +33,24 @@ import net.minecraft.world.scores.Team;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 import java.util.UUID;
 
-public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
+public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEntity {
     @Nullable
     private UUID persistentAngerTarget;
     private static final UniformInt PERSISTENT_ANGER_TIME = UniformInt.of(20, 39);
     private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BrotecitoEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(BrotecitoEntity.class, EntityDataSerializers.BOOLEAN);
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public BrotecitoEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-        this.moveControl = new BrotecitoMoveControl(this);
     }
 
     // Método para que el Brotecito pueda obtener espadas de diamante y equiparlas
@@ -86,14 +89,13 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
      */
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new BrotecitoFloatGoal(this));
+        this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
-        this.goalSelector.addGoal(5, new BrotecitoAttackGoal(this));
+        this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0, true));
         this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(7, new BreedGoal(this, 1.0));
-        this.goalSelector.addGoal(8, new BrotecitoRandomDirectionGoal(this));
-        this.goalSelector.addGoal(9, new BrotecitoKeepOnJumpingGoal(this));
+        this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
@@ -104,14 +106,15 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
         this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal<>(this, true));
     }
 
-    public static AttributeSupplier.Builder createAttributes() {
+    public static AttributeSupplier createAttributes() {
         return Animal.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, 20D)
                 .add(Attributes.FOLLOW_RANGE, 24D)
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.ARMOR_TOUGHNESS, 0.1f)
                 .add(Attributes.ATTACK_KNOCKBACK, 2f)
-                .add(Attributes.ATTACK_DAMAGE, 2f);
+                .add(Attributes.ATTACK_DAMAGE, 2f)
+                .build();
     }
 
     @Nullable
@@ -293,44 +296,13 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob {
         }
     }
 
-    public int getJumpDelay() {
-        return this.random.nextInt(20) + 10;
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+
     }
 
-    protected void jumpFromGround() {
-        Vec3 vec3 = this.getDeltaMovement();
-        this.setDeltaMovement(vec3.x, this.getJumpPower(), vec3.z);
-        this.hasImpulse = true;
-    }
-
-    protected float getJumpPower() {
-        return 0.42F;
-    }
-
-    protected SoundEvent getJumpSound() {
-        return SoundEvents.SLIME_JUMP;
-    }
-
-    protected float getSoundVolume() {
-        return 0.4F;
-    }
-
-    protected float getSoundPitch() {
-        float f = this.isTiny() ? 1.4F : 0.8F;
-        return ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) * f;
-    }
-
-    public boolean isTiny() {
-        return false; // Puedes ajustar esta lógica según las necesidades de tu entidad
-    }
-
-    public void dealDamage(LivingEntity target) {
-        if (this.isAlive() && this.distanceToSqr(target) < this.getBbWidth() * this.getBbWidth() && this.hasLineOfSight(target)) {
-            boolean flag = target.hurt(target.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-            if (flag) {
-                this.doEnchantDamageEffects(this, target);
-                this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
-            }
-        }
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 }

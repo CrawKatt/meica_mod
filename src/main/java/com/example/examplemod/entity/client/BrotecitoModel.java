@@ -1,17 +1,28 @@
 package com.example.examplemod.entity.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
-import net.minecraft.client.model.ArmedModel;
-import net.minecraft.client.model.HeadedModel;
-import net.minecraft.client.model.HierarchicalModel;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.HumanoidArm;
+import com.example.examplemod.ExampleMod;
+import com.example.examplemod.entity.custom.brotecito.BrotecitoEntity;
+import net.minecraft.resources.ResourceLocation;
+import software.bernie.geckolib.model.GeoModel;
 
+public class BrotecitoModel extends GeoModel<BrotecitoEntity> {
+	@Override
+	public ResourceLocation getModelResource(BrotecitoEntity brotecitoEntity) {
+		return new ResourceLocation(ExampleMod.MODID, "geo/brotecito.geo.json");
+	}
+
+	@Override
+	public ResourceLocation getTextureResource(BrotecitoEntity brotecitoEntity) {
+		return new ResourceLocation(ExampleMod.MODID, "textures/entity/brotecito.png");
+	}
+
+	@Override
+	public ResourceLocation getAnimationResource(BrotecitoEntity brotecitoEntity) {
+		return null;
+	}
+}
+
+/*
 public class BrotecitoModel<T extends Entity> extends HierarchicalModel<T> implements ArmedModel, HeadedModel {
 	private final ModelPart brotecito;
 	private final ModelPart arms;
@@ -131,3 +142,4 @@ public class BrotecitoModel<T extends Entity> extends HierarchicalModel<T> imple
 
 	}
 }
+*/

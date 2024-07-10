@@ -6,7 +6,7 @@
 				"identifier": "geometry.unknown",
 				"texture_width": 64,
 				"texture_height": 64,
-				"visible_bounds_width": 3,
+				"visible_bounds_width": 4,
 				"visible_bounds_height": 2.5,
 				"visible_bounds_offset": [0, 0.75, 0]
 			},
@@ -44,26 +44,19 @@
 					]
 				},
 				{
-					"name": "arms",
-					"parent": "brotecito",
-					"pivot": [0, 0, 0]
-				},
-				{
 					"name": "rightArm",
-					"parent": "arms",
-					"pivot": [-7, 5.07674, -2.95559],
-					"rotation": [-12.5, 0, 0],
+					"parent": "brotecito",
+					"pivot": [-7, 8.5, -1],
 					"cubes": [
-						{"origin": [-8, 4.07674, -4.95559], "size": [2, 2, 4], "pivot": [-7, 5.07674, -2.95559], "rotation": [-12.5, 0, 0], "uv": [21, 1]}
+						{"origin": [-8, 4, -2], "size": [2, 5, 2], "uv": [9, 0]}
 					]
 				},
 				{
 					"name": "leftArm",
-					"parent": "arms",
-					"pivot": [7, 5.07674, -2.95559],
-					"rotation": [-12.5, 0, 0],
+					"parent": "brotecito",
+					"pivot": [7, 8.5, -1],
 					"cubes": [
-						{"origin": [6, 4.07674, -4.95559], "size": [2, 2, 4], "pivot": [7, 5.07674, -2.95559], "rotation": [-12.5, 0, 0], "uv": [7, 1]}
+						{"origin": [6, 4, -2], "size": [2, 5, 2], "uv": [23, 0]}
 					]
 				},
 				{
