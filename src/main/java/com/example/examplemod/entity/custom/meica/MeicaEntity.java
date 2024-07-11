@@ -8,6 +8,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -29,6 +30,9 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
+
+import static com.example.examplemod.sound.ModSounds.MEICA_DEATH;
+import static com.example.examplemod.sound.ModSounds.MEICA_KILL_ENTITY;
 
 public class MeicaEntity extends Monster implements NeutralMob, RangedAttackMob {
     @Nullable
@@ -142,5 +146,17 @@ public class MeicaEntity extends Monster implements NeutralMob, RangedAttackMob 
     public void aiStep() {
         super.aiStep();
         this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
+    }
+
+    /* SOUNDS */
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return MEICA_DEATH.get();
+    }
+
+    // Método para reproducir un sonido cuando Meica mata a una entidad
+    public void playKillSound() {
+        this.level().playSeededSound(null, this.getX(), this.getY(), this.getZ(), MEICA_KILL_ENTITY.get(), this.getSoundSource(), 1.0F, 1.0F, this.random.nextLong());
     }
 }

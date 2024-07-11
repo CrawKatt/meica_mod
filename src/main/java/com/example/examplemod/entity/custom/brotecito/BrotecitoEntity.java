@@ -7,8 +7,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -28,7 +26,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
@@ -110,7 +107,7 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
         return Animal.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, 20D)
                 .add(Attributes.FOLLOW_RANGE, 24D)
-                .add(Attributes.MOVEMENT_SPEED, 0.25D)
+                .add(Attributes.MOVEMENT_SPEED, 0.15D)
                 .add(Attributes.ARMOR_TOUGHNESS, 0.1f)
                 .add(Attributes.ATTACK_KNOCKBACK, 2f)
                 .add(Attributes.ATTACK_DAMAGE, 2f)

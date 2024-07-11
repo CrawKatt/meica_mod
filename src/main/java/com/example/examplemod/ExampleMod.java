@@ -7,6 +7,7 @@ import com.example.examplemod.entity.client.MeicaRenderer;
 import com.example.examplemod.item.ModCreativeModTabs;
 import com.example.examplemod.item.ModItems;
 import com.example.examplemod.particle.ModParticles;
+import com.example.examplemod.sound.ModSounds;
 import com.example.examplemod.worldgen.biome.ModTerrablender;
 import com.example.examplemod.worldgen.biome.surface.ModSurfaceRules;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -42,6 +43,9 @@ public class ExampleMod {
 
         // Registra el Bioma
         ModTerrablender.registerBiomes();
+
+        // Registra los audios
+        ModSounds.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);

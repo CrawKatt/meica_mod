@@ -29,5 +29,11 @@
   "block.examplemod.brotenita_door": "Brotenita Door",
   "block.examplemod.brotenita_trapdoor": "Brotenita Trapdoor",
 
-  "creativetab.example_tab": "Brotenita Example Tab"
+  "creativetab.example_tab": "Brotenita Example Tab",
+
+  "entity.examplemod.meica": "Meica",
+  "entity.examplemod.brotecito": "Brotecito",
+
+  "sounds.examplemod.meica_kill": "Meica's kill sound",
+  "sounds.examplemod.meica_death": "Meica's death sound"
 }
