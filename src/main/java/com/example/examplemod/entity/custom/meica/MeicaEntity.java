@@ -79,7 +79,7 @@ public class MeicaEntity extends Monster implements NeutralMob, RangedAttackMob 
     }
 
     // Método para definir los atributos de Meica (vida, daño, velocidad, etc.)
-    public static AttributeSupplier setAttributes() {
+    public static AttributeSupplier createAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 20.00)
                 .add(Attributes.ATTACK_DAMAGE, 3.0f)

@@ -3,6 +3,7 @@ package com.example.examplemod.event;
 import com.example.examplemod.ExampleMod;
 import com.example.examplemod.entity.ModEntities;
 import com.example.examplemod.entity.custom.brotecito.BrotecitoEntity;
+import com.example.examplemod.entity.custom.brotecito.BrotecitoMamadoEntity;
 import com.example.examplemod.entity.custom.meica.MeicaEntity;
 import com.example.examplemod.particle.ModParticles;
 import com.example.examplemod.particle.custom.KappaPrideParticles;
@@ -17,7 +18,8 @@ public class ModEventBusEvents {
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(ModEntities.BROTECITO.get(), BrotecitoEntity.createAttributes());
-        event.put(ModEntities.MEICA.get(), MeicaEntity.createMobAttributes().build());
+        event.put(ModEntities.BROTECITO_MAMADO.get(), BrotecitoMamadoEntity.createAttributes());
+        event.put(ModEntities.MEICA.get(), MeicaEntity.createAttributes());
     }
 
     @SubscribeEvent

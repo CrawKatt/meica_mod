@@ -2,29 +2,19 @@ package com.example.examplemod.entity.client;
 
 import com.example.examplemod.ExampleMod;
 import com.example.examplemod.entity.custom.meica.MeicaEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
+import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
-public class MeicaRenderer extends MobRenderer<MeicaEntity, MeicaModel<MeicaEntity>> {
+public class MeicaRenderer extends HumanoidMobRenderer<MeicaEntity, MeicaModel<MeicaEntity>> {
     public static final ResourceLocation TEXTURE = new ResourceLocation(ExampleMod.MODID, "textures/entity/meica.png");
-    public MeicaRenderer(EntityRendererProvider.Context pContext) {
-        super(pContext, new MeicaModel<>(pContext.bakeLayer(ModModelLayers.MEICA_LAYER)), 0.6f); // Tamaño de la sombra de la Entidad
-        this.addLayer(new ItemInHandLayer<>(this, pContext.getItemInHandRenderer()));
+
+    public MeicaRenderer(EntityRendererProvider.Context context) {
+        super(context, new MeicaModel<>(context.bakeLayer(MeicaModel.LAYER_LOCATION)), 0.5F);
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull MeicaEntity pEntity) {
+    public ResourceLocation getTextureLocation(MeicaEntity entity) {
         return TEXTURE;
-    }
-
-    @Override
-    public void render(MeicaEntity pEntity, float pEntityYaw, float pPartialTicks, @NotNull PoseStack pMatrixStack,
-                       @NotNull MultiBufferSource pBuffer, int pPackedLight) {
-        super.render(pEntity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight);
     }
 }
