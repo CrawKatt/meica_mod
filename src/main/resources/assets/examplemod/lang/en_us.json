@@ -33,6 +33,7 @@
 
   "entity.examplemod.meica": "Meica",
   "entity.examplemod.brotecito": "Brotecito",
+  "entity.examplemod.brotecito_mamado": "Brotecito Mamado",
 
   "sounds.examplemod.meica_kill": "Meica's kill sound",
   "sounds.examplemod.meica_death": "Meica's death sound"

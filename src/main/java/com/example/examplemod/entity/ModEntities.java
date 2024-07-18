@@ -2,6 +2,7 @@ package com.example.examplemod.entity;
 
 import com.example.examplemod.ExampleMod;
 import com.example.examplemod.entity.custom.brotecito.BrotecitoEntity;
+import com.example.examplemod.entity.custom.brotecito.BrotecitoMamadoEntity;
 import com.example.examplemod.entity.custom.meica.MeicaEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -23,6 +24,11 @@ public class ModEntities {
     public static final RegistryObject<EntityType<MeicaEntity>> MEICA =
             ENTITY_TYPES.register("meica", () -> EntityType.Builder.of(MeicaEntity::new, MobCategory.MONSTER)
                     .sized(1.0f, 2.0f).build("meica"));
+
+    // Define la HitBox del Brotecito Mamado
+    public static final RegistryObject<EntityType<BrotecitoMamadoEntity>> BROTECITO_MAMADO =
+            ENTITY_TYPES.register("brotecito_mamado", () -> EntityType.Builder.of(BrotecitoMamadoEntity::new, MobCategory.CREATURE)
+                    .sized(1.4F, 2.7F).build("brotecito_mamado"));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
