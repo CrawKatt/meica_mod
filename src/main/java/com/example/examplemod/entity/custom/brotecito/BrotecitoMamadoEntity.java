@@ -16,7 +16,6 @@ import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
@@ -29,15 +28,16 @@ import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.Animation;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.List;
 import java.util.UUID;
 
 public class BrotecitoMamadoEntity extends TamableAnimal implements NeutralMob, GeoEntity {
@@ -48,33 +48,22 @@ public class BrotecitoMamadoEntity extends TamableAnimal implements NeutralMob, 
     private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(BrotecitoEntity.class, EntityDataSerializers.BOOLEAN);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int attackAnimationTick;
-    //private static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(BrotecitoMamadoEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final int ATTACK_DURATION = 20;
+    private static final EntityDataAccessor<Boolean> ATTACKING =
+            SynchedEntityData.defineId(BrotecitoMamadoEntity.class, EntityDataSerializers.BOOLEAN);
 
     public BrotecitoMamadoEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    // Método para que el Brotecito pueda obtener espadas de diamante y equiparlas
     @Override
     public void tick() {
         super.tick();
 
-        if (!this.isAlive()) {
-            return;
-        }
-
-        List<ItemEntity> itemsNearby = this.level().getEntitiesOfClass(ItemEntity.class, this.getBoundingBox().inflate(1.0));
-
-        for (ItemEntity itemEntity : itemsNearby) {
-            Item item = itemEntity.getItem().getItem();
-            if (item == Items.DIAMOND_SWORD || item == Items.BOW) {
-                // Recoger el Objeto
-                this.take(itemEntity, itemEntity.getItem().getCount());
-
-                // Equipar la espada
-                this.setItemSlot(EquipmentSlot.MAINHAND, itemEntity.getItem());
-                itemEntity.discard();
-                break;
+        if (this.attackAnimationTick > 0) {
+            this.attackAnimationTick--;
+            if (this.attackAnimationTick == 0) {
+                stopAttack();
             }
         }
     }
@@ -86,9 +75,9 @@ public class BrotecitoMamadoEntity extends TamableAnimal implements NeutralMob, 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0, true));
+        // Es necesario añadir un goal personalizado para que la animación de ataque funcione correctamente
+        this.goalSelector.addGoal(5, new BrotecitoMamadoMeleeAttackGoal(this, 1.0, true));
         this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F, false));
-        this.goalSelector.addGoal(7, new BreedGoal(this, 1.0));
         this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
@@ -142,6 +131,16 @@ public class BrotecitoMamadoEntity extends TamableAnimal implements NeutralMob, 
     @Override
     public void startPersistentAngerTimer() {
         this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
+    }
+
+    public void startAttack() {
+        this.entityData.set(ATTACKING, true);
+        this.attackAnimationTick = ATTACK_DURATION;
+    }
+
+    public void stopAttack() {
+        this.entityData.set(ATTACKING, false);
+        this.attackAnimationTick = 0;
     }
 
     /* TAMEABLE */
@@ -239,6 +238,11 @@ public class BrotecitoMamadoEntity extends TamableAnimal implements NeutralMob, 
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(SITTING, false);
+        this.entityData.define(ATTACKING, false);
+    }
+
+    public boolean isAttacking() {
+        return this.entityData.get(ATTACKING);
     }
 
     public void setSitting(boolean sitting) {
@@ -269,27 +273,24 @@ public class BrotecitoMamadoEntity extends TamableAnimal implements NeutralMob, 
         }
     }
 
-
-
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "move_controller", 5, state -> {
-            if (state.isMoving() && !this.swinging) {
-                state.setAnimation(RawAnimation.begin().then("animation.brotecito_mamado.walk", Animation.LoopType.LOOP));
-                return PlayState.CONTINUE;
-            } else if (!state.isMoving() && !this.swinging) {
-                state.setAnimation(RawAnimation.begin().then("animation.brotecito_mamado.idle", Animation.LoopType.LOOP));
-                return PlayState.CONTINUE;
-            }
-            return PlayState.STOP;
-        }));
-        controllerRegistrar.add(new AnimationController<>(this, "attack_controller", 5, state -> {
-            if (this.swinging && state.getController().getAnimationState().equals(AnimationController.State.STOPPED)) {
-                state.setAnimation(RawAnimation.begin().then("animation.brotecito_mamado.attack", Animation.LoopType.PLAY_ONCE));
-                return PlayState.CONTINUE;
-            }
-            return PlayState.STOP;
-        }));
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 0, this::predicate));
+    }
+
+    private <T extends GeoAnimatable> PlayState predicate(AnimationState<T> tAnimationState) {
+        if (this.isAttacking()) {
+            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito_mamado.attack", Animation.LoopType.PLAY_ONCE));
+            return PlayState.CONTINUE;
+        } else if (tAnimationState.isMoving()) {
+            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito_mamado.walk", Animation.LoopType.LOOP));
+            return PlayState.CONTINUE;
+        } else if (!tAnimationState.isMoving() && !this.isInSittingPose()) {
+            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito_mamado.idle", Animation.LoopType.LOOP));
+            return PlayState.CONTINUE;
+        }
+
+        return PlayState.STOP;
     }
 
     @Override
