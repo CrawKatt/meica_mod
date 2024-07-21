@@ -17,7 +17,7 @@ public class ModSurfaceRules {
         SurfaceRules.RuleSource grassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, GRASS_BLOCK), DIRT);
 
         return SurfaceRules.sequence(
-                SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.TEST_BIOME),
+                SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.MEICA_FOREST),
                                 SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, DIAMOND)),
                         SurfaceRules.ifTrue(SurfaceRules.ON_CEILING, RAW_DIAMOND)),
 
