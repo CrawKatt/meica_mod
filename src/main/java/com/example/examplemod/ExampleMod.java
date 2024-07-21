@@ -9,12 +9,14 @@ import com.example.examplemod.item.ModItems;
 import com.example.examplemod.particle.ModParticles;
 import com.example.examplemod.sound.ModSounds;
 import com.example.examplemod.worldgen.biome.ModTerrablender;
+import com.example.examplemod.worldgen.biome.custom.CustomBiomeFogAdjuster;
 import com.example.examplemod.worldgen.biome.surface.ModSurfaceRules;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -28,6 +30,7 @@ import terrablender.api.SurfaceRuleManager;
 @Mod(ExampleMod.MODID)
 public class ExampleMod {
     public static final String MODID = "examplemod";
+    private static final CustomBiomeFogAdjuster fogAdjuster = new CustomBiomeFogAdjuster();
 
     public ExampleMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -49,6 +52,9 @@ public class ExampleMod {
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+
+        // Registra la densidad de la Niebla
+        MinecraftForge.EVENT_BUS.register(fogAdjuster);
 
         // Registra los bloques
         ModBlocks.register(modEventBus);
@@ -76,6 +82,13 @@ public class ExampleMod {
         }
     }
 
+    @SubscribeEvent
+    public void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            fogAdjuster.tick();
+        }
+    }
+
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
@@ -89,6 +102,7 @@ public class ExampleMod {
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(ModEntities.BROTECITO.get(), BrotecitoRenderer::new);
             EntityRenderers.register(ModEntities.MEICA.get(), MeicaRenderer::new);
+            fogAdjuster.setFogDensity(0.1F, 50.0F);
         }
     }
 }
