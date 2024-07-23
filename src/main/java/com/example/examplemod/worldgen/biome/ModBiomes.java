@@ -2,16 +2,18 @@ package com.example.examplemod.worldgen.biome;
 
 import com.example.examplemod.ExampleMod;
 import com.example.examplemod.entity.ModEntities;
+import com.example.examplemod.worldgen.ModPlacedFeatures;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.BootstapContext;
-import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class ModBiomes {
     public static final ResourceKey<Biome> MEICA_FOREST = ResourceKey.create(Registries.BIOME,
@@ -46,7 +48,9 @@ public class ModBiomes {
         BiomeDefaultFeatures.addDefaultOres(biomeBuilder);
         BiomeDefaultFeatures.addExtraGold(biomeBuilder);
 
-        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.DARK_FOREST_VEGETATION);
+        //biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.TREES_BIRCH_AND_OAK);
+        Holder.Reference<PlacedFeature> bigOakPlacedFeature = context.lookup(Registries.PLACED_FEATURE).getOrThrow(ModPlacedFeatures.BIG_OAK_PLACED_KEY);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, bigOakPlacedFeature);
 
         BiomeDefaultFeatures.addDefaultExtraVegetation(biomeBuilder);
 
