@@ -34,51 +34,51 @@ public class BigOakTrunkPlacer extends TrunkPlacer {
     @Override
     public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter,
                                                             RandomSource pRandom, int pFreeTreeHeight, BlockPos pPos, TreeConfiguration pConfig) {
-        List<FoliagePlacer.FoliageAttachment> list = Lists.newArrayList();
+        List<FoliagePlacer.FoliageAttachment> foliageAttachments = Lists.newArrayList();
         BlockPos blockpos = pPos.below();
         setDirtAt(pLevel, pBlockSetter, pRandom, blockpos, pConfig);
         setDirtAt(pLevel, pBlockSetter, pRandom, blockpos.east(), pConfig);
         setDirtAt(pLevel, pBlockSetter, pRandom, blockpos.south(), pConfig);
         setDirtAt(pLevel, pBlockSetter, pRandom, blockpos.south().east(), pConfig);
         Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(pRandom);
-        int i = pFreeTreeHeight - pRandom.nextInt(4);
-        int j = 2 - pRandom.nextInt(3);
-        int k = pPos.getX();
-        int l = pPos.getY();
-        int i1 = pPos.getZ();
-        int j1 = k;
-        int k1 = i1;
-        int l1 = l + pFreeTreeHeight - 1;
+        int trunkOffset = pFreeTreeHeight - pRandom.nextInt(4);
+        int branchOffset = 2 - pRandom.nextInt(3);
+        int baseX = pPos.getX();
+        int baseY = pPos.getY();
+        int baseZ = pPos.getZ();
+        int currentX = baseX;
+        int currentZ = baseZ;
+        int trunkTopY = baseY + pFreeTreeHeight - 1;
 
-        for(int i2 = 0; i2 < pFreeTreeHeight; ++i2) {
-            if (i2 >= i && j > 0) {
-                j1 += direction.getStepX();
-                k1 += direction.getStepZ();
-                --j;
+        for(int currentHeight = 0; currentHeight < pFreeTreeHeight; ++currentHeight) {
+            if (currentHeight >= trunkOffset && branchOffset > 0) {
+                currentX += direction.getStepX();
+                currentZ += direction.getStepZ();
+                --branchOffset;
             }
 
-            int j2 = l + i2;
-            BlockPos blockpos1 = new BlockPos(j1, j2, k1);
-            if (TreeFeature.isAirOrLeaves(pLevel, blockpos1)) {
-                this.placeLog(pLevel, pBlockSetter, pRandom, blockpos1, pConfig);
-                this.placeLog(pLevel, pBlockSetter, pRandom, blockpos1.east(), pConfig);
-                this.placeLog(pLevel, pBlockSetter, pRandom, blockpos1.south(), pConfig);
-                this.placeLog(pLevel, pBlockSetter, pRandom, blockpos1.east().south(), pConfig);
+            int currentY = baseY + currentHeight;
+            BlockPos currentPos = new BlockPos(currentX, currentY, currentZ);
+            if (TreeFeature.isAirOrLeaves(pLevel, currentPos)) {
+                this.placeLog(pLevel, pBlockSetter, pRandom, currentPos, pConfig);
+                this.placeLog(pLevel, pBlockSetter, pRandom, currentPos.east(), pConfig);
+                this.placeLog(pLevel, pBlockSetter, pRandom, currentPos.south(), pConfig);
+                this.placeLog(pLevel, pBlockSetter, pRandom, currentPos.east().south(), pConfig);
             }
         }
 
-        list.add(new FoliagePlacer.FoliageAttachment(new BlockPos(j1, l1, k1), 0, true));
+        foliageAttachments.add(new FoliagePlacer.FoliageAttachment(new BlockPos(currentX, trunkTopY, currentZ), 0, true));
 
-        for(int l2 = -1; l2 <= 2; ++l2) {
-            for(int i3 = -1; i3 <= 2; ++i3) {
-                if ((l2 < 0 || l2 > 1 || i3 < 0 || i3 > 1) && pRandom.nextInt(3) <= 0) {
-                    int j3 = pRandom.nextInt(3) + 2;
+        for(int offsetX = -1; offsetX <= 2; ++offsetX) {
+            for(int offsetZ = -1; offsetZ <= 2; ++offsetZ) {
+                if ((offsetX < 0 || offsetX > 1 || offsetZ < 0 || offsetZ > 1) && pRandom.nextInt(3) <= 0) {
+                    int branchHeight = pRandom.nextInt(3) + 2;
 
-                    for(int k2 = 0; k2 < j3; ++k2) {
-                        this.placeLog(pLevel, pBlockSetter, pRandom, new BlockPos(k + l2, l1 - k2 - 1, i1 + i3), pConfig);
+                    for(int branchY = 0; branchY < branchHeight; ++branchY) {
+                        this.placeLog(pLevel, pBlockSetter, pRandom, new BlockPos(baseX + offsetX, trunkTopY - branchY - 1, baseZ + offsetZ), pConfig);
                     }
 
-                    list.add(new FoliagePlacer.FoliageAttachment(new BlockPos(j1 + l2, l1, k1 + i3), 0, false));
+                    foliageAttachments.add(new FoliagePlacer.FoliageAttachment(new BlockPos(currentX + offsetX, trunkTopY, currentZ + offsetZ), 0, false));
                 }
             }
         }
@@ -92,7 +92,7 @@ public class BigOakTrunkPlacer extends TrunkPlacer {
             int branchLength = pRandom.nextInt(maxBranchLength - minBranchLength + 1) + minBranchLength;
             BlockPos branchBasePos = new BlockPos(pPos.getX(), pPos.getY() + height, pPos.getZ());
 
-            for (Direction direction1 : Direction.Plane.HORIZONTAL) {
+            for (Direction branchDirection : Direction.Plane.HORIZONTAL) {
                 BlockPos branchPos = branchBasePos;
                 int upwardShift = 0;
                 for (int length = 0; length < branchLength; length++) {
@@ -101,7 +101,7 @@ public class BigOakTrunkPlacer extends TrunkPlacer {
                         branchPos = branchPos.above();
                         upwardShift++;
                     } else {
-                        branchPos = branchPos.relative(direction1);
+                        branchPos = branchPos.relative(branchDirection);
                     }
                     if (TreeFeature.isAirOrLeaves(pLevel, branchPos) || TreeFeature.isAirOrLeaves(pLevel, branchPos.below())) {
                         this.placeLog(pLevel, pBlockSetter, pRandom, branchPos, pConfig);
@@ -112,10 +112,11 @@ public class BigOakTrunkPlacer extends TrunkPlacer {
             }
         }
 
-        return list;
+        return foliageAttachments;
     }
 
-    private void addFoliageAround(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, RandomSource pRandom, BlockPos pos, TreeConfiguration pConfig, boolean isBranchEnd, int extraDensity) {
+    private void addFoliageAround(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, RandomSource pRandom,
+                                  BlockPos pos, TreeConfiguration pConfig, boolean isBranchEnd, int extraDensity) {
         // Base foliage density plus extra density for branch ends
         int foliageDensity = isBranchEnd ? (4 + extraDensity) : 2;
         for (int i = 0; i < foliageDensity; i++) {
@@ -126,21 +127,22 @@ public class BigOakTrunkPlacer extends TrunkPlacer {
             BlockPos foliagePos = pos.relative(direction, distance);
             // Place foliage if the spot is suitable (air or leaves)
             if (TreeFeature.isAirOrLeaves(pLevel, foliagePos)) {
-                this.placeLeaf(pLevel, pBlockSetter, pRandom, foliagePos, pConfig);
+                this.placeLeaf(pBlockSetter, pRandom, foliagePos, pConfig);
             }
             // Optionally, add more foliage around the initial foliage position for a denser look
             if (isBranchEnd && pRandom.nextFloat() < 0.5f) { // 50% chance to add more foliage around for branch ends
                 for (Direction dir : Direction.Plane.HORIZONTAL) {
                     BlockPos aroundFoliagePos = foliagePos.relative(dir);
                     if (TreeFeature.isAirOrLeaves(pLevel, aroundFoliagePos)) {
-                        this.placeLeaf(pLevel, pBlockSetter, pRandom, aroundFoliagePos, pConfig);
+                        this.placeLeaf(pBlockSetter, pRandom, aroundFoliagePos, pConfig);
                     }
                 }
             }
         }
     }
 
-    private void placeLeaf(LevelSimulatedReader reader, BiConsumer<BlockPos, BlockState> blockSetter, RandomSource random, BlockPos pos, TreeConfiguration config) {
+    private void placeLeaf(BiConsumer<BlockPos, BlockState> blockSetter,
+                           RandomSource random, BlockPos pos, TreeConfiguration config) {
         blockSetter.accept(pos, config.foliageProvider.getState(random, pos));
     }
 }
