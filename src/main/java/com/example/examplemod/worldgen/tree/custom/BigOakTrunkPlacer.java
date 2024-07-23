@@ -83,6 +83,64 @@ public class BigOakTrunkPlacer extends TrunkPlacer {
             }
         }
 
+        // Variar la longitud de los brazos y la altura de inicio
+        int minBranchLength = 2;
+        int maxBranchLength = 5;
+        int branchVariationHeight = pFreeTreeHeight / 4;
+
+        for (int height = branchVariationHeight; height < pFreeTreeHeight; height += pRandom.nextInt(3) + 2) {
+            int branchLength = pRandom.nextInt(maxBranchLength - minBranchLength + 1) + minBranchLength;
+            BlockPos branchBasePos = new BlockPos(pPos.getX(), pPos.getY() + height, pPos.getZ());
+
+            for (Direction direction1 : Direction.Plane.HORIZONTAL) {
+                BlockPos branchPos = branchBasePos;
+                int upwardShift = 0;
+                for (int length = 0; length < branchLength; length++) {
+                    // Alternar entre moverse hacia arriba y en la dirección horizontal para crear un efecto de escalera
+                    if (length % 2 == 0 && upwardShift < 2) {
+                        branchPos = branchPos.above();
+                        upwardShift++;
+                    } else {
+                        branchPos = branchPos.relative(direction1);
+                    }
+                    if (TreeFeature.isAirOrLeaves(pLevel, branchPos) || TreeFeature.isAirOrLeaves(pLevel, branchPos.below())) {
+                        this.placeLog(pLevel, pBlockSetter, pRandom, branchPos, pConfig);
+                    }
+                }
+                // Aumentar la densidad de follaje alrededor de los extremos de los brazos
+                addFoliageAround(pLevel, pBlockSetter, pRandom, branchPos, pConfig, true, 6);
+            }
+        }
+
         return list;
+    }
+
+    private void addFoliageAround(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, RandomSource pRandom, BlockPos pos, TreeConfiguration pConfig, boolean isBranchEnd, int extraDensity) {
+        // Base foliage density plus extra density for branch ends
+        int foliageDensity = isBranchEnd ? (4 + extraDensity) : 2;
+        for (int i = 0; i < foliageDensity; i++) {
+            // Randomly choose a direction to place foliage, including diagonals for more natural spread
+            Direction direction = Direction.values()[pRandom.nextInt(Direction.values().length)];
+            // Randomly decide how far from the branch the foliage should start (1 or 2 blocks away)
+            int distance = pRandom.nextBoolean() ? 1 : 2;
+            BlockPos foliagePos = pos.relative(direction, distance);
+            // Place foliage if the spot is suitable (air or leaves)
+            if (TreeFeature.isAirOrLeaves(pLevel, foliagePos)) {
+                this.placeLeaf(pLevel, pBlockSetter, pRandom, foliagePos, pConfig);
+            }
+            // Optionally, add more foliage around the initial foliage position for a denser look
+            if (isBranchEnd && pRandom.nextFloat() < 0.5f) { // 50% chance to add more foliage around for branch ends
+                for (Direction dir : Direction.Plane.HORIZONTAL) {
+                    BlockPos aroundFoliagePos = foliagePos.relative(dir);
+                    if (TreeFeature.isAirOrLeaves(pLevel, aroundFoliagePos)) {
+                        this.placeLeaf(pLevel, pBlockSetter, pRandom, aroundFoliagePos, pConfig);
+                    }
+                }
+            }
+        }
+    }
+
+    private void placeLeaf(LevelSimulatedReader reader, BiConsumer<BlockPos, BlockState> blockSetter, RandomSource random, BlockPos pos, TreeConfiguration config) {
+        blockSetter.accept(pos, config.foliageProvider.getState(random, pos));
     }
 }
