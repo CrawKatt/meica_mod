@@ -6,8 +6,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -19,12 +17,8 @@ import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.scores.Team;
-import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -70,12 +64,12 @@ public class BrotecitoMamadoEntity extends TamableAnimal implements NeutralMob, 
 
     /**
      * Define el comportamiento de la IA del Brotecito
+     * Es necesario añadir un goal personalizado para que la animación de ataque funcione correctamente
      */
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
-        // Es necesario añadir un goal personalizado para que la animación de ataque funcione correctamente
         this.goalSelector.addGoal(5, new BrotecitoMamadoMeleeAttackGoal(this, 1.0, true));
         this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0));
@@ -143,73 +137,37 @@ public class BrotecitoMamadoEntity extends TamableAnimal implements NeutralMob, 
         this.attackAnimationTick = 0;
     }
 
-    /* TAMEABLE */
-    @Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack itemStack = player.getItemInHand(hand);
-        Item item = itemStack.getItem();
-
-        Item itemForTaming = Items.APPLE;
-
-        if (isFood(itemStack)) {
-            return super.mobInteract(player, hand);
-        }
-
-        if (item == itemForTaming && !isTame()) {
-            if (this.level().isClientSide) {
-                return InteractionResult.CONSUME;
-            } else {
-                if (!player.getAbilities().instabuild) {
-                    itemStack.shrink(1);
-                }
-
-                if (!ForgeEventFactory.onAnimalTame(this, player)) {
-                    if (!this.level().isClientSide) {
-                        super.tame(player);
-                        this.navigation.recomputePath();
-                        this.setTarget(null);
-                        this.level().broadcastEntityEvent(this, (byte) 7);
-                        setSitting(false);
-                    }
-                }
-
-                return InteractionResult.SUCCESS;
-            }
-        }
-
-        if (isTame() && !this.level().isClientSide && hand == InteractionHand.MAIN_HAND) {
-            setSitting(!isSitting());
-            return InteractionResult.SUCCESS;
-        }
-
-        if (itemStack.getItem() == itemForTaming) {
-            return InteractionResult.PASS;
-        }
-
-        return super.mobInteract(player, hand);
-    }
-
     // Método para que el Brotecito pueda atacar a entidades hostiles excepto a:
     // - Ghasts
     // - Brotecitos que no son suyos
     // - jugadores que no pueden ser dañados
     @Override
     public boolean wantsToAttack(@NotNull LivingEntity pTarget, @NotNull LivingEntity pOwner) {
-        if (!(pTarget instanceof Ghast)) {
-            if (pTarget instanceof BrotecitoEntity brotecitoEntity) {
-                return !brotecitoEntity.isTame() || brotecitoEntity.getOwner() != pOwner;
-            } else if (pTarget instanceof BrotecitoMamadoEntity brotecitoMamadoEntity) {
-                return !brotecitoMamadoEntity.isTame() || brotecitoMamadoEntity.getOwner() != pOwner;
-            } else if (pTarget instanceof Player && pOwner instanceof Player && !((Player) pOwner).canHarmPlayer((Player) pTarget)) {
-                return false;
-            } else if (pTarget instanceof AbstractHorse && ((AbstractHorse) pTarget).isTamed()) {
-                return false;
-            } else {
-                return !(pTarget instanceof TamableAnimal) || !((TamableAnimal) pTarget).isTame();
-            }
-        } else {
-            return false;
+        return !isNonAttackableTarget(pTarget, pOwner);
+    }
+
+    private boolean isNonAttackableTarget(LivingEntity pTarget, LivingEntity pOwner) {
+        if (pTarget instanceof Ghast) {
+            return true;
         }
+
+        if (pTarget instanceof BrotecitoEntity brotecitoEntity) {
+            return brotecitoEntity.isTame() && brotecitoEntity.getOwner() == pOwner;
+        }
+
+        if (pTarget instanceof BrotecitoMamadoEntity brotecitoMamadoEntity) {
+            return brotecitoMamadoEntity.isTame() && brotecitoMamadoEntity.getOwner() == pOwner;
+        }
+
+        if (pTarget instanceof Player && pOwner instanceof Player) {
+            return !((Player) pOwner).canHarmPlayer((Player) pTarget);
+        }
+
+        if (pTarget instanceof AbstractHorse) {
+            return ((AbstractHorse) pTarget).isTamed();
+        }
+
+        return pTarget instanceof TamableAnimal && ((TamableAnimal) pTarget).isTame();
     }
 
     @Override
@@ -234,6 +192,7 @@ public class BrotecitoMamadoEntity extends TamableAnimal implements NeutralMob, 
     }
 
     // Método para que el Brotecito pueda sentarse y levantarse
+    // También comprueba si está atacando y funcione correctamente la animación de ataque
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
