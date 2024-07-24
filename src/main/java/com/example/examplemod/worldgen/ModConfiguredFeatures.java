@@ -7,7 +7,7 @@ import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -40,10 +40,10 @@ public class ModConfiguredFeatures {
         // Generación de árboles gigantes
         TreeConfiguration bigOakConfig = new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(Blocks.OAK_LOG),
-                new MegaJungleTrunkPlacer(8, 12, 4),
+                new MegaJungleTrunkPlacer(10, 4, 19),
                 BlockStateProvider.simple(Blocks.OAK_LEAVES),
-                new MegaJungleFoliagePlacer(UniformInt.of(2, 3), UniformInt.of(0, 2), 4),
-                new TwoLayersFeatureSize(1, 0, 1)
+                new MegaJungleFoliagePlacer(ConstantInt.of(2), ConstantInt.of( 0), 2),
+                new TwoLayersFeatureSize(1, 1, 2)
         ).build();
 
         register(context, BIG_OAK_KEY, Feature.TREE, bigOakConfig);
