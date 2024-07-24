@@ -2,8 +2,6 @@ package com.example.examplemod.worldgen;
 
 import com.example.examplemod.ExampleMod;
 import com.example.examplemod.block.ModBlocks;
-import com.example.examplemod.worldgen.tree.custom.BigOakFoliagePlacer;
-import com.example.examplemod.worldgen.tree.custom.BigOakTrunkPlacer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
@@ -17,7 +15,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.MegaJungleFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.MegaJungleTrunkPlacer;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 
@@ -40,9 +40,9 @@ public class ModConfiguredFeatures {
         // Generación de árboles gigantes
         TreeConfiguration bigOakConfig = new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(Blocks.OAK_LOG),
-                new BigOakTrunkPlacer(8, 12, 4),
+                new MegaJungleTrunkPlacer(8, 12, 4),
                 BlockStateProvider.simple(Blocks.OAK_LEAVES),
-                new BigOakFoliagePlacer(UniformInt.of(2, 3), UniformInt.of(0, 2), 3),
+                new MegaJungleFoliagePlacer(UniformInt.of(2, 3), UniformInt.of(0, 2), 4),
                 new TwoLayersFeatureSize(1, 0, 1)
         ).build();
 

@@ -11,8 +11,6 @@ import com.example.examplemod.sound.ModSounds;
 import com.example.examplemod.worldgen.biome.ModTerrablender;
 import com.example.examplemod.worldgen.biome.custom.CustomBiomeFogAdjuster;
 import com.example.examplemod.worldgen.biome.surface.ModSurfaceRules;
-import com.example.examplemod.worldgen.tree.ModFoliagePlacers;
-import com.example.examplemod.worldgen.tree.ModTrunkPlacerTypes;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
@@ -60,12 +58,6 @@ public class ExampleMod {
 
         // Registra los bloques
         ModBlocks.register(modEventBus);
-
-        // Registra el Placer de Troncos
-        ModTrunkPlacerTypes.register(modEventBus);
-
-        // Registra el Placer de Follaje (Hojas de los árboles)
-        ModFoliagePlacers.register(modEventBus);
 
         // Registra las pestañas del modo creativo
         ModCreativeModTabs.register(modEventBus);
