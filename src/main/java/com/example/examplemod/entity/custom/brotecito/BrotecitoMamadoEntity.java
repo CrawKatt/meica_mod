@@ -265,7 +265,7 @@ public class BrotecitoMamadoEntity extends TamableAnimal implements NeutralMob, 
         if (tamed) {
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(125.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(20D);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.5f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25f);
         } else {
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(100.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(15D);
@@ -296,5 +296,10 @@ public class BrotecitoMamadoEntity extends TamableAnimal implements NeutralMob, 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
+    }
+
+    public void setOwner(Player player) {
+        this.setTame(true);
+        this.setOwnerUUID(player.getUUID());
     }
 }

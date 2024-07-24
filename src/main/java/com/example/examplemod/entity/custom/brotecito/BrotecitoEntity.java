@@ -1,6 +1,7 @@
 package com.example.examplemod.entity.custom.brotecito;
 
 import com.example.examplemod.entity.ModEntities;
+import com.example.examplemod.item.ModItems;
 import com.example.examplemod.particle.ModParticles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -42,12 +43,29 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
     @Nullable
     private UUID persistentAngerTarget;
     private static final UniformInt PERSISTENT_ANGER_TIME = UniformInt.of(20, 39);
+    private int evolutionProgress = 0;
+    private static final int MAX_EVOLUTION_PROGRESS = 5;
     private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BrotecitoEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(BrotecitoEntity.class, EntityDataSerializers.BOOLEAN);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public BrotecitoEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+    }
+
+    public int getEvolutionProgress() {
+        return this.evolutionProgress;
+    }
+
+    public void increaseEvolutionProgress(int amount) {
+        this.evolutionProgress += amount;
+        if (this.evolutionProgress > MAX_EVOLUTION_PROGRESS) {
+            this.evolutionProgress = MAX_EVOLUTION_PROGRESS;
+        }
+    }
+
+    public int getMaxEvolutionProgress() {
+        return MAX_EVOLUTION_PROGRESS;
     }
 
     // Método para que el Brotecito pueda obtener espadas de diamante y equiparlas
@@ -107,7 +125,7 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
         return Animal.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, 20D)
                 .add(Attributes.FOLLOW_RANGE, 24D)
-                .add(Attributes.MOVEMENT_SPEED, 0.15D)
+                .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.ARMOR_TOUGHNESS, 0.1f)
                 .add(Attributes.ATTACK_KNOCKBACK, 2f)
                 .add(Attributes.ATTACK_DAMAGE, 2f)
@@ -200,15 +218,42 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
             }
         }
 
-        if (isTame() && !this.level().isClientSide && hand == InteractionHand.MAIN_HAND) {
-            setSitting(!isSitting());
-            return InteractionResult.SUCCESS;
+        if (isTame()) {
+            if (item == ModItems.BROTENITA_MEAL.get()) {
+                if (this.level().isClientSide) {
+                    return InteractionResult.CONSUME;
+                } else {
+                    if (!player.getAbilities().instabuild) {
+                        itemStack.shrink(1);
+                    }
+
+                    this.increaseEvolutionProgress(1);
+                    if (this.getEvolutionProgress() >= this.getMaxEvolutionProgress()) {
+                        Level level = this.level();
+                        BrotecitoMamadoEntity brotecitoMamado = new BrotecitoMamadoEntity(ModEntities.BROTECITO_MAMADO.get(), level);
+
+                        brotecitoMamado.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+                        brotecitoMamado.setTame(true);
+                        brotecitoMamado.setOwner(player);
+
+                        level.addFreshEntity(brotecitoMamado);
+                        this.discard();
+
+                        return InteractionResult.SUCCESS;
+                    }
+
+                    return InteractionResult.SUCCESS;
+                }
+            } else if (!this.level().isClientSide && hand == InteractionHand.MAIN_HAND) {
+                this.setSitting(!this.isSitting());
+                return InteractionResult.SUCCESS;
+            }
         }
 
         if (itemStack.getItem() == itemForTaming) {
             return InteractionResult.PASS;
         }
-        
+
         return super.mobInteract(player, hand);
     }
 
