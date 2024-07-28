@@ -79,6 +79,41 @@
           }
         }
       }
+    },
+    "animation.brotecito_mamado.sit": {
+      "loop": "hold_on_last_frame",
+      "bones": {
+        "body": {
+          "position": {
+            "vector": [0, -14, 0]
+          }
+        },
+        "right_arm2": {
+          "rotation": {
+            "vector": [-70.29799, 7.1439, 2.89404]
+          }
+        },
+        "left_arm2": {
+          "rotation": {
+            "vector": [-71.46082, -13.38872, -4.07677]
+          }
+        },
+        "right_leg2": {
+          "rotation": {
+            "vector": [-90, 0, 0]
+          }
+        },
+        "left_leg2": {
+          "rotation": {
+            "vector": [-90, 0, 0]
+          }
+        },
+        "brotecito": {
+          "position": {
+            "vector": [0, -14, 0]
+          }
+        }
+      }
     }
   },
   "geckolib_format_version": 2

@@ -6,6 +6,8 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -137,6 +139,15 @@ public class BrotecitoMamadoEntity extends TamableAnimal implements NeutralMob, 
         this.attackAnimationTick = 0;
     }
 
+    @Override
+    public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
+        if (isTame() && !this.level().isClientSide && hand == InteractionHand.MAIN_HAND) {
+            setSitting(!isSitting());
+            return InteractionResult.SUCCESS;
+        }
+        return super.mobInteract(player, hand);
+    }
+
     // Método para que el Brotecito pueda atacar a entidades hostiles excepto a:
     // - Ghasts
     // - Brotecitos que no son suyos
@@ -246,6 +257,9 @@ public class BrotecitoMamadoEntity extends TamableAnimal implements NeutralMob, 
             return PlayState.CONTINUE;
         } else if (!tAnimationState.isMoving() && !this.isInSittingPose()) {
             tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito_mamado.idle", Animation.LoopType.LOOP));
+            return PlayState.CONTINUE;
+        } else if (this.isInSittingPose()) {
+            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito_mamado.sit", Animation.LoopType.HOLD_ON_LAST_FRAME));
             return PlayState.CONTINUE;
         }
 
