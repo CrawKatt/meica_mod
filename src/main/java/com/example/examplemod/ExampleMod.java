@@ -1,9 +1,12 @@
 package com.example.examplemod;
 
 import com.example.examplemod.block.ModBlocks;
+import com.example.examplemod.effect.ModEffects;
 import com.example.examplemod.entity.ModEntities;
 import com.example.examplemod.entity.client.BrotecitoRenderer;
 import com.example.examplemod.entity.client.MeicaRenderer;
+import com.example.examplemod.event.BiomeEvents;
+import com.example.examplemod.event.ModEvents;
 import com.example.examplemod.item.ModCreativeModTabs;
 import com.example.examplemod.item.ModItems;
 import com.example.examplemod.particle.ModParticles;
@@ -50,6 +53,9 @@ public class ExampleMod {
         // Registra los audios
         ModSounds.register(modEventBus);
 
+        // Registra los efectos
+        ModEffects.register(modEventBus);
+
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
@@ -67,6 +73,13 @@ public class ExampleMod {
 
         // Registra el setup (Necesario para que cargue las reglas de superficie)
         modEventBus.addListener(this::commonSetup);
+
+        // Registra el evento para aplicar el efecto de la infección de brotenita
+        MinecraftForge.EVENT_BUS.register(BiomeEvents.class);
+
+        // Registra el evento para añadir capabilities
+        //MinecraftForge.EVENT_BUS.register(new CapabilityEvents());
+        modEventBus.addListener(ModEvents::onRegisterCapabilities);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

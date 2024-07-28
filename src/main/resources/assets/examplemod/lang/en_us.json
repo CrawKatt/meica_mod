@@ -37,5 +37,8 @@
   "entity.examplemod.brotecito_mamado": "Brotecito Mamado",
 
   "sounds.examplemod.meica_kill": "Meica's kill sound",
-  "sounds.examplemod.meica_death": "Meica's death sound"
+  "sounds.examplemod.meica_death": "Meica's death sound",
+
+  "effect.examplemod.brotenita_infection": "Brotification",
+  "effect.examplemod.fragility": "Fragility"
 }
