@@ -236,7 +236,6 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
 
             return InteractionResult.SUCCESS;
         }
-
     }
 
     // Método para evolucionar al Brotecito
