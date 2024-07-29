@@ -8,11 +8,11 @@ import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Random;
 
-public class SoundHallucinationEffect extends MobEffect {
+public class ParanoiaEffect extends MobEffect {
     private static final Random RANDOM = new Random();
     private int soundTimer;
 
-    protected SoundHallucinationEffect(MobEffectCategory pCategory, int pColor) {
+    protected ParanoiaEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);
     }
 
@@ -26,9 +26,9 @@ public class SoundHallucinationEffect extends MobEffect {
                     case 0 -> serverLevel.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ZOMBIE_AMBIENT, entity.getSoundSource(), 1.0F, 1.0F);
                     case 1 -> serverLevel.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.SKELETON_AMBIENT, entity.getSoundSource(), 1.0F, 1.0F);
                     case 2 -> serverLevel.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.CREEPER_PRIMED, entity.getSoundSource(), 1.0F, 1.0F);
-                    case 3 -> serverLevel.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.SPIDER_AMBIENT, entity.getSoundSource(), 1.0F, 1.0F);
+                    case 3 -> serverLevel.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.GHAST_WARN, entity.getSoundSource(), 1.0F, 1.0F);
                     case 4 -> serverLevel.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDERMAN_AMBIENT, entity.getSoundSource(), 1.0F, 1.0F);
-                    case 5 -> serverLevel.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.GHAST_SCREAM, entity.getSoundSource(), 1.0F, 1.0F);
+                    case 5 -> serverLevel.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.GHAST_HURT, entity.getSoundSource(), 1.0F, 1.0F);
                 }
                 soundTimer = 200;
             }

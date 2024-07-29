@@ -18,8 +18,8 @@ public class ModEffects {
         () -> new BrotenitaInfectionEffect(MobEffectCategory.HARMFUL, 0x996600).addAttributeModifier(Attributes.MOVEMENT_SPEED,
                 "7107DE5E-7CE8-4030-940E-514C1F160890", -0.025f, AttributeModifier.Operation.fromValue(0)));
 
-    public static final RegistryObject<MobEffect> SOUND_HALLUCINATION = MOB_EFFECTS.register("sound_hallucination",
-            () -> new SoundHallucinationEffect(MobEffectCategory.HARMFUL, 0x9966CC));
+    public static final RegistryObject<MobEffect> PARANOIA = MOB_EFFECTS.register("paranoia",
+            () -> new ParanoiaEffect(MobEffectCategory.HARMFUL, 0x9966CC));
 
     public static void register(IEventBus pEventBus) {
         MOB_EFFECTS.register(pEventBus);

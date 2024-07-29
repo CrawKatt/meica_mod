@@ -20,24 +20,26 @@ public class BrotenitaInfectionEffect extends MobEffect {
     @Override
     public void applyEffectTick(LivingEntity entity, int amplifier) {
         if (!entity.level().isClientSide) {
-            int duration = this.getDuration(entity);
-
-            if (duration >= 72000) { // 60 minutos
-                entity.kill(); // Muerte
-            } else if (duration >= 60000) { // 50 minutos
-                entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 32767, 0));
-                entity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 32767, 0));
-            } else if (duration >= 48000) { // 40 minutos
-                spawnZombiesAround(entity);
-            } else if (duration >= 36000) { // 30 minutos
-                entity.addEffect(new MobEffectInstance(ModEffects.SOUND_HALLUCINATION.get(), 32767, 0));
-            } else if (duration >= 24000) { // 20 minutos
-                entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 32767, 0));
-            } else if (duration >= 12000) { // 10 minutos
-                entity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 32767, 0));
-            }
+            addEffects(entity, this.getDuration(entity));
         }
         super.applyEffectTick(entity, amplifier);
+    }
+
+    private void addEffects(LivingEntity entity, int duration) {
+        if (duration >= 72000) { // 60 minutos
+            entity.kill(); // Muerte
+        } else if (duration >= 60000) { // 50 minutos
+            entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 32767, 0));
+            entity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 32767, 0));
+        } else if (duration >= 48000) { // 40 minutos
+            spawnZombiesAround(entity);
+        } else if (duration >= 36000) { // 30 minutos
+            entity.addEffect(new MobEffectInstance(ModEffects.PARANOIA.get(), 32767, 0));
+        } else if (duration >= 24000) { // 20 minutos
+            entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 32767, 0));
+        } else if (duration >= 12000) { // 10 minutos
+            entity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 32767, 0));
+        }
     }
 
     private int getDuration(LivingEntity entity) {
