@@ -43,8 +43,8 @@ public class MeicaEntity extends Monster implements NeutralMob, RangedAttackMob 
     private final ServerBossEvent bossEvent =
             new ServerBossEvent(Component.literal("Meica"), BossEvent.BossBarColor.GREEN, BossEvent.BossBarOverlay.NOTCHED_12);
 
-    public MeicaEntity(EntityType<? extends Monster> p_33002_, Level p_33003_) {
-        super(p_33002_, p_33003_);
+    public MeicaEntity(EntityType<? extends Monster> entityType, Level pLevel) {
+        super(entityType, pLevel);
     }
 
     // Método para definir el equipo de Meica (arco por defecto)
