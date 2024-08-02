@@ -115,7 +115,7 @@ public class ExampleMod {
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(ModEntities.BROTECITO.get(), BrotecitoRenderer::new);
             EntityRenderers.register(ModEntities.MEICA.get(), MeicaRenderer::new);
-            fogAdjuster.setFogDensity(0.1F, 50.0F);
+            fogAdjuster.setFogDensity(50.0F);
         }
     }
 }
