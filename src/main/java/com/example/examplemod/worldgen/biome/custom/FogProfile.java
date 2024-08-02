@@ -17,16 +17,8 @@ public class FogProfile {
         return rgb;
     }
 
-    public void setRgb(Vector3f rgb) {
-        this.rgb = rgb;
-    }
-
     public float getFogStart() {
         return fogStart;
-    }
-
-    public void setFogStart(float fogStart) {
-        this.fogStart = fogStart;
     }
 
     public float getFogEnd() {
