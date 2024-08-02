@@ -2,10 +2,7 @@ package com.example.examplemod.event;
 
 import com.example.examplemod.ExampleMod;
 import com.example.examplemod.entity.ModEntities;
-import com.example.examplemod.entity.client.BrotecitoMamadoRenderer;
-import com.example.examplemod.entity.client.BrotecitoRenderer;
-import com.example.examplemod.entity.client.MeicaModel;
-import com.example.examplemod.entity.client.MeicaRenderer;
+import com.example.examplemod.entity.client.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent.RegisterLayerDefinitions;
@@ -19,6 +16,7 @@ public class ModEventBusClientEvents {
         event.registerEntityRenderer(ModEntities.MEICA.get(), MeicaRenderer::new);
         event.registerEntityRenderer(ModEntities.BROTECITO.get(), BrotecitoRenderer::new);
         event.registerEntityRenderer(ModEntities.BROTECITO_MAMADO.get(), BrotecitoMamadoRenderer::new);
+        event.registerEntityRenderer(ModEntities.PLAYER_CLONE.get(), PlayerCloneRenderer::new);
     }
 
     @SubscribeEvent

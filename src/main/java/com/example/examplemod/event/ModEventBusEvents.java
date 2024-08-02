@@ -5,6 +5,7 @@ import com.example.examplemod.entity.ModEntities;
 import com.example.examplemod.entity.custom.brotecito.BrotecitoEntity;
 import com.example.examplemod.entity.custom.brotecito.BrotecitoMamadoEntity;
 import com.example.examplemod.entity.custom.meica.MeicaEntity;
+import com.example.examplemod.entity.custom.player_clone.PlayerCloneEntity;
 import com.example.examplemod.particle.ModParticles;
 import com.example.examplemod.particle.custom.KappaPrideParticles;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -20,6 +21,7 @@ public class ModEventBusEvents {
         event.put(ModEntities.BROTECITO.get(), BrotecitoEntity.createAttributes());
         event.put(ModEntities.BROTECITO_MAMADO.get(), BrotecitoMamadoEntity.createAttributes());
         event.put(ModEntities.MEICA.get(), MeicaEntity.createAttributes());
+        event.put(ModEntities.PLAYER_CLONE.get(), PlayerCloneEntity.createAttributes());
     }
 
     @SubscribeEvent
