@@ -25,14 +25,32 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(ModBlocks.BROTENITA_BLOCK.get(),
-                        ModBlocks.RAW_BROTENITA_BLOCK.get());
+                        ModBlocks.RAW_BROTENITA_BLOCK.get(),
+                        ModBlocks.BROTENITA_STAIRS.get(),
+                        ModBlocks.BROTENITA_SLAB.get(),
+                        ModBlocks.BROTENITA_FENCE.get(),
+                        ModBlocks.BROTENITA_FENCE_GATE.get(),
+                        ModBlocks.BROTENITA_WALL.get(),
+                        ModBlocks.BROTENITA_DOOR.get(),
+                        ModBlocks.BROTENITA_TRAPDOOR.get(),
+                        ModBlocks.BROTENITA_BUTTON.get(),
+                        ModBlocks.BROTENITA_PRESSURE_PLATE.get());
 
         //this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
                 //.add(ModBlocks.BROTENITA_ORE.get()).addTag(Tags.Blocks.ORES);
 
         this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
                 .add(ModBlocks.BROTENITA_BLOCK.get())
-                .add(ModBlocks.RAW_BROTENITA_BLOCK.get());
+                .add(ModBlocks.RAW_BROTENITA_BLOCK.get())
+                .add(ModBlocks.BROTENITA_STAIRS.get())
+                .add(ModBlocks.BROTENITA_SLAB.get())
+                .add(ModBlocks.BROTENITA_FENCE.get())
+                .add(ModBlocks.BROTENITA_FENCE_GATE.get())
+                .add(ModBlocks.BROTENITA_WALL.get())
+                .add(ModBlocks.BROTENITA_DOOR.get())
+                .add(ModBlocks.BROTENITA_TRAPDOOR.get())
+                .add(ModBlocks.BROTENITA_BUTTON.get())
+                .add(ModBlocks.BROTENITA_PRESSURE_PLATE.get());
 
         this.tag(BlockTags.FENCES)
                 .add(ModBlocks.BROTENITA_FENCE.get());
@@ -42,5 +60,20 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
 
         this.tag(BlockTags.WALLS)
                 .add(ModBlocks.BROTENITA_WALL.get());
+
+        this.tag(BlockTags.DOORS)
+                .add(ModBlocks.BROTENITA_DOOR.get());
+
+        this.tag(BlockTags.TRAPDOORS)
+                .add(ModBlocks.BROTENITA_TRAPDOOR.get());
+
+        this.tag(BlockTags.BUTTONS)
+                .add(ModBlocks.BROTENITA_BUTTON.get());
+
+        this.tag(BlockTags.PRESSURE_PLATES)
+                .add(ModBlocks.BROTENITA_PRESSURE_PLATE.get());
+
+        this.tag(BlockTags.SLABS)
+                .add(ModBlocks.BROTENITA_SLAB.get());
     }
 }
