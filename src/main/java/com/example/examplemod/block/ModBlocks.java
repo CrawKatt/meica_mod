@@ -34,9 +34,6 @@ public class ModBlocks {
             () -> new ButtonBlock(BlockBehaviour.Properties.copy(Blocks.STONE_BUTTON),
                     BlockSetType.IRON, 10, true));
 
-    //public static final RegistryObject<Block> BROTENITA_STARIS = registerBlock("brotenita_stairs",
-            //() -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
-
     public static final RegistryObject<Block> BROTENITA_PRESSURE_PLATE = registerBlock("brotenita_pressure_plate",
             () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK),
                     BlockSetType.IRON));
