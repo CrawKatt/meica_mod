@@ -8,6 +8,7 @@ import com.crawkatt.meicamod.entity.client.MeicaRenderer;
 import com.crawkatt.meicamod.event.BiomeEvents;
 import com.crawkatt.meicamod.event.ModEvents;
 import com.crawkatt.meicamod.item.ModCreativeModTabs;
+import com.crawkatt.meicamod.item.ModItemProperties;
 import com.crawkatt.meicamod.item.ModItems;
 import com.crawkatt.meicamod.particle.ModParticles;
 import com.crawkatt.meicamod.sound.ModSounds;
@@ -99,6 +100,9 @@ public class MeicaMod {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
+
+            ModItemProperties.addcustomItemProperties();
+
             EntityRenderers.register(ModEntities.BROTECITO.get(), BrotecitoRenderer::new);
             EntityRenderers.register(ModEntities.MEICA.get(), MeicaRenderer::new);
         }

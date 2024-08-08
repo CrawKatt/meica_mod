@@ -1,6 +1,8 @@
 package com.crawkatt.meicamod.item;
 
 import com.crawkatt.meicamod.MeicaMod;
+import com.crawkatt.meicamod.item.custom.ActiveBrotenitaArmorItem;
+import com.crawkatt.meicamod.item.custom.ModArmorItem;
 import net.minecraft.world.item.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -45,16 +47,16 @@ public class ModItems {
 
     // todo: Cambiar textura por textura de Brotenita
     public static final RegistryObject<Item> BROTENITA_HELMET = ITEMS.register("brotenita_helmet",
-            () -> new ArmorItem(ModArmorMaterials.BROTENITA, ArmorItem.Type.HELMET, new Item.Properties()));
+            () -> new ModArmorItem(ModArmorMaterials.BROTENITA, ArmorItem.Type.HELMET, new Item.Properties()));
 
     public static final RegistryObject<Item> BROTENITA_CHESTPLATE = ITEMS.register("brotenita_chestplate",
-            () -> new ArmorItem(ModArmorMaterials.BROTENITA, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+            () -> new ModArmorItem(ModArmorMaterials.BROTENITA, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
 
     public static final RegistryObject<Item> BROTENITA_LEGGINGS = ITEMS.register("brotenita_leggings",
-            () -> new ArmorItem(ModArmorMaterials.BROTENITA, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+            () -> new ModArmorItem(ModArmorMaterials.BROTENITA, ArmorItem.Type.LEGGINGS, new Item.Properties()));
 
     public static final RegistryObject<Item> BROTENITA_BOOTS = ITEMS.register("brotenita_boots",
-            () -> new ArmorItem(ModArmorMaterials.BROTENITA, ArmorItem.Type.BOOTS, new Item.Properties()));
+            () -> new ModArmorItem(ModArmorMaterials.BROTENITA, ArmorItem.Type.BOOTS, new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
