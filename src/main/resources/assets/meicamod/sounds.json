@@ -1,14 +1,14 @@
 {
   "meica_kill": {
-    "subtitle": "sounds.brotecitosmod.meica_kill",
+    "subtitle": "sounds.meicamod.meica_kill",
     "sounds": [
-      "brotecitosmod:meica_kill"
+      "meicamod:meica_kill"
     ]
   },
   "meica_death": {
-    "subtitle": "sounds.brotecitosmod.meica_death",
+    "subtitle": "sounds.meicamod.meica_death",
     "sounds": [
-      "brotecitosmod:meica_death"
+      "meicamod:meica_death"
     ]
   }
 }
