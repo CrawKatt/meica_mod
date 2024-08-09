@@ -10,13 +10,16 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ModArmorItem extends ArmorItem {
     private static final Map<ArmorMaterial, MobEffectInstance> MATERIAL_TO_EFFECT_MAP =
             (new ImmutableMap.Builder<ArmorMaterial, MobEffectInstance>())
-                    .put(ModArmorMaterials.BROTENITA, new MobEffectInstance(MobEffects.NIGHT_VISION, 200, 1,
+                    .put(ModArmorMaterials.BROTENITA, new MobEffectInstance(MobEffects.NIGHT_VISION, -1, 1,
                             false, false, true)).build();
+
+    private static final Map<Player, Map<ArmorMaterial, MobEffectInstance>> PLAYER_EFFECTS = new HashMap<>();
 
     public ModArmorItem(ArmorMaterial pMaterial, Type pType, Properties pProperties) {
         super(pMaterial, pType, pProperties);
@@ -27,6 +30,8 @@ public class ModArmorItem extends ArmorItem {
         if(!world.isClientSide()) {
             if(hasFullSuitOfArmorOn(player)) {
                 evaluateArmorEffects(player);
+            } else {
+                removeArmorEffects(player);
             }
         }
     }
@@ -48,6 +53,24 @@ public class ModArmorItem extends ArmorItem {
 
         if (hasCorrectArmorOn(mapArmorMaterial, player) && !hasPlayerEffect) {
             player.addEffect(new MobEffectInstance(mapStatusEffect));
+            PLAYER_EFFECTS.computeIfAbsent(player, k -> new HashMap<>()).put(material, mapStatusEffect);
+        }
+    }
+
+    private void removeArmorEffects(Player player) {
+        if (PLAYER_EFFECTS.containsKey(player)) {
+            Map<ArmorMaterial, MobEffectInstance> activeEffects = PLAYER_EFFECTS.get(player);
+            for (Map.Entry<ArmorMaterial, MobEffectInstance> entry : activeEffects.entrySet()) {
+                MobEffectInstance effect = entry.getValue();
+                if (!hasCorrectArmorOn(entry.getKey(), player)) {
+                    player.removeEffect(effect.getEffect());
+                }
+            }
+
+            activeEffects.entrySet().removeIf(entry -> !hasCorrectArmorOn(entry.getKey(), player));
+            if (activeEffects.isEmpty()) {
+                PLAYER_EFFECTS.remove(player);
+            }
         }
     }
 
