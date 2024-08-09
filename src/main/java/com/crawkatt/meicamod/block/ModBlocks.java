@@ -62,7 +62,8 @@ public class ModBlocks {
                     .randomTicks()
                     .strength(1.5F)
                     .requiresCorrectToolForDrops()
-                    .sound(SoundType.AMETHYST_CLUSTER).lightLevel((state -> 5))));
+                    .sound(SoundType.AMETHYST_CLUSTER)
+                    .lightLevel((state -> 5))));
 
     public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
