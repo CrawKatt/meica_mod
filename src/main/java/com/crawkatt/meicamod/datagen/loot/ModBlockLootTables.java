@@ -1,6 +1,7 @@
 package com.crawkatt.meicamod.datagen.loot;
 
 import com.crawkatt.meicamod.block.ModBlocks;
+import com.crawkatt.meicamod.item.ModItems;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
@@ -38,8 +39,8 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.add(ModBlocks.BROTENITA_DOOR.get(),
                 block -> createDoorTable(ModBlocks.BROTENITA_DOOR.get()));
 
-        //this.add(ModBlocks.BROTENITA_ORE.get(),
-                //block -> createCopperLikeOreDrops(ModBlocks.BROTENITA_ORE.get(), ModItems.RAW_BROTENITA.get()));
+        this.add(ModBlocks.RAW_BROTENITA.get(),
+                block -> createCopperLikeOreDrops(ModBlocks.RAW_BROTENITA.get(), ModItems.RAW_BROTENITA.get()));
     }
 
     protected LootTable.Builder createCopperLikeOreDrops(Block pBlock, Item item) {

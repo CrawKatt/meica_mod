@@ -36,7 +36,6 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModItems.BROTENITA_LEGGINGS.get());
                         pOutput.accept(ModItems.BROTENITA_BOOTS.get());
 
-                        //pOutput.accept(ModBlocks.BROTENITA_BLOCK.get());
                         pOutput.accept(ModBlocks.BROTENITA_BLOCK.get());
                         pOutput.accept(ModBlocks.RAW_BROTENITA_BLOCK.get());
 

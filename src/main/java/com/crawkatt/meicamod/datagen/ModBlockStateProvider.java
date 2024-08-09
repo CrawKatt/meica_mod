@@ -2,9 +2,13 @@ package com.crawkatt.meicamod.datagen;
 
 import com.crawkatt.meicamod.MeicaMod;
 import com.crawkatt.meicamod.block.ModBlocks;
+import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -16,8 +20,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         blockWithItem(ModBlocks.BROTENITA_BLOCK);
+        blockWithVariants(ModBlocks.RAW_BROTENITA, "raw_brotenita");
         blockWithItem(ModBlocks.RAW_BROTENITA_BLOCK);
-        //blockWithItem(ModBlocks.BROTENITA_ORE); todo: Corregir esto
 
         stairsBlock(((StairBlock) ModBlocks.BROTENITA_STAIRS.get()), blockTexture(ModBlocks.BROTENITA_BLOCK.get()));
         slabBlock(((SlabBlock) ModBlocks.BROTENITA_SLAB.get()), blockTexture(ModBlocks.BROTENITA_BLOCK.get()), blockTexture(ModBlocks.BROTENITA_BLOCK.get()));
@@ -34,5 +38,39 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     private void blockWithItem(RegistryObject<Block> blockRegistryObject) {
         simpleBlockWithItem(blockRegistryObject.get(), cubeAll(blockRegistryObject.get()));
+    }
+
+    private void blockWithVariants(RegistryObject<Block> blockRegistryObject, String textureName) {
+        ModelFile model = models().withExistingParent(blockRegistryObject.getId().getPath(), "minecraft:block/cross")
+                .texture("cross", modLoc("block/" + textureName)).renderType("cutout");
+
+        // Define variantes
+        getVariantBuilder(blockRegistryObject.get())
+                .forAllStates(state -> {
+                    Direction direction = state.getValue(BlockStateProperties.FACING);
+                    return ConfiguredModel.builder()
+                            .modelFile(model)
+                            .rotationY(getRotationYForDirection(direction))
+                            .rotationX(getRotationXForDirection(direction))
+                            .build();
+                });
+    }
+
+    // NO REMOVER LOS CASOS REPETIDOS
+    private int getRotationXForDirection(Direction direction) {
+        return switch (direction) {
+            case EAST, NORTH, SOUTH, WEST -> 90;
+            case DOWN -> 180;
+            default -> 0;
+        };
+    }
+
+    private int getRotationYForDirection(Direction direction) {
+        return switch (direction) {
+            case EAST -> 90;
+            case SOUTH -> 180;
+            case WEST -> 270;
+            default -> 0;
+        };
     }
 }

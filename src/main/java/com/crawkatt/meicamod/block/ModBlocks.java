@@ -56,9 +56,13 @@ public class ModBlocks {
     public static final RegistryObject<Block> RAW_BROTENITA_BLOCK = registerBlock("raw_brotenita_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
 
-    //public static final RegistryObject<Block> BROTENITA_ORE = registerBlock("raw_brotenita_block",
-            //() -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.STONE)
-                    //.strength(2F).requiresCorrectToolForDrops(), UniformInt.of(3, 6)));
+    public static final RegistryObject<Block> RAW_BROTENITA = BLOCKS.register("raw_brotenita",
+            () -> new AmethystClusterBlock(7, 3, BlockBehaviour.Properties.copy(Blocks.AMETHYST_CLUSTER)
+                    .noOcclusion()
+                    .randomTicks()
+                    .strength(1.5F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.AMETHYST_CLUSTER).lightLevel((state -> 5))));
 
     public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

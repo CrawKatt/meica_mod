@@ -1,7 +1,7 @@
 package com.crawkatt.meicamod.item;
 
 import com.crawkatt.meicamod.MeicaMod;
-import com.crawkatt.meicamod.item.custom.ActiveBrotenitaArmorItem;
+import com.crawkatt.meicamod.block.ModBlocks;
 import com.crawkatt.meicamod.item.custom.ModArmorItem;
 import net.minecraft.world.item.*;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -16,9 +16,8 @@ public class ModItems {
     public static final RegistryObject<Item> BROTENITA_INGOT = ITEMS.register("brotenita_ingot",
             () -> new Item(new Item.Properties()));
 
-    // todo: Cambiar textura por textura de Brotenita cruda
     public static final RegistryObject<Item> RAW_BROTENITA = ITEMS.register("raw_brotenita",
-            () -> new Item(new Item.Properties()));
+            () -> new BlockItem(ModBlocks.RAW_BROTENITA.get(), new Item.Properties()));
 
     public static final RegistryObject<Item> BROTENITA_MEAL = ITEMS.register("brotenita_meal",
             () -> new Item(new Item.Properties()));
@@ -45,7 +44,6 @@ public class ModItems {
     public static final RegistryObject<Item> BROTENITA_HOE = ITEMS.register("brotenita_hoe",
             () -> new HoeItem(ModToolTiers.BROTENITA, 4, 2, new Item.Properties()));
 
-    // todo: Cambiar textura por textura de Brotenita
     public static final RegistryObject<Item> BROTENITA_HELMET = ITEMS.register("brotenita_helmet",
             () -> new ModArmorItem(ModArmorMaterials.BROTENITA, ArmorItem.Type.HELMET, new Item.Properties()));
 

@@ -1,6 +1,5 @@
 {
   "item.meicamod.brotenita_ingot": "Brotenita Ingot",
-  "item.meicamod.raw_brotenita": "Raw Brotenita",
   "item.meicamod.brotenita_staff": "Brotenita Staff",
   "item.meicamod.brotenita_meal": "Brotenita Meal",
 
@@ -19,6 +18,7 @@
 
   "block.meicamod.brotenita_block": "Block of Brotenita",
   "block.meicamod.raw_brotenita_block": "Block of raw Brotenita",
+  "block.meicamod.raw_brotenita": "Raw Brotenita",
 
   "block.meicamod.brotenita_stairs": "Brotenita Stairs",
   "block.meicamod.brotenita_slab": "Brotenita Slab",
