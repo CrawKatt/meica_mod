@@ -45,9 +45,6 @@ public class MeicaMod {
         // Registra las partículas
         ModParticles.register(modEventBus);
 
-        // Registra el Bioma
-        ModTerrablender.registerBiomes();
-
         // Registra los audios
         ModSounds.register(modEventBus);
 
@@ -78,6 +75,8 @@ public class MeicaMod {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
+            // NO COLOCAR EN EL MÉTODO CONSTRUCTOR DEL MOD
+            ModTerrablender.registerBiomes();
             SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
         });
     }
