@@ -2,8 +2,10 @@ package com.crawkatt.meicamod.item;
 
 import com.crawkatt.meicamod.MeicaMod;
 import com.crawkatt.meicamod.block.ModBlocks;
+import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.item.custom.ModArmorItem;
 import net.minecraft.world.item.*;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -55,6 +57,18 @@ public class ModItems {
 
     public static final RegistryObject<Item> BROTENITA_BOOTS = ITEMS.register("brotenita_boots",
             () -> new ModArmorItem(ModArmorMaterials.BROTENITA, ArmorItem.Type.BOOTS, new Item.Properties()));
+
+    public static final RegistryObject<Item> BROTECITO_SPAWN_EGG = ITEMS.register("brotecito_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.BROTECITO, 0x00FF00, 0xFFDAB9, new Item.Properties()));
+
+    public static final RegistryObject<Item> MEICA_SPAWN_EGG = ITEMS.register("meica_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.MEICA, 0xA0522D, 0xFFDAB9, new Item.Properties()));
+
+    public static final RegistryObject<Item> BROTECITO_MAMADO_SPAWN_EGG = ITEMS.register("brotecito_mamado_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.BROTECITO_MAMADO, 0xFFFF00, 0xFFD700, new Item.Properties()));
+
+    public static final RegistryObject<Item> PLAYER_CLONE_SPAWN_EGG = ITEMS.register("player_clone_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.PLAYER_CLONE, 0x000000, 0xFFFFFF, new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

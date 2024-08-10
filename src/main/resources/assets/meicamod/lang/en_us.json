@@ -16,6 +16,11 @@
   "item.meicamod.brotenita_leggings": "Brotenita Leggings",
   "item.meicamod.brotenita_boots": "Brotenita Boots",
 
+  "item.meicamod.brotecito_spawn_egg": "Brotecito Spawn Egg",
+  "item.meicamod.brotecito_mamado_spawn_egg": "Brotecito Mamado Spawn Egg",
+  "item.meicamod.meica_spawn_egg": "Meica Spawn Egg",
+  "item.meicamod.player_clone_spawn_egg": "Player Clone Spawn Egg",
+
   "block.meicamod.brotenita_block": "Block of Brotenita",
   "block.meicamod.raw_brotenita_block": "Block of raw Brotenita",
   "block.meicamod.raw_brotenita": "Raw Brotenita",

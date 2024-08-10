@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.armortrim.TrimMaterial;
 import net.minecraft.world.item.armortrim.TrimMaterials;
 import net.minecraft.world.level.block.Block;
@@ -69,6 +70,11 @@ public class ModItemModelProvider extends ItemModelProvider {
         trimmedArmorItem(ModItems.BROTENITA_CHESTPLATE);
         trimmedArmorItem(ModItems.BROTENITA_LEGGINGS);
         trimmedArmorItem(ModItems.BROTENITA_BOOTS);
+
+        mobEggItem(ModItems.BROTECITO_SPAWN_EGG);
+        mobEggItem(ModItems.BROTECITO_MAMADO_SPAWN_EGG);
+        mobEggItem(ModItems.MEICA_SPAWN_EGG);
+        mobEggItem(ModItems.PLAYER_CLONE_SPAWN_EGG);
     }
 
     private void trimmedArmorItem(RegistryObject<Item> itemRegistryObject) {
@@ -155,5 +161,15 @@ public class ModItemModelProvider extends ItemModelProvider {
         return withExistingParent(item.getId().getPath(),
                 new ResourceLocation("item/generated")).texture("layer0",
                 new ResourceLocation(MeicaMod.MODID,"item/" + item.getId().getPath()));
+    }
+
+    private void mobEggItem(RegistryObject<Item> itemRegistryObject) {
+        if (itemRegistryObject.get() instanceof SpawnEggItem) {
+            ResourceLocation vanillaEggTexture = new ResourceLocation("item/egg"); // Cambia esto si tienes una textura específica
+
+            getBuilder(itemRegistryObject.getId().getPath())
+                    .parent(new ModelFile.UncheckedModelFile("item/generated"))
+                    .texture("layer0", vanillaEggTexture);
+        }
     }
 }

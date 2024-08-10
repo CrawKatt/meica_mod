@@ -50,6 +50,11 @@ public class ModCreativeModTabs {
 
                         pOutput.accept(ModBlocks.BROTENITA_DOOR.get());
                         pOutput.accept(ModBlocks.BROTENITA_TRAPDOOR.get());
+
+                        pOutput.accept(ModItems.BROTECITO_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.BROTECITO_MAMADO_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.MEICA_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.PLAYER_CLONE_SPAWN_EGG.get());
                     })
                     .build());
 
