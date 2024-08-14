@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "meicamod:block/brotenita_slab"
+    },
+    "type=double": {
+      "model": "meicamod:block/brotenita_block"
+    },
+    "type=top": {
+      "model": "meicamod:block/brotenita_slab_top"
+    }
+  }
+}

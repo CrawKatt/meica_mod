@@ -1,0 +1,16 @@
+{
+  "values": [
+    "meicamod:brotenita_block",
+    "meicamod:raw_brotenita_block",
+    "meicamod:brotenita_stairs",
+    "meicamod:brotenita_slab",
+    "meicamod:brotenita_fence",
+    "meicamod:brotenita_fence_gate",
+    "meicamod:brotenita_wall",
+    "meicamod:brotenita_door",
+    "meicamod:brotenita_trapdoor",
+    "meicamod:brotenita_button",
+    "meicamod:brotenita_pressure_plate",
+    "meicamod:raw_brotenita"
+  ]
+}

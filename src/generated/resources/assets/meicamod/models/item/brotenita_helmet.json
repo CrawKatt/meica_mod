@@ -1,0 +1,68 @@
+{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "meicamod:item/brotenita_helmet_quartz_trim",
+      "predicate": {
+        "minecraft:trim_type": 0.5
+      }
+    },
+    {
+      "model": "meicamod:item/brotenita_helmet_iron_trim",
+      "predicate": {
+        "minecraft:trim_type": 0.5
+      }
+    },
+    {
+      "model": "meicamod:item/brotenita_helmet_netherite_trim",
+      "predicate": {
+        "minecraft:trim_type": 0.5
+      }
+    },
+    {
+      "model": "meicamod:item/brotenita_helmet_redstone_trim",
+      "predicate": {
+        "minecraft:trim_type": 0.5
+      }
+    },
+    {
+      "model": "meicamod:item/brotenita_helmet_copper_trim",
+      "predicate": {
+        "minecraft:trim_type": 0.5
+      }
+    },
+    {
+      "model": "meicamod:item/brotenita_helmet_gold_trim",
+      "predicate": {
+        "minecraft:trim_type": 0.5
+      }
+    },
+    {
+      "model": "meicamod:item/brotenita_helmet_emerald_trim",
+      "predicate": {
+        "minecraft:trim_type": 0.5
+      }
+    },
+    {
+      "model": "meicamod:item/brotenita_helmet_diamond_trim",
+      "predicate": {
+        "minecraft:trim_type": 0.5
+      }
+    },
+    {
+      "model": "meicamod:item/brotenita_helmet_lapis_trim",
+      "predicate": {
+        "minecraft:trim_type": 0.5
+      }
+    },
+    {
+      "model": "meicamod:item/brotenita_helmet_amethyst_trim",
+      "predicate": {
+        "minecraft:trim_type": 0.5
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "meicamod:item/brotenita_helmet"
+  }
+}

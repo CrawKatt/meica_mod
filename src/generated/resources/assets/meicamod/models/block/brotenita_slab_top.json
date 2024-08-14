@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "meicamod:block/brotenita_block",
+    "side": "meicamod:block/brotenita_block",
+    "top": "meicamod:block/brotenita_block"
+  }
+}

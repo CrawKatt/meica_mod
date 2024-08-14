@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "meicamod:brotenita_ingot"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "BB",
+    "BS",
+    " S"
+  ],
+  "result": {
+    "item": "meicamod:brotenita_axe"
+  },
+  "show_notification": true
+}

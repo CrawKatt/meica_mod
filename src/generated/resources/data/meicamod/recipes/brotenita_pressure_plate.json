@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": {
+      "item": "meicamod:brotenita_ingot"
+    }
+  },
+  "pattern": [
+    "BB"
+  ],
+  "result": {
+    "item": "meicamod:brotenita_pressure_plate"
+  },
+  "show_notification": true
+}

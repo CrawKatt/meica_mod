@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    {
+      "item": "meicamod:brotenita_ingot"
+    }
+  ],
+  "result": {
+    "item": "meicamod:brotenita_button"
+  }
+}
