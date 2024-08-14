@@ -16,6 +16,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Set;
 
+// Clase ModBlockLootTables
+// Se encarga de generar las tablas de loot de los bloques (los ítems que se obtienen al romperlos)
 public class ModBlockLootTables extends BlockLootSubProvider {
     public ModBlockLootTables() {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags());
@@ -24,8 +26,6 @@ public class ModBlockLootTables extends BlockLootSubProvider {
     @Override
     protected void generate() {
         this.dropSelf(ModBlocks.BROTENITA_BLOCK.get());
-        this.dropSelf(ModBlocks.RAW_BROTENITA_BLOCK.get());
-
         this.dropSelf(ModBlocks.BROTENITA_STAIRS.get());
         this.dropSelf(ModBlocks.BROTENITA_BUTTON.get());
         this.dropSelf(ModBlocks.BROTENITA_PRESSURE_PLATE.get());
@@ -38,8 +38,9 @@ public class ModBlockLootTables extends BlockLootSubProvider {
                 block -> createSlabItemTable(ModBlocks.BROTENITA_SLAB.get()));
         this.add(ModBlocks.BROTENITA_DOOR.get(),
                 block -> createDoorTable(ModBlocks.BROTENITA_DOOR.get()));
-
         this.add(ModBlocks.RAW_BROTENITA.get(),
+                block -> createCopperLikeOreDrops(ModBlocks.RAW_BROTENITA.get(), ModItems.RAW_BROTENITA.get()));
+        this.add(ModBlocks.RAW_BROTENITA_BLOCK.get(),
                 block -> createCopperLikeOreDrops(ModBlocks.RAW_BROTENITA.get(), ModItems.RAW_BROTENITA.get()));
     }
 

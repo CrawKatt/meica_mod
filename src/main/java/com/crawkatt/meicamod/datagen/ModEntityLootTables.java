@@ -11,6 +11,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.BiConsumer;
 
+// Clase ModEntityLootTables
+// Se encarga de generar las tablas de saqueo de las entidades (hace que droppeen items al morir)
 public class ModEntityLootTables implements LootTableSubProvider {
     @Override
     public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {

@@ -39,7 +39,30 @@ authors="${mod_authors}" #optional
 #displayTest="MATCH_VERSION" # MATCH_VERSION is the default if nothing is specified (#optional)
 
 # The description text for the mod (multi line!) (#mandatory)
-description='''${mod_description}'''
+description="""
+Mod about the Vtuber Meica05 that includes Brotecitos in the world, new ores, new biome, weapons, and much more.
+
+Among the main features:
+
+- Meica Forest Biome: Explore a new and dangerous exclusive biome. This biome features large trees, tameable brotecitos, and\
+a dense green fog that has detrimental effects on you as you spend more time in it, offering a new and exciting environment for your adventures.
+
+- Mineral Brotenite: Discover "Brotenite", a new and rare mineral more valuable than Netherite and only found inside the\
+Brotenite Geodes, located within the Meica Forest.
+
+- Brotenite Armor: Equip yourself with the Brotenite armor, which protects you from the damaging effects of the Meica Forest, allowing you\
+to venture into the forest and collect resources more safely.
+
+Why download Meica Mod?
+The Meica Mod is ideal for Meica05 fans and those seeking a Minecraft experience enriched with content inspired by their favorite Vtuber.\
+With new mechanics, a themed biome, and custom elements, this mod offers a fun way to bring your passion for Meica into the world of Minecraft.
+
+Compatibility:
+Client and Server: The Meica Mod requires installation on both client and server to ensure that all features, including the Meica Forest biome and\
+Brotenite Armor, are available in both environments.
+
+Discover how the Meica Mod can elevante your Minecraft experience and immerse yourself in a world filled with the magic of Meica05!
+"""
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.${mod_id}]] #optional
     # the modid of the dependency

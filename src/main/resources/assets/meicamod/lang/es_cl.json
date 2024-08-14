@@ -1,0 +1,49 @@
+{
+  "item.meicamod.brotenita_ingot": "Lingote de Brotenita",
+  "item.meicamod.brotenita_staff": "Bastón de Brotenita",
+  "item.meicamod.brotenita_meal": "Polvo de Brotenita",
+
+  "item.meicamod.meica_bow": "Arco de Meica",
+
+  "item.meicamod.brotenita_sword": "Espada de Brotenita",
+  "item.meicamod.brotenita_pickaxe": "Pico de Brotenita",
+  "item.meicamod.brotenita_axe": "Hacha de Brotenita",
+  "item.meicamod.brotenita_shovel": "Pala de Brotenita",
+  "item.meicamod.brotenita_hoe": "Azadón de Brotenita",
+
+  "item.meicamod.brotenita_helmet": "Casco de Brotenita",
+  "item.meicamod.brotenita_chestplate": "Peto de Brotenita",
+  "item.meicamod.brotenita_leggings": "Pantalones de Brotenita",
+  "item.meicamod.brotenita_boots": "Botas de Brotenita",
+
+  "item.meicamod.brotecito_spawn_egg": "Generar Brotecito",
+  "item.meicamod.brotecito_mamado_spawn_egg": "Generar Brotecito Mamado",
+  "item.meicamod.meica_spawn_egg": "Generar Meica",
+  "item.meicamod.player_clone_spawn_egg": "Generar Player Clone",
+
+  "block.meicamod.brotenita_block": "Bloque de Brotenita",
+  "block.meicamod.raw_brotenita_block": "Mena de Brotenita",
+  "block.meicamod.raw_brotenita": "Brotenita",
+
+  "block.meicamod.brotenita_stairs": "Escaleras de Brotenita",
+  "block.meicamod.brotenita_slab": "Brotenita Slab",
+  "block.meicamod.brotenita_button": "Botón de Brotenita",
+  "block.meicamod.brotenita_pressure_plate": "Placa de presión de Brotenita",
+  "block.meicamod.brotenita_fence": "Brotenita Fence",
+  "block.meicamod.brotenita_fence_gate": "Brotenita Fence Gate",
+  "block.meicamod.brotenita_wall": "Muro de Brotenita",
+  "block.meicamod.brotenita_door": "Puerta de Brotenita",
+  "block.meicamod.brotenita_trapdoor": "Brotenita Trapdoor",
+
+  "creativetab.example_tab": "Meica Mod",
+
+  "entity.meicamod.meica": "Meica",
+  "entity.meicamod.brotecito": "Brotecito",
+  "entity.meicamod.brotecito_mamado": "Brotecito Mamado",
+
+  "sounds.meicamod.meica_kill": "Meica's kill sound",
+  "sounds.meicamod.meica_death": "Meica's death sound",
+
+  "effect.meicamod.brotenita_infection": "Brotificación",
+  "effect.meicamod.paranoia": "Paranoia"
+}

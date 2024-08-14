@@ -11,6 +11,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
+// Clase ModBlockTagGenerator
+// Se encarga de generar las etiquetas de los bloques y de añadirles las propiedades necesarias
+// como la posibilidad de ser minados con un pico y la necesidad de una herramienta de diamante
 public class ModBlockTagGenerator extends BlockTagsProvider {
     // Método constructor (Equivalente a ModBlockTagGenerator::new() en Rust)
     // La keyword `super` se usa para llamar al método constructor de la clase padre
@@ -33,10 +36,8 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                         ModBlocks.BROTENITA_DOOR.get(),
                         ModBlocks.BROTENITA_TRAPDOOR.get(),
                         ModBlocks.BROTENITA_BUTTON.get(),
-                        ModBlocks.BROTENITA_PRESSURE_PLATE.get());
-
-        //this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
-                //.add(ModBlocks.BROTENITA_ORE.get()).addTag(Tags.Blocks.ORES);
+                        ModBlocks.BROTENITA_PRESSURE_PLATE.get(),
+                        ModBlocks.RAW_BROTENITA.get());
 
         this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
                 .add(ModBlocks.BROTENITA_BLOCK.get())
@@ -49,7 +50,8 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.BROTENITA_DOOR.get())
                 .add(ModBlocks.BROTENITA_TRAPDOOR.get())
                 .add(ModBlocks.BROTENITA_BUTTON.get())
-                .add(ModBlocks.BROTENITA_PRESSURE_PLATE.get());
+                .add(ModBlocks.BROTENITA_PRESSURE_PLATE.get())
+                .add(ModBlocks.RAW_BROTENITA.get());
 
         this.tag(BlockTags.FENCES)
                 .add(ModBlocks.BROTENITA_FENCE.get());
