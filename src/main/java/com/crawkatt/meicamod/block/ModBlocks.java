@@ -1,6 +1,7 @@
 package com.crawkatt.meicamod.block;
 
 import com.crawkatt.meicamod.MeicaMod;
+import com.crawkatt.meicamod.block.custom.BrotenitaCropBlock;
 import com.crawkatt.meicamod.item.ModItems;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
@@ -55,6 +56,14 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> RAW_BROTENITA_BLOCK = registerBlock("raw_brotenita_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
+
+    public static final RegistryObject<Block> BROTENITA_CROP = BLOCKS.register("brotenita_crop",
+            () -> new BrotenitaCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT)
+                    .noCollission()
+                    .noOcclusion()
+                    .sound(SoundType.SMALL_AMETHYST_BUD)
+                    .requiresCorrectToolForDrops()
+                    .lightLevel((state -> 5))));
 
     public static final RegistryObject<Block> RAW_BROTENITA = BLOCKS.register("raw_brotenita",
             () -> new AmethystClusterBlock(7, 3, BlockBehaviour.Properties.copy(Blocks.AMETHYST_CLUSTER)

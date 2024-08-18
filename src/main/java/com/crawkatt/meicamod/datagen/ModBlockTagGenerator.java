@@ -37,7 +37,8 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                         ModBlocks.BROTENITA_TRAPDOOR.get(),
                         ModBlocks.BROTENITA_BUTTON.get(),
                         ModBlocks.BROTENITA_PRESSURE_PLATE.get(),
-                        ModBlocks.RAW_BROTENITA.get());
+                        ModBlocks.RAW_BROTENITA.get(),
+                        ModBlocks.BROTENITA_CROP.get());
 
         this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
                 .add(ModBlocks.BROTENITA_BLOCK.get())
@@ -51,7 +52,8 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.BROTENITA_TRAPDOOR.get())
                 .add(ModBlocks.BROTENITA_BUTTON.get())
                 .add(ModBlocks.BROTENITA_PRESSURE_PLATE.get())
-                .add(ModBlocks.RAW_BROTENITA.get());
+                .add(ModBlocks.RAW_BROTENITA.get())
+                .add(ModBlocks.BROTENITA_CROP.get());
 
         this.tag(BlockTags.FENCES)
                 .add(ModBlocks.BROTENITA_FENCE.get());

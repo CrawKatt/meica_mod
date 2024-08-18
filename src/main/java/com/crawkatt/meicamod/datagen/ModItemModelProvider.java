@@ -45,6 +45,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     protected void registerModels() {
         simpleItem(ModItems.BROTENITA_INGOT);
         simpleItem(ModItems.RAW_BROTENITA);
+        simpleItem(ModItems.SMALL_BROTENITA);
         simpleItem(ModItems.BROTENITA_MEAL);
 
         simpleBlockItem(ModBlocks.BROTENITA_DOOR);

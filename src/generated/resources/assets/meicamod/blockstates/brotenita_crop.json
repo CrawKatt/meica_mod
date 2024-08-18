@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "meicamod:block/brotenita_stage0"
+    },
+    "age=1": {
+      "model": "meicamod:block/brotenita_stage1"
+    },
+    "age=2": {
+      "model": "meicamod:block/brotenita_stage2"
+    },
+    "age=3": {
+      "model": "meicamod:block/brotenita_stage3"
+    },
+    "age=4": {
+      "model": "meicamod:block/brotenita_stage4"
+    },
+    "age=5": {
+      "model": "meicamod:block/brotenita_stage5"
+    },
+    "age=6": {
+      "model": "meicamod:block/brotenita_stage6"
+    }
+  }
+}

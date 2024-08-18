@@ -21,6 +21,10 @@ public class ModItems {
     public static final RegistryObject<Item> RAW_BROTENITA = ITEMS.register("raw_brotenita",
             () -> new BlockItem(ModBlocks.RAW_BROTENITA.get(), new Item.Properties()));
 
+    // Semilla de la brotenita
+    public static final RegistryObject<Item> SMALL_BROTENITA = ITEMS.register("small_brotenita",
+            () -> new ItemNameBlockItem(ModBlocks.BROTENITA_CROP.get(), new Item.Properties()));
+
     public static final RegistryObject<Item> BROTENITA_MEAL = ITEMS.register("brotenita_meal",
             () -> new Item(new Item.Properties()));
 
