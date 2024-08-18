@@ -10,7 +10,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
-public class ModCreativeModTabs {
+public class ModCreativeModeTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MeicaMod.MODID);
 
@@ -20,6 +20,7 @@ public class ModCreativeModTabs {
                     .displayItems((pParameters, pOutput) -> {
                         pOutput.accept(ModItems.BROTENITA_INGOT.get());
                         pOutput.accept(ModItems.RAW_BROTENITA.get());
+                        pOutput.accept(ModItems.SMALL_BROTENITA.get());
                         pOutput.accept(ModItems.BROTENITA_MEAL.get());
 
                         pOutput.accept(ModItems.BROTENITA_STAFF.get());

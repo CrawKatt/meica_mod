@@ -7,7 +7,7 @@ import com.crawkatt.meicamod.entity.client.BrotecitoRenderer;
 import com.crawkatt.meicamod.entity.client.MeicaRenderer;
 import com.crawkatt.meicamod.event.BiomeEvents;
 import com.crawkatt.meicamod.event.ModEvents;
-import com.crawkatt.meicamod.item.ModCreativeModTabs;
+import com.crawkatt.meicamod.item.ModCreativeModeTabs;
 import com.crawkatt.meicamod.item.ModItemProperties;
 import com.crawkatt.meicamod.item.ModItems;
 import com.crawkatt.meicamod.particle.ModParticles;
@@ -58,7 +58,7 @@ public class MeicaMod {
         ModBlocks.register(modEventBus);
 
         // Registra las pestañas del modo creativo
-        ModCreativeModTabs.register(modEventBus);
+        ModCreativeModeTabs.register(modEventBus);
 
         // Registra el evento para añadir items al modo creativo
         modEventBus.addListener(this::addCreative);
