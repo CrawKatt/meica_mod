@@ -9,6 +9,7 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
@@ -43,7 +44,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.add(ModBlocks.BROTENITA_DOOR.get(),
                 block -> createDoorTable(ModBlocks.BROTENITA_DOOR.get()));
         this.add(ModBlocks.RAW_BROTENITA.get(),
-                block -> createCopperLikeOreDrops(ModBlocks.RAW_BROTENITA.get(), ModItems.RAW_BROTENITA.get()));
+                block -> createBrotenitaOreWithBonusDrops(ModBlocks.RAW_BROTENITA.get(), ModItems.RAW_BROTENITA.get(), ModItems.SMALL_BROTENITA.get()));
         this.add(ModBlocks.RAW_BROTENITA_BLOCK.get(),
                 block -> createCopperLikeOreDrops(ModBlocks.RAW_BROTENITA.get(), ModItems.RAW_BROTENITA.get()));
 
@@ -61,6 +62,34 @@ public class ModBlockLootTables extends BlockLootSubProvider {
                         LootItem.lootTableItem(item)
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 5.0F)))
                                 .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))));
+    }
+
+    protected LootTable.Builder createBrotenitaOreWithBonusDrops(Block block, Item primaryItem, Item secondaryItem) {
+        // Crear el primer LootItem para Raw Brotenita
+        LootItem.Builder<?> primaryLootItem = LootItem.lootTableItem(primaryItem)
+                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 1.0F)));
+
+        // Crear el segundo LootItem para Small Brotenita
+        LootItem.Builder<?> secondaryLootItem = LootItem.lootTableItem(secondaryItem)
+                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 1.0F)));
+
+        // Crear un LootPool y agregar el primer LootItem
+        LootPool.Builder primaryLootPool = LootPool.lootPool()
+                .setRolls(UniformGenerator.between(1.0F, 1.0F))
+                .add(this.applyExplosionDecay(block, primaryLootItem));
+
+        // Crear un segundo LootPool y agregar el segundo LootItem
+        LootPool.Builder secondaryLootPool = LootPool.lootPool()
+                .setRolls(UniformGenerator.between(1.0F, 1.0F))
+                .add(this.applyExplosionDecay(block, secondaryLootItem));
+
+        // Crear la tabla de loot con ambos pools
+        return createSilkTouchDispatchTable(block, this.applyExplosionDecay(block,
+                LootItem.lootTableItem(block)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 1.0F)))
+                        .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))))
+                .withPool(primaryLootPool)
+                .withPool(secondaryLootPool);
     }
 
     @Override
