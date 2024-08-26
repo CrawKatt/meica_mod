@@ -64,6 +64,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
                                 .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))));
     }
 
+    // Crear una tabla de loot para un bloque de cultivo de Brotenita
     protected LootTable.Builder createBrotenitaOreWithBonusDrops(Block block, Item primaryItem, Item secondaryItem) {
         // Crear el primer LootItem para Raw Brotenita
         LootItem.Builder<?> primaryLootItem = LootItem.lootTableItem(primaryItem)
