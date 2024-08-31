@@ -3,7 +3,6 @@ package com.crawkatt.meicamod.worldgen.biome;
 import com.crawkatt.meicamod.MeicaMod;
 import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.worldgen.ModPlacedFeatures;
-import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
@@ -15,7 +14,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class ModBiomes {
     public static final ResourceKey<Biome> MEICA_FOREST = ResourceKey.create(Registries.BIOME,
@@ -41,7 +39,7 @@ public class ModBiomes {
         BiomeDefaultFeatures.addDefaultMonsterRoom(builder);
         BiomeDefaultFeatures.addDefaultUndergroundVariety(builder);
 
-        // Líquidos
+        // Manantiales
         BiomeDefaultFeatures.addDefaultSprings(builder);
 
         // Estructuras superficiales
@@ -62,17 +60,14 @@ public class ModBiomes {
         // Cavernas y Lagos
         globalOverworldGeneration(biomeBuilder);
 
+        // Generación de Árboles Gigantes (PRIORIZAR ANTES DE LO DEMÁS ABAJO)
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacedFeatures.BIG_OAK_PLACED_KEY);
+
         // Vegetación base
         BiomeDefaultFeatures.addForestFlowers(biomeBuilder);
-        BiomeDefaultFeatures.addFerns(biomeBuilder);
+        BiomeDefaultFeatures.addPlainVegetation(biomeBuilder);
         BiomeDefaultFeatures.addDefaultOres(biomeBuilder);
         BiomeDefaultFeatures.addDefaultFlowers(biomeBuilder);
-        BiomeDefaultFeatures.addPlainVegetation(biomeBuilder);
-
-        //biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.TREES_BIRCH_AND_OAK);
-        // Custom Features
-        Holder.Reference<PlacedFeature> bigOakPlacedFeature = context.lookup(Registries.PLACED_FEATURE).getOrThrow(ModPlacedFeatures.BIG_OAK_PLACED_KEY);
-        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, bigOakPlacedFeature);
 
         // Vegetación extra
         BiomeDefaultFeatures.addDefaultExtraVegetation(biomeBuilder);

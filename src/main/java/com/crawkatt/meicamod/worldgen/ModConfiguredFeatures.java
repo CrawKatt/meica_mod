@@ -19,14 +19,15 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.configurations.GeodeConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
-import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.MegaJungleFoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.featuresize.ThreeLayersFeatureSize;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.DarkOakFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.trunkplacers.MegaJungleTrunkPlacer;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.DarkOakTrunkPlacer;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 
 import java.util.List;
+import java.util.OptionalInt;
 
 public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> OVERWORLD_BROTENITA_ORE_KEY = registerKey("brotenita_ore");
@@ -43,16 +44,21 @@ public class ModConfiguredFeatures {
 
         register(context, OVERWORLD_BROTENITA_ORE_KEY, Feature.ORE, new OreConfiguration(overworldBrotenitaOre, 9));
 
-        // Generación de árboles gigantes
-        TreeConfiguration bigOakConfig = new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(Blocks.OAK_LOG),
-                new MegaJungleTrunkPlacer(10, 4, 19),
-                BlockStateProvider.simple(Blocks.OAK_LEAVES),
-                new MegaJungleFoliagePlacer(ConstantInt.of(2), ConstantInt.of( 0), 2),
-                new TwoLayersFeatureSize(1, 1, 2)
-        ).build();
-
-        register(context, BIG_OAK_KEY, Feature.TREE, bigOakConfig);
+        register(context, BIG_OAK_KEY, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                BlockStateProvider.simple(Blocks.OAK_LOG), // Define el tronco del árbol
+                // (12 Altura base del tronco)
+                // (4 Variación aleatoria en la altura del tronco { puede agregar hasta 4 bloques a la altura base } )
+                // (8 Longitud del tronco antes de ramificarse)
+                new DarkOakTrunkPlacer(6, 4, 8), // Define como se debe generar el tronco del árbol (Trunk Placer)
+                BlockStateProvider.simple(Blocks.OAK_LEAVES), // Define el tipo de hojas del árbol
+                // (0 Radio y Desplazamiento vertical. Las Hojas estarán compactas alrededor del tronco, sin extensión adicional)
+                new DarkOakFoliagePlacer(ConstantInt.of(0), ConstantInt.of( 0)), // Define como se deben generar las hojas del árbol (Foliage Placer)
+                // (1,1 Dimensiones de la primera y segunda capa )
+                // (0 Altura de la tercera capa { Sin tercera capa } )
+                // (1,2 Los tamaños adicionales en las capas superiores)
+                // (OptionalInt.empty() No hay restricción máxima de altura adicional)
+                new ThreeLayersFeatureSize(1, 1, 0, 1, 2, OptionalInt.empty()) // Define el tamaño y la forma del árbol
+        ).forceDirt().build());
 
         // Generación de geodas de brotenita
         register(context, BROTENITA_GEODE_KEY, Feature.GEODE,

@@ -8,6 +8,7 @@ import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.*;
@@ -28,10 +29,11 @@ public class ModPlacedFeatures {
 
         register(context, BIG_OAK_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.BIG_OAK_KEY),
                 List.of(
-                        PlacementUtils.countExtra(2, 0.1f, 2),
-                        InSquarePlacement.spread(),
+                        CountPlacement.of(16),
+                        InSquarePlacement.spread(), // Distribución en cuadrícula uniforme dentro de un chunk
                         SurfaceWaterDepthFilter.forMaxDepth(0), // Evita que se genere en agua
-                        PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
+                        PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, // Genera los árboles en la tierra
+                        PlacementUtils.filteredByBlockSurvival(Blocks.OAK_SAPLING), // Esto arregla el problema de los árboles flotantes
                         BiomeFilter.biome()
                 )
         );
