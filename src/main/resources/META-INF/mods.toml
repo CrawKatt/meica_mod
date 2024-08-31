@@ -61,7 +61,10 @@ Compatibility:
 Client and Server: The Meica Mod requires installation on both client and server to ensure that all features, including the Meica Forest biome and\
 Brotenite Armor, are available in both environments.
 
-Discover how the Meica Mod can elevante your Minecraft experience and immerse yourself in a world filled with the magic of Meica05!
+Realistic or lighting-changing shaders are incompatible: Because lighting-changing shaders also change how fog works,\
+it can happen that the greenish fog is rendered in the Meica Forest biome or is partially displayed without its characteristic color.\
+It does not directly affect as an incompatibility that makes it impossible to play with such shaders,\
+but it is recommended to disable them for a better experience when entering Meica Forest.
 """
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.${mod_id}]] #optional
