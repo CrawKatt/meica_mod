@@ -17,9 +17,9 @@
     },
     "particle": {
       "options": {
-        "type": "minecraft:falling_spore_blossom"
+        "type": "minecraft:spore_blossom_air"
       },
-      "probability": 0.005
+      "probability": 0.05
     },
     "sky_color": 7843327,
     "water_color": 4159204,
