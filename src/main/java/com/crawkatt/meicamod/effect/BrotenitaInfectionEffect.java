@@ -65,10 +65,14 @@ public class BrotenitaInfectionEffect extends MobEffect {
                             pos.getY(),
                             pos.getZ() + serverLevel.random.nextInt(10) - 5
                     );
-                    serverLevel.addFreshEntity(clone);
+
                     if (entity instanceof Player player) {
-                        clone.setTarget(player); // Establecer al jugador como objetivo
+                        clone.copyInventory(player);
+                        clone.copyArmor(player);
+                        clone.setTarget(player);
                     }
+
+                    serverLevel.addFreshEntity(clone);
                 }
                 cloneSpawnTimer = CLONE_SPAWN_INTERVAL;
             }
