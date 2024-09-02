@@ -58,22 +58,43 @@ public class ModConfiguredFeatures {
                 // (1,2 Los tamaños adicionales en las capas superiores)
                 // (OptionalInt.empty() No hay restricción máxima de altura adicional)
                 new ThreeLayersFeatureSize(1, 1, 0, 1, 2, OptionalInt.empty()) // Define el tamaño y la forma del árbol
-        ).forceDirt().build());
+        ).build());
 
         // Generación de geodas de brotenita
         register(context, BROTENITA_GEODE_KEY, Feature.GEODE,
-                new GeodeConfiguration(new GeodeBlockSettings(BlockStateProvider.simple(Blocks.AIR), // Interior de la Geoda
-                        BlockStateProvider.simple(Blocks.DEEPSLATE), // Capa intermedia de la Geoda
-                        BlockStateProvider.simple(ModBlocks.RAW_BROTENITA_BLOCK.get()), // Capa intermedia de la Geoda
-                        BlockStateProvider.simple(Blocks.DIRT), // Capa intermedia de la Geoda
-                        BlockStateProvider.simple(ModBlocks.BROTENITA_BLOCK.get()), // Capa exterior de la Geoda
-                        List.of(ModBlocks.BROTENITA_BLOCK.get().defaultBlockState()), // Capa exterior de la Geoda
-                        BlockTags.FEATURES_CANNOT_REPLACE, BlockTags.GEODE_INVALID_BLOCKS),
+                new GeodeConfiguration(
+                        new GeodeBlockSettings(
+                                // (AIR Bloque de relleno)
+                                BlockStateProvider.simple(Blocks.AIR),
+
+                                // Capa de llenado del núcleo de la geoda (usualmente la capa más interna de roca)
+                                BlockStateProvider.simple(Blocks.DEEPSLATE),
+
+                                // Capa de material interno (el bloque personalizado RAW_BROTENITA_BLOCK)
+                                BlockStateProvider.simple(ModBlocks.RAW_BROTENITA_BLOCK.get()),
+
+                                // Capa intermedia
+                                BlockStateProvider.simple(Blocks.MOSS_BLOCK),
+
+                                // Capa de la corteza externa (bloques de "deepslate" para la capa externa)
+                                BlockStateProvider.simple(Blocks.DEEPSLATE),
+
+                                // Lista de posibles bloques que aparecerán como cristales en la geoda
+                                List.of(ModBlocks.RAW_BROTENITA.get().defaultBlockState()),
+
+                                // Bloques que no pueden ser reemplazados durante la generación de la geoda
+                                BlockTags.FEATURES_CANNOT_REPLACE,
+
+                                // Bloques inválidos para la generación de la geoda
+                                BlockTags.GEODE_INVALID_BLOCKS
+                        ),
                         new GeodeLayerSettings(1.7D, 1.2D, 2.5D, 3.5D),
                         new GeodeCrackSettings(0.25D, 1.5D, 1), 0.5D, 0.1D,
                         true, UniformInt.of(3, 8),
                         UniformInt.of(2, 6), UniformInt.of(1, 2),
-                        -18, 18, 0.075D, 1));
+                        -18, 18, 0.075D, 1
+                )
+        );
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {

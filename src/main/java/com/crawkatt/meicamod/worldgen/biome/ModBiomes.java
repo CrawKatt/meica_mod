@@ -83,7 +83,7 @@ public class ModBiomes {
                         .waterFogColor(0x050533)
                         .skyColor(0x77ADFF)
                         .fogColor(0x0b6623)
-                        .ambientParticle(new AmbientParticleSettings(ParticleTypes.FALLING_SPORE_BLOSSOM, 0.005f))
+                        .ambientParticle(new AmbientParticleSettings(ParticleTypes.SPORE_BLOSSOM_AIR, 0.05f))
                         .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS).build())
                 .build();
     }
