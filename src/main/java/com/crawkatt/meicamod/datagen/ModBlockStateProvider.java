@@ -3,19 +3,17 @@ package com.crawkatt.meicamod.datagen;
 import com.crawkatt.meicamod.MeicaMod;
 import com.crawkatt.meicamod.block.ModBlocks;
 import com.crawkatt.meicamod.block.custom.BrotenitaCropBlock;
-import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class ModBlockStateProvider extends BlockStateProvider {
     public ModBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
@@ -25,7 +23,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         blockWithItem(ModBlocks.BROTENITA_BLOCK);
-        blockWithVariants(ModBlocks.RAW_BROTENITA, "raw_brotenita");
+        directionalBlock(ModBlocks.RAW_BROTENITA.get(),
+                models().cross(getName(ModBlocks.RAW_BROTENITA), blockTexture(ModBlocks.RAW_BROTENITA.get())).renderType("cutout"));
         blockWithItem(ModBlocks.RAW_BROTENITA_BLOCK);
 
         stairsBlock(((StairBlock) ModBlocks.BROTENITA_STAIRS.get()), blockTexture(ModBlocks.BROTENITA_BLOCK.get()));
@@ -61,37 +60,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         return models;
     }
 
-    private void blockWithVariants(RegistryObject<Block> blockRegistryObject, String textureName) {
-        ModelFile model = models().withExistingParent(blockRegistryObject.getId().getPath(), "minecraft:block/cross")
-                .texture("cross", modLoc("block/" + textureName)).renderType("cutout");
-
-        // Define variantes
-        getVariantBuilder(blockRegistryObject.get())
-                .forAllStates(state -> {
-                    Direction direction = state.getValue(BlockStateProperties.FACING);
-                    return ConfiguredModel.builder()
-                            .modelFile(model)
-                            .rotationY(getRotationYForDirection(direction))
-                            .rotationX(getRotationXForDirection(direction))
-                            .build();
-                });
-    }
-
-    // NO REMOVER LOS CASOS REPETIDOS
-    private int getRotationXForDirection(Direction direction) {
-        return switch (direction) {
-            case EAST, NORTH, SOUTH, WEST -> 90;
-            case DOWN -> 180;
-            default -> 0;
-        };
-    }
-
-    private int getRotationYForDirection(Direction direction) {
-        return switch (direction) {
-            case EAST -> 90;
-            case SOUTH -> 180;
-            case WEST -> 270;
-            default -> 0;
-        };
+    public String getName(Supplier<? extends Block> block) {
+        return block.get().builtInRegistryHolder().key().location().getPath();
     }
 }
