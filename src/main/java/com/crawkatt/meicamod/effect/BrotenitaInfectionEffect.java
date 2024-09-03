@@ -58,22 +58,20 @@ public class BrotenitaInfectionEffect extends MobEffect {
         if (entity.level() instanceof ServerLevel serverLevel) {
             if (cloneSpawnTimer <= 0 && serverLevel.random.nextDouble() < 0.25) {
                 BlockPos pos = entity.blockPosition();
-                for (int index = 0; index < 3; index++) {
-                    PlayerCloneEntity clone = new PlayerCloneEntity(ModEntities.PLAYER_CLONE.get(), serverLevel);
-                    clone.moveTo(
-                            pos.getX() + serverLevel.random.nextInt(10) - 5,
-                            pos.getY(),
-                            pos.getZ() + serverLevel.random.nextInt(10) - 5
-                    );
+                PlayerCloneEntity clone = new PlayerCloneEntity(ModEntities.PLAYER_CLONE.get(), serverLevel);
+                clone.moveTo(
+                        pos.getX() + serverLevel.random.nextInt(10) - 5,
+                        pos.getY(),
+                        pos.getZ() + serverLevel.random.nextInt(10) - 5
+                );
 
-                    if (entity instanceof Player player) {
-                        clone.copyInventory(player);
-                        clone.copyArmor(player);
-                        clone.setTarget(player);
-                    }
-
-                    serverLevel.addFreshEntity(clone);
+                if (entity instanceof Player player) {
+                    clone.copyInventory(player);
+                    clone.copyArmor(player);
+                    clone.setTarget(player);
                 }
+
+                serverLevel.addFreshEntity(clone);
                 cloneSpawnTimer = CLONE_SPAWN_INTERVAL;
             }
         }
