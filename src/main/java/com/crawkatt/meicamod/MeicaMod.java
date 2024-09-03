@@ -1,6 +1,7 @@
 package com.crawkatt.meicamod;
 
 import com.crawkatt.meicamod.block.ModBlocks;
+import com.crawkatt.meicamod.command.SpawnClonesCommand;
 import com.crawkatt.meicamod.effect.ModEffects;
 import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.entity.client.BrotecitoRenderer;
@@ -91,7 +92,7 @@ public class MeicaMod {
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-
+        SpawnClonesCommand.register(event.getServer().getCommands().getDispatcher());
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
