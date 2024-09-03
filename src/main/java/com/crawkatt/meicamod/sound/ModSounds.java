@@ -14,6 +14,8 @@ public class ModSounds {
 
     public static final RegistryObject<SoundEvent> MEICA_KILL_ENTITY = registerSoundEvents("meica_kill");
     public static final RegistryObject<SoundEvent> MEICA_DEATH = registerSoundEvents("meica_death");
+    public static final RegistryObject<SoundEvent> MEICA_LAUGHT = registerSoundEvents("meica_laught");
+    public static final RegistryObject<SoundEvent> MEICA_HALLO = registerSoundEvents("meica_hallo");
 
     private static RegistryObject<SoundEvent> registerSoundEvents(String name) {
         ResourceLocation id = new ResourceLocation(MeicaMod.MODID, name);

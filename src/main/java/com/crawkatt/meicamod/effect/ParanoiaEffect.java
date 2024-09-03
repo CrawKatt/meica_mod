@@ -1,5 +1,6 @@
 package com.crawkatt.meicamod.effect;
 
+import com.crawkatt.meicamod.sound.ModSounds;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffect;
@@ -23,8 +24,8 @@ public class ParanoiaEffect extends MobEffect {
                 soundTimer--;
             } else if (RANDOM.nextInt(100) < 5) { // 5% de probabilidad de reproducir un sonido en cada tick
                 switch (RANDOM.nextInt(6)) {
-                    case 0 -> serverLevel.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ZOMBIE_AMBIENT, entity.getSoundSource(), 1.0F, 1.0F);
-                    case 1 -> serverLevel.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.SKELETON_AMBIENT, entity.getSoundSource(), 1.0F, 1.0F);
+                    case 0 -> serverLevel.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ModSounds.MEICA_LAUGHT.get(), entity.getSoundSource(), 1.0F, 1.0F);
+                    case 1 -> serverLevel.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ModSounds.MEICA_HALLO.get(), entity.getSoundSource(), 1.0F, 1.0F);
                     case 2 -> serverLevel.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.CREEPER_PRIMED, entity.getSoundSource(), 1.0F, 1.0F);
                     case 3 -> serverLevel.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.GHAST_WARN, entity.getSoundSource(), 1.0F, 1.0F);
                     case 4 -> serverLevel.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDERMAN_AMBIENT, entity.getSoundSource(), 1.0F, 1.0F);

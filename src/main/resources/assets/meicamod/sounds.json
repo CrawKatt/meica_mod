@@ -10,5 +10,17 @@
     "sounds": [
       "meicamod:meica_death"
     ]
+  },
+  "meica_laught": {
+    "subtitle": "sounds.meicamod.meica_laught",
+    "sounds": [
+      "meicamod:meica_laught"
+    ]
+  },
+  "meica_hallo": {
+    "subtitle": "sounds.meicamod.meica_hallo",
+    "sounds": [
+      "meicamod:meica_hallo"
+    ]
   }
 }
