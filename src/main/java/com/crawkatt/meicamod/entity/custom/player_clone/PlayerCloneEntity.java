@@ -7,10 +7,7 @@ import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -18,16 +15,13 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ShieldItem;
-import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
 public class PlayerCloneEntity extends PathfinderMob {
-    private final SimpleContainer inventory = new SimpleContainer(36);
     private ResourceLocation playerSkin;
 
     public PlayerCloneEntity(EntityType<? extends PathfinderMob> entityType, Level pLevel) {
@@ -37,7 +31,8 @@ public class PlayerCloneEntity extends PathfinderMob {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
+        this.goalSelector.addGoal(1, new BlockAndCounterAttackGoal(this));
+        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
@@ -47,7 +42,7 @@ public class PlayerCloneEntity extends PathfinderMob {
                 .add(Attributes.MAX_HEALTH, 20.00)
                 .add(Attributes.ATTACK_DAMAGE, 3.0f)
                 .add(Attributes.ATTACK_SPEED, 2.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.23000000417232513)
+                .add(Attributes.MOVEMENT_SPEED, 0.35D)
                 .build();
     }
 
@@ -80,12 +75,8 @@ public class PlayerCloneEntity extends PathfinderMob {
     }
 
     @Override
-    public void setItemInHand(InteractionHand hand, ItemStack stack) {
+    public void setItemInHand(@NotNull InteractionHand hand, @NotNull ItemStack stack) {
         this.setItemSlot(hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND, stack);
-    }
-
-    public SimpleContainer getInventory() {
-        return inventory;
     }
 
     public void copyInventory(Player player) {
@@ -110,12 +101,11 @@ public class PlayerCloneEntity extends PathfinderMob {
 
         // Verificar si el jugador lleva un escudo en la mano secundaria
         ItemStack offHandItem = player.getItemInHand(InteractionHand.OFF_HAND);
+
         if (offHandItem.getItem() instanceof ShieldItem) {
-            // Si lleva un escudo, equiparlo al clon
             this.setItemInHand(InteractionHand.OFF_HAND, offHandItem.copy());
         } else if (!secondStrongestWeapon.isEmpty()) {
-            // Si no tiene escudo, equipar la segunda arma más poderosa
-            this.setItemInHand(InteractionHand.OFF_HAND, secondStrongestWeapon.copy());
+            this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
         }
     }
 }
