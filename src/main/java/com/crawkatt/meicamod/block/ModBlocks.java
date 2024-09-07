@@ -2,6 +2,7 @@ package com.crawkatt.meicamod.block;
 
 import com.crawkatt.meicamod.MeicaMod;
 import com.crawkatt.meicamod.block.custom.BrotenitaCropBlock;
+import com.crawkatt.meicamod.block.portal.MeicaPortalBlock;
 import com.crawkatt.meicamod.block.custom.RawBrotenitaCluster;
 import com.crawkatt.meicamod.item.ModItems;
 import net.minecraft.sounds.SoundEvents;
@@ -74,6 +75,8 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.AMETHYST_CLUSTER)
                     .lightLevel((state -> 5))));
+
+    public static final RegistryObject<Block> MEICA_PORTAL = registerBlock("meica_portal", MeicaPortalBlock::new);
 
     public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

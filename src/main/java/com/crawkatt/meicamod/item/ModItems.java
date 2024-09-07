@@ -3,6 +3,7 @@ package com.crawkatt.meicamod.item;
 import com.crawkatt.meicamod.MeicaMod;
 import com.crawkatt.meicamod.block.ModBlocks;
 import com.crawkatt.meicamod.entity.ModEntities;
+import com.crawkatt.meicamod.item.custom.CatalystItem;
 import com.crawkatt.meicamod.item.custom.ModArmorItem;
 import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeSpawnEggItem;
@@ -29,8 +30,7 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
 
     // todo: Cambiar texturas por texturas de Brotenita
-    public static final RegistryObject<Item> BROTENITA_STAFF = ITEMS.register("brotenita_staff",
-            () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> BROTENITA_STAFF = ITEMS.register("brotenita_staff", CatalystItem::new);
 
     public static final RegistryObject<Item> MEICA_BOW = ITEMS.register("meica_bow",
             () -> new BowItem(new Item.Properties().durability(500)));

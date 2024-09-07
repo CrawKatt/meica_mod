@@ -23,6 +23,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         blockWithItem(ModBlocks.BROTENITA_BLOCK);
+        blockWithItem(ModBlocks.MEICA_PORTAL);
+
         directionalBlock(ModBlocks.RAW_BROTENITA.get(),
                 models().cross(getName(ModBlocks.RAW_BROTENITA), blockTexture(ModBlocks.RAW_BROTENITA.get())).renderType("cutout"));
         blockWithItem(ModBlocks.RAW_BROTENITA_BLOCK);
