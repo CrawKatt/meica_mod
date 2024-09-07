@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "axis=z": { "model": "meicamod:block/meica_portal_ew" },
+    "axis=x": { "model": "meicamod:block/meica_portal_ns" }
+  }
+}
