@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.portal.PortalShape;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -46,6 +47,7 @@ public class MeicaPortalBlock extends NetherPortalBlock {
                 .noCollission()
                 .lightLevel(state -> 10)
                 .noLootTable()
+                .mapColor(MapColor.COLOR_LIGHT_GREEN)
         );
         registerDefaultState(stateDefinition.any().setValue(AXIS, Direction.Axis.X));
     }
@@ -58,10 +60,17 @@ public class MeicaPortalBlock extends NetherPortalBlock {
     public boolean trySpawnPortal(LevelAccessor worldIn, BlockPos pos) {
         MeicaPortalBlock.Size MeicaPortalBlock$size = this.isPortal(worldIn, pos);
         if (MeicaPortalBlock$size != null && !onTrySpawnPortal(worldIn, pos, MeicaPortalBlock$size)) {
+            playPortalSound((Level) worldIn, pos);
             MeicaPortalBlock$size.placePortalBlocks();
             return true;
         } else {
             return false;
+        }
+    }
+
+    private void playPortalSound(Level worldIn, BlockPos pos) {
+        if (worldIn != null) {
+            worldIn.playSound(null, pos, SoundEvents.END_PORTAL_SPAWN, SoundSource.BLOCKS, 1.0F, 1.0F);
         }
     }
 
