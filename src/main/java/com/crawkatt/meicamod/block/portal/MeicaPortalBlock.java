@@ -52,12 +52,7 @@ public class MeicaPortalBlock extends NetherPortalBlock {
 
     @Override
     public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos, @NotNull CollisionContext context) {
-
-        if (state.getValue(AXIS) == Direction.Axis.Z) {
-            return Z_AABB;
-        } else {
-            return X_AABB;
-        }
+        return state.getValue(AXIS) == Direction.Axis.Z ? Z_AABB : X_AABB;
     }
 
     public boolean trySpawnPortal(LevelAccessor worldIn, BlockPos pos) {
