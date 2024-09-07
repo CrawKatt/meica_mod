@@ -18,10 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.NetherPortalBlock;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -47,7 +44,7 @@ public class MeicaPortalBlock extends NetherPortalBlock {
                 .noCollission()
                 .lightLevel(state -> 10)
                 .noLootTable()
-                .mapColor(MapColor.COLOR_LIGHT_GREEN)
+                .sound(SoundType.GLASS)
         );
         registerDefaultState(stateDefinition.any().setValue(AXIS, Direction.Axis.X));
     }
