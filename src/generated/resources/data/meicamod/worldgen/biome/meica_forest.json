@@ -15,6 +15,12 @@
       "sound": "minecraft:ambient.cave",
       "tick_delay": 6000
     },
+    "music": {
+      "max_delay": 24000,
+      "min_delay": 12000,
+      "replace_current_music": false,
+      "sound": "minecraft:music.nether.warped_forest"
+    },
     "particle": {
       "options": {
         "type": "minecraft:spore_blossom_air"
