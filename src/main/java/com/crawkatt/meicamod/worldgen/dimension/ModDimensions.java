@@ -58,11 +58,11 @@ public class ModDimensions {
                                 Climate.parameters(
                                         0.0F,
                                         0.0F,
-                                        0.0F,
-                                        0.0F,
-                                        0.0F,
-                                        0.0F,
-                                        0.0F
+                                        -0.4F,
+                                        -0.6F,
+                                        0.3F,
+                                        0.4F,
+                                        0.1F
                                 ),
                                 biomeRegistry.getOrThrow(ModBiomes.MEICADIM_FOREST))
                         ))),

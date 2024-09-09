@@ -8,13 +8,13 @@
         {
           "biome": "meicamod:meicadim_forest",
           "parameters": {
-            "continentalness": 0.0,
-            "depth": 0.0,
-            "erosion": 0.0,
+            "continentalness": -0.4,
+            "depth": 0.3,
+            "erosion": -0.6,
             "humidity": 0.0,
-            "offset": 0.0,
+            "offset": 0.1,
             "temperature": 0.0,
-            "weirdness": 0.0
+            "weirdness": 0.4
           }
         }
       ]

@@ -11,6 +11,8 @@ import net.minecraft.data.worldgen.Carvers;
 import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.Musics;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -97,12 +99,13 @@ public class ModBiomes {
                 .temperature(0.7f)
                 .generationSettings(biomeBuilder.build())
                 .mobSpawnSettings(spawnBuilder.build())
-                .specialEffects((new BiomeSpecialEffects.Builder())
+                .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(0x3F76E4)
                         .waterFogColor(0x050533)
                         .skyColor(0x77ADFF)
                         .fogColor(0x0b6623)
                         .ambientParticle(new AmbientParticleSettings(ParticleTypes.SPORE_BLOSSOM_AIR, 0.05f))
+                        .backgroundMusic(Musics.createGameMusic(SoundEvents.MUSIC_BIOME_WARPED_FOREST))
                         .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS).build())
                 .build();
     }
@@ -140,12 +143,13 @@ public class ModBiomes {
                 .temperature(0.7f)
                 .generationSettings(biomeBuilder.build())
                 .mobSpawnSettings(spawnBuilder.build())
-                .specialEffects((new BiomeSpecialEffects.Builder())
+                .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(0x3F76E4)
                         .waterFogColor(0x050533)
                         .skyColor(0x77ADFF)
                         .fogColor(0x0b6623)
                         .ambientParticle(new AmbientParticleSettings(ParticleTypes.SPORE_BLOSSOM_AIR, 0.05f))
+                        .backgroundMusic(Musics.createGameMusic(SoundEvents.MUSIC_BIOME_WARPED_FOREST))
                         .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS).build())
                 .build();
     }
