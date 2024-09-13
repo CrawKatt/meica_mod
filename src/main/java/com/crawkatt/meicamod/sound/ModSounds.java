@@ -14,6 +14,8 @@ public class ModSounds {
 
     public static final RegistryObject<SoundEvent> MEICA_KILL_ENTITY = registerSoundEvents("meica_kill");
     public static final RegistryObject<SoundEvent> MEICA_DEATH = registerSoundEvents("meica_death");
+    public static final RegistryObject<SoundEvent> MEICA_DEATH_2 = registerSoundEvents("meica_death_2");
+    public static final RegistryObject<SoundEvent> MEICA_DEATH_3 = registerSoundEvents("meica_death_3");
     public static final RegistryObject<SoundEvent> MEICA_LAUGHT = registerSoundEvents("meica_laught");
     public static final RegistryObject<SoundEvent> MEICA_HALLO = registerSoundEvents("meica_hallo");
 

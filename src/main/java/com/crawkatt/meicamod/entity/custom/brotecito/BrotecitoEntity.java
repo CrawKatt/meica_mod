@@ -1,6 +1,7 @@
 package com.crawkatt.meicamod.entity.custom.brotecito;
 
 import com.crawkatt.meicamod.entity.ModEntities;
+import com.crawkatt.meicamod.entity.custom.meica.MeicaEntity;
 import com.crawkatt.meicamod.item.ModItems;
 import com.crawkatt.meicamod.particle.ModParticles;
 import net.minecraft.nbt.CompoundTag;
@@ -19,7 +20,6 @@ import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
@@ -37,7 +37,6 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.List;
 import java.util.UUID;
 
 public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEntity {
@@ -49,6 +48,7 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
     private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BrotecitoEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(BrotecitoEntity.class, EntityDataSerializers.BOOLEAN);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private boolean aggressiveMode = false;
 
     public BrotecitoEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -95,12 +95,16 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
         this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
-        this.targetSelector.addGoal(6, new NonTameRandomTargetGoal<>(this, Turtle.class, false, Turtle.BABY_ON_LAND_SELECTOR));
-        this.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(this, AbstractSkeleton.class, false));
-        this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal<>(this, true));
+        if (this.isAgressiveMode()) {
+            this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        } else {
+            this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+            this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+            this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
+            this.targetSelector.addGoal(6, new NonTameRandomTargetGoal<>(this, Turtle.class, false, Turtle.BABY_ON_LAND_SELECTOR));
+            this.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(this, AbstractSkeleton.class, false));
+            this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal<>(this, true));
+        }
     }
 
     public static AttributeSupplier createAttributes() {
@@ -112,6 +116,14 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
                 .add(Attributes.ATTACK_KNOCKBACK, 2f)
                 .add(Attributes.ATTACK_DAMAGE, 2f)
                 .build();
+    }
+
+    public void setAggressiveMode(boolean aggressiveMode) {
+        this.aggressiveMode = aggressiveMode;
+    }
+
+    public boolean isAgressiveMode() {
+        return this.aggressiveMode;
     }
 
     @Nullable
@@ -277,6 +289,10 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
 
     @Override
     public boolean isAlliedTo(@NotNull Entity pEntity) {
+        if (isAggressive() || !this.isTamed() && pEntity instanceof MeicaEntity) {
+            return true;
+        }
+
         if (this.isTame() && this.getOwner() != null) {
             return pEntity == this.getOwner();
         } else {
@@ -343,5 +359,9 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
+    }
+
+    public boolean isTamed() {
+        return this.isTame();
     }
 }
