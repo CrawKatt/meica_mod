@@ -66,7 +66,7 @@ public class ModDimensions {
                                 ),
                                 biomeRegistry.getOrThrow(ModBiomes.MEICADIM_FOREST))
                         ))),
-                noiseGenSettings.getOrThrow(NoiseGeneratorSettings.FLOATING_ISLANDS));
+                noiseGenSettings.getOrThrow(ModNoiseGeneratorSettings.FLOATING_FOREST));
 
         LevelStem stem = new LevelStem(dimTypes.getOrThrow(ModDimensions.MEICA_DIM_TYPE), noiseBasedChunkGenerator);
         context.register(MEICADIM_KEY, stem);

@@ -6,6 +6,7 @@ import com.crawkatt.meicamod.worldgen.ModConfiguredFeatures;
 import com.crawkatt.meicamod.worldgen.ModPlacedFeatures;
 import com.crawkatt.meicamod.worldgen.biome.ModBiomes;
 import com.crawkatt.meicamod.worldgen.dimension.ModDimensions;
+import com.crawkatt.meicamod.worldgen.dimension.ModNoiseGeneratorSettings;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -21,6 +22,7 @@ public class ModWorldGenProvider extends DatapackBuiltinEntriesProvider {
             .add(Registries.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap)
             .add(Registries.PLACED_FEATURE, ModPlacedFeatures::bootstrap)
             .add(Registries.BIOME, ModBiomes::boostrap)
+            .add(Registries.NOISE_SETTINGS, ModNoiseGeneratorSettings::bootstrap)
             .add(Registries.LEVEL_STEM, ModDimensions::bootstrapStem)
             .add(Registries.DIMENSION_TYPE, ModDimensions::boostrapType)
             .add(ForgeRegistries.Keys.BIOME_MODIFIERS, ModBiomeModifiers::bootstrap);
