@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.border.WorldBorder;
-import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.level.portal.PortalShape;
@@ -184,10 +183,8 @@ public class MeicaTeleporter implements ITeleporter {
         if (entity.level().dimension() != ModDimensions.MEICADIM_LEVEL_KEY && !destinationIsUG) {
             return null;
         } else {
-            WorldBorder border = level.getWorldBorder();
-            double coordinateDifference = DimensionType.getTeleportationScale(entity.level().dimensionType(), level.dimensionType());
-            BlockPos pos = border.clampToBounds(entity.getX() * coordinateDifference, entity.getY(), entity.getZ() * coordinateDifference);
-            return this.getOrMakePortal(entity, pos).map((result) -> {
+            BlockPos centerPos = new BlockPos(0, 70, 0);
+            return this.getOrMakePortal(entity, centerPos).map((result) -> {
                 BlockState blockstate = entity.level().getBlockState(entity.portalEntrancePos);
                 Direction.Axis axis;
                 Vec3 vector3d;

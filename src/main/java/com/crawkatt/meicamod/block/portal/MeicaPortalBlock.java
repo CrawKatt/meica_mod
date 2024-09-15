@@ -1,6 +1,7 @@
 package com.crawkatt.meicamod.block.portal;
 
 import com.crawkatt.meicamod.block.ModBlocks;
+import com.crawkatt.meicamod.capabilities.BossData;
 import com.crawkatt.meicamod.util.ModTags;
 import com.crawkatt.meicamod.worldgen.dimension.ModDimensions;
 import com.crawkatt.meicamod.worldgen.portal.MeicaTeleporter;
@@ -96,25 +97,39 @@ public class MeicaPortalBlock extends NetherPortalBlock {
 
     @Override
     public void entityInside(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, Entity entity) {
-        if(!entity.isPassenger() && !entity.isVehicle() && entity.canChangeDimensions()) {
-            if(entity.isOnPortalCooldown()) {
+        if (!entity.isPassenger() && !entity.isVehicle() && entity.canChangeDimensions()) {
+            if (entity.isOnPortalCooldown()) {
                 entity.setPortalCooldown();
             } else {
-                if(!entity.level().isClientSide && !pos.equals(entity.portalEntrancePos)) {
+                if (!entity.level().isClientSide && !pos.equals(entity.portalEntrancePos)) {
                     entity.portalEntrancePos = pos.immutable();
                 }
-                Level entityWorld = entity.level();
 
-                MinecraftServer minecraftserver = entityWorld.getServer();
-                ResourceKey<Level> destination = entity.level().dimension() == ModDimensions.MEICADIM_LEVEL_KEY
-                        ? Level.OVERWORLD : ModDimensions.MEICADIM_LEVEL_KEY;
-                if(minecraftserver != null) {
-                    ServerLevel destinationWorld = minecraftserver.getLevel(destination);
-                    if(destinationWorld != null && minecraftserver.isNetherEnabled() && !entity.isPassenger()) {
-                        entity.level().getProfiler().push("meica_portal");
-                        entity.setPortalCooldown();
-                        entity.changeDimension(destinationWorld, new MeicaTeleporter(destinationWorld));
-                        entity.level().getProfiler().pop();
+                if (!entity.level().isClientSide) {
+                    Level entityWorld = entity.level();
+                    MinecraftServer minecraftserver = entityWorld.getServer();
+
+                    // Definir el destino según si el jugador está en la dimensión personalizada
+                    ResourceKey<Level> destination = entity.level().dimension() == ModDimensions.MEICADIM_LEVEL_KEY
+                            ? Level.OVERWORLD : ModDimensions.MEICADIM_LEVEL_KEY;
+
+                    // Verificar si el jugador intenta salir de la dimensión de Meica
+                    if (entity.level().dimension() == ModDimensions.MEICADIM_LEVEL_KEY && destination == Level.OVERWORLD) {
+                        BossData bossData = BossData.get((ServerLevel) entity.level());
+                        if (!bossData.isBossDefeated()) {
+                            entity.setPortalCooldown();
+                            return;
+                        }
+                    }
+
+                    if (minecraftserver != null) {
+                        ServerLevel destinationWorld = minecraftserver.getLevel(destination);
+                        if (destinationWorld != null && minecraftserver.isNetherEnabled() && !entity.isPassenger()) {
+                            entity.level().getProfiler().push("meica_portal");
+                            entity.setPortalCooldown();
+                            entity.changeDimension(destinationWorld, new MeicaTeleporter(destinationWorld));
+                            entity.level().getProfiler().pop();
+                        }
                     }
                 }
             }
