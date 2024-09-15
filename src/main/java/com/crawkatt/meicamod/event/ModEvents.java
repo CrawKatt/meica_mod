@@ -2,8 +2,8 @@ package com.crawkatt.meicamod.event;
 
 import com.crawkatt.meicamod.MeicaMod;
 import com.crawkatt.meicamod.effect.ModEffects;
-import com.crawkatt.meicamod.infection.PlayerInfection;
-import com.crawkatt.meicamod.infection.PlayerInfectionProvider;
+import com.crawkatt.meicamod.capabilities.PlayerInfection;
+import com.crawkatt.meicamod.capabilities.PlayerInfectionProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
