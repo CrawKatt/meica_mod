@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.placement.CaveSurface;
-import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
 import java.util.List;
 
@@ -23,13 +22,10 @@ public class ModNoiseGeneratorSettings {
 
     public static void bootstrap(BootstapContext<NoiseGeneratorSettings> context) {
         HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
-        HolderGetter<NormalNoise.NoiseParameters> noise = context.lookup(Registries.NOISE);
-
-        NoiseGeneratorSettings settings = createNoiseSettings(densityFunctions, noise);
-        context.register(FLOATING_FOREST, settings);
+        context.register(FLOATING_FOREST, createNoiseSettings(densityFunctions));
     }
 
-    public static NoiseGeneratorSettings createNoiseSettings(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noise) {
+    public static NoiseGeneratorSettings createNoiseSettings(HolderGetter<DensityFunction> densityFunctions) {
         // Bloque predeterminado (grass_block) y fluido predeterminado (air) como en el JSON
         BlockState defaultBlock = Blocks.GRASS_BLOCK.defaultBlockState();
         BlockState defaultFluid = Blocks.AIR.defaultBlockState();
@@ -39,7 +35,7 @@ public class ModNoiseGeneratorSettings {
                 new NoiseSettings(0, 128, 2, 1),
                 defaultBlock, // defaultBlock
                 defaultFluid, // defaultFluid
-                createNoiseRouter(densityFunctions, noise), // noiseRouter
+                createNoiseRouter(densityFunctions), // noiseRouter
                 createSurfaceRules(), // surfaceRule (regla de superficie con grass_block)
                 List.of(), // spawnTarget (vacío como en el JSON)
                 0, // seaLevel (nivel del mar = 0)
@@ -65,7 +61,7 @@ public class ModNoiseGeneratorSettings {
     }
 
     // Crear el NoiseRouter basado en el JSON
-    private static NoiseRouter createNoiseRouter(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noise) {
+    private static NoiseRouter createNoiseRouter(HolderGetter<DensityFunction> densityFunctions) {
         // Generar la forma de las islas flotantes del End
         DensityFunction endIslands = DensityFunctions.cache2d(DensityFunctions.endIslands(0L));
 
@@ -98,35 +94,30 @@ public class ModNoiseGeneratorSettings {
     }
 
     private static DensityFunction slideEnd(DensityFunction function) {
-        return slideEndLike(function, 0, 128);
+        return slide(function);
     }
 
-    // Método para aplicar post-procesamiento
     private static DensityFunction postProcess(DensityFunction densityFunction) {
         DensityFunction density = DensityFunctions.blendDensity(densityFunction);
         return DensityFunctions.mul(DensityFunctions.interpolated(density), DensityFunctions.constant(0.64)).squeeze();
     }
 
-    // Método para obtener una función de densidad
+    // Densidad
     private static DensityFunction getFunction(HolderGetter<DensityFunction> densityFunctions, ResourceKey<DensityFunction> key) {
         return new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(key));
     }
 
-    private static DensityFunction slideEndLike(DensityFunction pDensityFunction, int pMinY, int pMaxY) {
-        return slide(pDensityFunction, pMinY, pMaxY, 72, -184, -23.4375, 4, 32, -0.234375);
-    }
-
-    private static DensityFunction slide(DensityFunction densityFunction, int minY, int maxY, int fromYTop, int toYTop, double topOffset, int fromYBottom, int toYBottom, double bottomOffset) {
+    private static DensityFunction slide(DensityFunction densityFunction) {
         // Aplicar un gradiente para la parte superior del terreno, disminuyendo de 1 a 0 entre las alturas fromYTop y toYTop
-        DensityFunction topGradient = DensityFunctions.yClampedGradient(minY + maxY - fromYTop, minY + maxY - toYTop, 1.0, 0.0);
+        DensityFunction topGradient = DensityFunctions.yClampedGradient(128 - 72, 128 + 184, 1.0, 0.0);
 
         // Aplicar una interpolación (lerp) entre el gradiente de la parte superior y el valor de desplazamiento topOffset
-        DensityFunction adjustedTop = DensityFunctions.lerp(topGradient, topOffset, densityFunction);
+        DensityFunction adjustedTop = DensityFunctions.lerp(topGradient, -23.4375, densityFunction);
 
         // Aplicar un gradiente para la parte inferior del terreno, aumentando de 0 a 1 entre las alturas fromYBottom y toYBottom
-        DensityFunction bottomGradient = DensityFunctions.yClampedGradient(minY + fromYBottom, minY + toYBottom, 0.0, 1.0);
+        DensityFunction bottomGradient = DensityFunctions.yClampedGradient(4, 32, 0.0, 1.0);
 
         // Devolver la función de densidad ajustada
-        return DensityFunctions.lerp(bottomGradient, bottomOffset, adjustedTop);
+        return DensityFunctions.lerp(bottomGradient, -0.234375, adjustedTop);
     }
 }
