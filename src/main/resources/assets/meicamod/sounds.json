@@ -11,6 +11,18 @@
       "meicamod:meica_death"
     ]
   },
+  "meica_death_2": {
+    "subtitle": "sounds.meicamod.meica_death_2",
+    "sounds": [
+      "meicamod:meica_death_2"
+    ]
+  },
+  "meica_death_3": {
+    "subtitle": "sounds.meicamod.meica_death_3",
+    "sounds": [
+      "meicamod:meica_death_3"
+    ]
+  },
   "meica_laught": {
     "subtitle": "sounds.meicamod.meica_laught",
     "sounds": [
