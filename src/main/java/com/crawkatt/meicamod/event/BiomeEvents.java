@@ -1,7 +1,7 @@
 package com.crawkatt.meicamod.event;
 
 import com.crawkatt.meicamod.effect.ModEffects;
-import com.crawkatt.meicamod.infection.PlayerInfectionProvider;
+import com.crawkatt.meicamod.capabilities.PlayerInfectionProvider;
 import com.crawkatt.meicamod.worldgen.biome.ModBiomes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffectInstance;
