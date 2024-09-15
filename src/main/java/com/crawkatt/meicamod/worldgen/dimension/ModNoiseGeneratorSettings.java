@@ -126,8 +126,6 @@ public class ModNoiseGeneratorSettings {
         // Aplicar un gradiente para la parte inferior del terreno, aumentando de 0 a 1 entre las alturas fromYBottom y toYBottom
         DensityFunction bottomGradient = DensityFunctions.yClampedGradient(minY + fromYBottom, minY + toYBottom, 0.0, 1.0);
 
-        // Aplicar una interpolación (lerp) entre el gradiente de la parte inferior y el valor de desplazamiento bottomOffset
-
         // Devolver la función de densidad ajustada
         return DensityFunctions.lerp(bottomGradient, bottomOffset, adjustedTop);
     }
