@@ -7,6 +7,8 @@ import com.crawkatt.meicamod.entity.projectile.PoisonArrow;
 import com.crawkatt.meicamod.item.ModItems;
 import com.crawkatt.meicamod.sound.ModSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
@@ -68,7 +70,7 @@ public class MeicaEntity extends Monster implements RangedAttackMob {
             camouflagedDuration--;
 
             if (this.getHealth() < this.getMaxHealth()) {
-                this.heal(0.08F);
+                this.heal(0.30F);
             }
 
             if (camouflagedDuration <= 0) {
@@ -93,6 +95,19 @@ public class MeicaEntity extends Monster implements RangedAttackMob {
         if (isCamouflaged || camouflageCooldown > 0) return;
         isCamouflaged = true;
         camouflagedDuration = 200;
+
+        SimpleParticleType particle = ParticleTypes.SPORE_BLOSSOM_AIR;
+        for (int i = 0; i < 100; i++) {
+            double offsetX = (this.random.nextDouble() - 0.5) * 2.0;
+            double offsetY = this.random.nextDouble() * 2.0;
+            double offsetZ = (this.random.nextDouble() - 0.5) * 2.0;
+
+            double speedX = (this.random.nextDouble() - 0.5) * 5.0;
+            double speedY = this.random.nextDouble() * 5.0;
+            double speedZ = (this.random.nextDouble() - 0.5) * 5.0;
+
+            this.level().addParticle(particle, this.getX() + offsetX, this.getY() + offsetY, this.getZ() + offsetZ, speedX, speedY, speedZ);
+        }
 
         this.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, camouflagedDuration, 0, false, false));
 
