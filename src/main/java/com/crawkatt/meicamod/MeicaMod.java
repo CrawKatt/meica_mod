@@ -6,8 +6,7 @@ import com.crawkatt.meicamod.effect.ModEffects;
 import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.entity.client.BrotecitoRenderer;
 import com.crawkatt.meicamod.entity.client.MeicaRenderer;
-import com.crawkatt.meicamod.event.BiomeEvents;
-import com.crawkatt.meicamod.event.ModEvents;
+import com.crawkatt.meicamod.event.*;
 import com.crawkatt.meicamod.item.ModCreativeModeTabs;
 import com.crawkatt.meicamod.item.ModItemProperties;
 import com.crawkatt.meicamod.item.ModItems;
@@ -73,6 +72,9 @@ public class MeicaMod {
 
         // Registra el evento para aplicar el efecto de la infección de brotenita
         MinecraftForge.EVENT_BUS.register(BiomeEvents.class);
+        MinecraftForge.EVENT_BUS.register(Overlay05.class);
+        MinecraftForge.EVENT_BUS.register(DimensionEvents.class);
+        MinecraftForge.EVENT_BUS.register(BossDeathHandler.class);
 
         // Registra el evento para añadir capabilities
         modEventBus.addListener(ModEvents::onRegisterCapabilities);
