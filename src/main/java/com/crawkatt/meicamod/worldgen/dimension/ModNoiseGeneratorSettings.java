@@ -26,7 +26,7 @@ public class ModNoiseGeneratorSettings {
     }
 
     public static NoiseGeneratorSettings createNoiseSettings(HolderGetter<DensityFunction> densityFunctions) {
-        // Bloque predeterminado (grass_block) y fluido predeterminado (air) como en el JSON
+        // Bloque predeterminado (grass_block) y fluido predeterminado (air)
         BlockState defaultBlock = Blocks.GRASS_BLOCK.defaultBlockState();
         BlockState defaultFluid = Blocks.AIR.defaultBlockState();
 
@@ -37,12 +37,12 @@ public class ModNoiseGeneratorSettings {
                 defaultFluid, // defaultFluid
                 createNoiseRouter(densityFunctions), // noiseRouter
                 createSurfaceRules(), // surfaceRule (regla de superficie con grass_block)
-                List.of(), // spawnTarget (vacío como en el JSON)
+                List.of(), // spawnTarget
                 0, // seaLevel (nivel del mar = 0)
-                true, // disableMobGeneration (deshabilitado como en el JSON)
-                false, // aquifersEnabled (deshabilitado como en el JSON)
-                false, // oreVeinsEnabled (deshabilitado como en el JSON)
-                true  // useLegacyRandomSource (habilitado como en el JSON)
+                true, // disableMobGeneration
+                false, // aquifersEnabled
+                false, // oreVeinsEnabled
+                true  // useLegacyRandomSource
         );
     }
 
@@ -60,7 +60,6 @@ public class ModNoiseGeneratorSettings {
         );
     }
 
-    // Crear el NoiseRouter basado en el JSON
     private static NoiseRouter createNoiseRouter(HolderGetter<DensityFunction> densityFunctions) {
         // Generar la forma de las islas flotantes del End
         DensityFunction endIslands = DensityFunctions.cache2d(DensityFunctions.endIslands(0L));
