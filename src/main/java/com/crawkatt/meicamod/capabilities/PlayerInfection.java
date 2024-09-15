@@ -1,4 +1,4 @@
-package com.crawkatt.meicamod.infection;
+package com.crawkatt.meicamod.capabilities;
 
 import net.minecraft.nbt.CompoundTag;
 
