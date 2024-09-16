@@ -29,14 +29,13 @@ public class ModItems {
     public static final RegistryObject<Item> BROTENITA_MEAL = ITEMS.register("brotenita_meal",
             () -> new Item(new Item.Properties()));
 
-    // todo: Cambiar texturas por texturas de Brotenita
     public static final RegistryObject<Item> BROTENITA_STAFF = ITEMS.register("brotenita_staff", CatalystItem::new);
 
     public static final RegistryObject<Item> MEICA_BOW = ITEMS.register("meica_bow",
             () -> new BowItem(new Item.Properties().durability(500)));
 
     public static final RegistryObject<Item> BROTENITA_SWORD = ITEMS.register("brotenita_sword",
-            () -> new SwordItem(ModToolTiers.BROTENITA, 4, 2, new Item.Properties()));
+            () -> new SwordItem(ModToolTiers.BROTENITA, 4, -2.4F, new Item.Properties()));
 
     public static final RegistryObject<Item> BROTENITA_PICKAXE = ITEMS.register("brotenita_pickaxe",
             () -> new PickaxeItem(ModToolTiers.BROTENITA, 4, 2, new Item.Properties()));
