@@ -72,7 +72,6 @@ public class MeicaMod {
 
         // Registra el evento para aplicar el efecto de la infección de brotenita
         MinecraftForge.EVENT_BUS.register(BiomeEvents.class);
-        MinecraftForge.EVENT_BUS.register(Overlay05.class);
         MinecraftForge.EVENT_BUS.register(DimensionEvents.class);
         MinecraftForge.EVENT_BUS.register(BossDeathHandler.class);
 
