@@ -11,6 +11,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -24,7 +25,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     }
 
     @Override
-    protected void buildRecipes(Consumer<FinishedRecipe> pWriter) {
+    protected void buildRecipes(@NotNull Consumer<FinishedRecipe> pWriter) {
         //oreSmeltimg(pWriter, BROTENITA_SMELTABLES, RecipeCategory.MISC, ModItems.BROTENITA_INGOT.get(), 0.25f, 100, "brotenita_ingot");
         //oreBlasting(pWriter, BROTENITA_SMELTABLES, RecipeCategory.MISC, ModItems.BROTENITA_INGOT.get(), 0.25f, 100, "brotenita_ingot");
 
@@ -117,6 +118,15 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('B', ModItems.BROTENITA_INGOT.get())
                 .define('S', Items.STICK)
                 .unlockedBy(getHasName(ModItems.BROTENITA_INGOT.get()), has(ModItems.BROTENITA_INGOT.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.BROTENITA_STAFF.get())
+                .pattern(" C ")
+                .pattern(" S ")
+                .pattern(" S ")
+                .define('C', ModItems.RAW_BROTENITA.get())
+                .define('S', Items.STICK)
+                .unlockedBy(getHasName(ModItems.RAW_BROTENITA.get()), has(ModItems.RAW_BROTENITA.get()))
                 .save(pWriter);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, ModBlocks.BROTENITA_DOOR.get())
