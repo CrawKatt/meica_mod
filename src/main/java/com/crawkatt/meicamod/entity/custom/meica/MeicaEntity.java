@@ -96,6 +96,7 @@ public class MeicaEntity extends Monster implements RangedAttackMob {
         isCamouflaged = true;
         camouflagedDuration = 200;
 
+        this.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, camouflagedDuration, 0, false, false));
         SimpleParticleType particle = ParticleTypes.SPORE_BLOSSOM_AIR;
         for (int i = 0; i < 100; i++) {
             double offsetX = (this.random.nextDouble() - 0.5) * 2.0;
@@ -108,8 +109,6 @@ public class MeicaEntity extends Monster implements RangedAttackMob {
 
             this.level().addParticle(particle, this.getX() + offsetX, this.getY() + offsetY, this.getZ() + offsetZ, speedX, speedY, speedZ);
         }
-
-        this.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, camouflagedDuration, 0, false, false));
 
         // Intentar encontrar una posición alejada del jugador y moverse allí
         for (int i = 0; i < 10; i++) {
