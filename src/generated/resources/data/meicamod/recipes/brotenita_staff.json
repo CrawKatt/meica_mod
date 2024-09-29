@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "item": "meicamod:raw_brotenita"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    " C ",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "item": "meicamod:brotenita_staff"
+  },
+  "show_notification": true
+}
