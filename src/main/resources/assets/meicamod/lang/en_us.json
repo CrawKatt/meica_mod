@@ -35,6 +35,7 @@
   "block.meicamod.brotenita_wall": "Brotenita Wall",
   "block.meicamod.brotenita_door": "Brotenita Door",
   "block.meicamod.brotenita_trapdoor": "Brotenita Trapdoor",
+  "block.meicamod.brotenita_melter": "Brotenita Melter",
 
   "creativetab.example_tab": "Brotenita Example Tab",
 
@@ -46,5 +47,8 @@
   "sounds.meicamod.meica_death": "Meica's death sound",
 
   "effect.meicamod.brotenita_infection": "Brotification",
-  "effect.meicamod.paranoia": "Paranoia"
+  "effect.meicamod.paranoia": "Paranoia",
+
+  "meicamod.tooltip.liquid.amount.with.capacity": "%s / %s mB",
+    "meicamod.tooltip.liquid.amount": "%s mB"
 }
