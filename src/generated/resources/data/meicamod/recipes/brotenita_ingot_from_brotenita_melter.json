@@ -1,0 +1,11 @@
+{
+  "type": "meicamod:brotenita_melter",
+  "ingredients": [
+    {
+      "item": "meicamod:raw_brotenita"
+    }
+  ],
+  "result": {
+    "item": "meicamod:brotenita_ingot"
+  }
+}

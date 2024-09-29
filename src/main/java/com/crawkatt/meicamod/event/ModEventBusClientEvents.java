@@ -1,6 +1,8 @@
 package com.crawkatt.meicamod.event;
 
 import com.crawkatt.meicamod.MeicaMod;
+import com.crawkatt.meicamod.block.entity.ModBlockEntities;
+import com.crawkatt.meicamod.block.entity.renderer.BrotenitaMelterBlockEntityRenderer;
 import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.entity.client.*;
 import net.minecraftforge.api.distmarker.Dist;
@@ -22,5 +24,11 @@ public class ModEventBusClientEvents {
     @SubscribeEvent
     public static void registerLayerDefinitions(RegisterLayerDefinitions event) {
         event.registerLayerDefinition(MeicaModel.LAYER_LOCATION, MeicaModel::createBodyLayer);
+    }
+
+    @SubscribeEvent
+    public static void registerBER(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(ModBlockEntities.BROTENITA_MELTER_BE.get(),
+                BrotenitaMelterBlockEntityRenderer::new);
     }
 }

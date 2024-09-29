@@ -54,6 +54,8 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 
         this.add(ModBlocks.BROTENITA_CROP.get(), this.createCropDrops(ModBlocks.BROTENITA_CROP.get(),
                 ModItems.RAW_BROTENITA.get(), ModItems.SMALL_BROTENITA.get(), lootItemConditionBuilder));
+
+        this.dropSelf(ModBlocks.BROTENITA_MELTER.get());
     }
 
     protected LootTable.Builder createCopperLikeOreDrops(Block pBlock, Item item) {

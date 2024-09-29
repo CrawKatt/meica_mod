@@ -31,17 +31,17 @@ public class BrotenitaInfectionEffect extends MobEffect {
         if (duration >= 72000) { // 60 minutos
             entity.kill(); // Muerte
         } else if (duration >= 60000) { // 50 minutos
-            entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 32767, 0));
-            entity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 32767, 0));
+            entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 32767, 0, true, false, false));
+            entity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 32767, 0, true, false, false));
             spawnPlayerClonesAround(entity);
         } else if (duration >= 48000) { // 40 minutos
             spawnPlayerClonesAround(entity);
         } else if (duration >= 36000) { // 30 minutos
-            entity.addEffect(new MobEffectInstance(ModEffects.PARANOIA.get(), 32767, 0));
+            entity.addEffect(new MobEffectInstance(ModEffects.PARANOIA.get(), 32767, 0, true, false, false));
         } else if (duration >= 24000) { // 20 minutos
-            entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 32767, 0));
+            entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 32767, 0, true, false, false));
         } else if (duration >= 12000) { // 10 minutos
-            entity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 32767, 0));
+            entity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 32767, 0, true, false, false));
         }
     }
 

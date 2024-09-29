@@ -76,6 +76,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         mobEggItem(ModItems.BROTECITO_MAMADO_SPAWN_EGG);
         mobEggItem(ModItems.MEICA_SPAWN_EGG);
         mobEggItem(ModItems.PLAYER_CLONE_SPAWN_EGG);
+
+        complexBlock(ModBlocks.BROTENITA_MELTER.get());
     }
 
     private void trimmedArmorItem(RegistryObject<Item> itemRegistryObject) {
@@ -119,6 +121,11 @@ public class ModItemModelProvider extends ItemModelProvider {
                                         "item/" + itemRegistryObject.getId().getPath()));
             });
         }
+    }
+
+    private ItemModelBuilder complexBlock(Block block) {
+        return withExistingParent(ForgeRegistries.BLOCKS.getKey(block).getPath(), new ResourceLocation(MeicaMod.MODID,
+                "block/" + ForgeRegistries.BLOCKS.getKey(block).getPath()));
     }
 
     private ItemModelBuilder simpleItem(RegistryObject<Item> item) {

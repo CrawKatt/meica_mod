@@ -2,6 +2,7 @@ package com.crawkatt.meicamod.block;
 
 import com.crawkatt.meicamod.MeicaMod;
 import com.crawkatt.meicamod.block.custom.BrotenitaCropBlock;
+import com.crawkatt.meicamod.block.custom.BrotenitaMelterBlock;
 import com.crawkatt.meicamod.block.portal.MeicaPortalBlock;
 import com.crawkatt.meicamod.block.custom.RawBrotenitaCluster;
 import com.crawkatt.meicamod.item.ModItems;
@@ -75,6 +76,9 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.AMETHYST_CLUSTER)
                     .lightLevel((state -> 5))));
+
+    public static final RegistryObject<Block> BROTENITA_MELTER = registerBlock("brotenita_melter",
+            () -> new BrotenitaMelterBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
 
     public static final RegistryObject<Block> MEICA_PORTAL = registerBlock("meica_portal", MeicaPortalBlock::new);
 

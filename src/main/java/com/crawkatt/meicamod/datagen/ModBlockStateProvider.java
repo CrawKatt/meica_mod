@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -41,6 +42,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
         trapdoorBlockWithRenderType(((TrapDoorBlock) ModBlocks.BROTENITA_TRAPDOOR.get()), modLoc("block/brotenita_trapdoor"), true, "cutout");
 
         makeCrop(((BrotenitaCropBlock) ModBlocks.BROTENITA_CROP.get()), "brotenita_stage", "brotenita_stage");
+        horizontalBlock(ModBlocks.BROTENITA_MELTER.get(),
+                new ModelFile.UncheckedModelFile(modLoc("block/brotenita_melter")));
     }
 
     private void blockWithItem(RegistryObject<Block> blockRegistryObject) {

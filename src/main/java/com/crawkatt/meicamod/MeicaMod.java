@@ -1,6 +1,7 @@
 package com.crawkatt.meicamod;
 
 import com.crawkatt.meicamod.block.ModBlocks;
+import com.crawkatt.meicamod.block.entity.ModBlockEntities;
 import com.crawkatt.meicamod.command.SpawnClonesCommand;
 import com.crawkatt.meicamod.effect.ModEffects;
 import com.crawkatt.meicamod.entity.ModEntities;
@@ -11,10 +12,15 @@ import com.crawkatt.meicamod.item.ModCreativeModeTabs;
 import com.crawkatt.meicamod.item.ModItemProperties;
 import com.crawkatt.meicamod.item.ModItems;
 import com.crawkatt.meicamod.particle.ModParticles;
+import com.crawkatt.meicamod.recipe.ModRecipes;
 import com.crawkatt.meicamod.registry.ModPOIs;
+import com.crawkatt.meicamod.screen.BrotenitaMelterScreen;
+import com.crawkatt.meicamod.screen.ModMenuTypes;
 import com.crawkatt.meicamod.sound.ModSounds;
 import com.crawkatt.meicamod.worldgen.biome.ModTerrablender;
 import com.crawkatt.meicamod.worldgen.biome.surface.ModSurfaceRules;
+import com.mojang.logging.LogUtils;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
@@ -27,12 +33,14 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.slf4j.Logger;
 import terrablender.api.SurfaceRuleManager;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(MeicaMod.MODID)
 public class MeicaMod {
     public static final String MODID = "meicamod";
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public MeicaMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -66,6 +74,15 @@ public class MeicaMod {
 
         // Registra el POI (Punto de interés)
         ModPOIs.register(modEventBus);
+
+        // Registra el Fundidor de Brotenita
+        ModBlockEntities.register(modEventBus);
+
+        // Registra los menús
+        ModMenuTypes.register(modEventBus);
+
+        // Registra las recetas
+        ModRecipes.register(modEventBus);
 
         // Registra el setup (Necesario para que cargue las reglas de superficie)
         modEventBus.addListener(this::commonSetup);
@@ -105,7 +122,9 @@ public class MeicaMod {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-
+            event.enqueueWork(() -> {
+                MenuScreens.register(ModMenuTypes.BROTENITA_MELTER_MENU.get(), BrotenitaMelterScreen::new);
+            });
             ModItemProperties.addcustomItemProperties();
 
             EntityRenderers.register(ModEntities.BROTECITO.get(), BrotecitoRenderer::new);
