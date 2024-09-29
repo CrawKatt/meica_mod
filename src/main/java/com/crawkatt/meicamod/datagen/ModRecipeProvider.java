@@ -140,6 +140,17 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModItems.BROTENITA_INGOT.get()), has(ModItems.BROTENITA_INGOT.get()))
                 .save(pWriter);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.BROTENITA_MELTER.get())
+                .pattern("LLL")
+                .pattern("FIB")
+                .pattern("I I")
+                .define('L', Items.POLISHED_BLACKSTONE_SLAB)
+                .define('F', Items.BLAST_FURNACE)
+                .define('I', Items.IRON_INGOT)
+                .define('B', Items.BUCKET)
+                .unlockedBy(getHasName(Items.BLAST_FURNACE), has(Items.BLAST_FURNACE))
+                .save(pWriter);
+
         ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, ModBlocks.BROTENITA_BUTTON.get())
                 .requires(ModItems.BROTENITA_INGOT.get())
                 .unlockedBy(getHasName(ModItems.BROTENITA_INGOT.get()), has(ModItems.BROTENITA_INGOT.get()))
