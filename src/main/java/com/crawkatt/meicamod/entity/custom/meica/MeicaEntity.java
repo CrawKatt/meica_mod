@@ -1,5 +1,6 @@
 package com.crawkatt.meicamod.entity.custom.meica;
 
+import com.crawkatt.meicamod.effect.ModEffects;
 import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.entity.custom.brotecito.BrotecitoEntity;
 import com.crawkatt.meicamod.entity.projectile.IceArrow;
@@ -41,9 +42,6 @@ import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.NotNull;
 
 public class MeicaEntity extends Monster implements RangedAttackMob {
-    private boolean isCamouflaged = false;
-    private int camouflageCooldown = 0;
-    private int camouflagedDuration = 0;
     /* Boss Bar */
     private final ServerBossEvent bossEvent =
             new ServerBossEvent(Component.literal("Meica"), BossEvent.BossBarColor.GREEN, BossEvent.BossBarOverlay.NOTCHED_12);
@@ -61,22 +59,8 @@ public class MeicaEntity extends Monster implements RangedAttackMob {
     public void tick() {
         super.tick();
 
-        if (camouflageCooldown > 0) {
-            camouflageCooldown--;
-            return;
-        }
-
-        if (isCamouflaged) {
-            camouflagedDuration--;
-
-            if (this.getHealth() < this.getMaxHealth()) {
-                this.heal(0.30F);
-            }
-
-            if (camouflagedDuration <= 0) {
-                this.removeEffect(MobEffects.INVISIBILITY);
-                isCamouflaged = false;
-            }
+        if (this.hasEffect(MobEffects.INVISIBILITY) && this.getHealth() < this.getMaxHealth()) {
+            this.heal(0.30F);
         }
 
         if (!this.isAlive()) {
@@ -88,15 +72,11 @@ public class MeicaEntity extends Monster implements RangedAttackMob {
     }
 
     public boolean isCamouflaged() {
-        return this.isCamouflaged;
+        return this.hasEffect(ModEffects.CAMOUFLAGE_COOLDOWN.get());
     }
 
     public void activateCamouflage() {
-        if (isCamouflaged || camouflageCooldown > 0) return;
-        isCamouflaged = true;
-        camouflagedDuration = 200;
-
-        this.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, camouflagedDuration, 0, false, false));
+        this.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 200, 0, false, false));
         SimpleParticleType particle = ParticleTypes.SPORE_BLOSSOM_AIR;
         for (int i = 0; i < 100; i++) {
             double offsetX = (this.random.nextDouble() - 0.5) * 2.0;
@@ -117,7 +97,7 @@ public class MeicaEntity extends Monster implements RangedAttackMob {
             if (pos != null && isSafeTeleportPosition(pos) && this.getTarget() != null) {
                 spawnBrotecitosAround(this.getTarget());
                 this.teleportTo(pos.x(), pos.y(), pos.z());
-                camouflageCooldown = 400;
+                this.addEffect(new MobEffectInstance(ModEffects.CAMOUFLAGE_COOLDOWN.get(), 400, 1, false, false));
 
                 break;
             }
@@ -227,7 +207,7 @@ public class MeicaEntity extends Monster implements RangedAttackMob {
     @Override
     public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
         //if (pSource.is(DamageTypeTags.IS_EXPLOSION) || pSource.is(DamageTypeTags.IS_FALL) || this.hasEffect(MobEffects.POISON)) return false;
-        if (this.getHealth() < this.getMaxHealth() * 0.5 && !isCamouflaged) {
+        if (this.getHealth() < this.getMaxHealth() * 0.5 && !isCamouflaged()) {
             if (this.getTarget() != null) {
                 this.getTarget().addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200, 1, false, false));
             }

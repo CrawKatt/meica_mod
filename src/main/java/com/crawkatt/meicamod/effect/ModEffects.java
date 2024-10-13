@@ -21,6 +21,9 @@ public class ModEffects {
     public static final RegistryObject<MobEffect> PARANOIA = MOB_EFFECTS.register("paranoia",
             () -> new ParanoiaEffect(MobEffectCategory.HARMFUL, 0x9966CC));
 
+    public static final RegistryObject<MobEffect> CAMOUFLAGE_COOLDOWN = MOB_EFFECTS.register("camouflage_cooldown",
+            () -> new CamouflageCooldown(MobEffectCategory.HARMFUL, 0x9966CC));
+
     public static void register(IEventBus pEventBus) {
         MOB_EFFECTS.register(pEventBus);
     }
