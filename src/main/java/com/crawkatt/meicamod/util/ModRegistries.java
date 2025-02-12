@@ -2,6 +2,7 @@ package com.crawkatt.meicamod.util;
 
 import com.crawkatt.meicamod.MeicaMod;
 import com.crawkatt.meicamod.block.ModBlocks;
+import com.crawkatt.meicamod.command.SpawnClonesCommand;
 import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.entity.custom.BrotecitoEntity;
 import com.crawkatt.meicamod.entity.custom.BrotecitoMamadoEntity;
@@ -11,6 +12,7 @@ import com.crawkatt.meicamod.event.BossDeathHandler;
 import com.crawkatt.meicamod.event.DimensionEvents;
 import com.crawkatt.meicamod.event.MeicaEvents;
 import com.crawkatt.meicamod.item.ModItems;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -24,6 +26,7 @@ public class ModRegistries {
         createPortal();
         registerEvents();
         registerAttributes();
+        registerCommands();
     }
 
     private static void createPortal() {
@@ -55,5 +58,9 @@ public class ModRegistries {
         ServerLivingEntityEvents.AFTER_DEATH.register(new MeicaEvents());
         ServerLivingEntityEvents.AFTER_DEATH.register(new BossDeathHandler());
         ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(new DimensionEvents());
+    }
+
+    private static void registerCommands() {
+        CommandRegistrationCallback.EVENT.register(SpawnClonesCommand::register);
     }
 }
