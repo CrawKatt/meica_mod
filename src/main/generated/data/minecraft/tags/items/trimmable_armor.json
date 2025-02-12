@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "meicamod:brotenita_helmet",
+    "meicamod:brotenita_chestplate",
+    "meicamod:brotenita_leggings",
+    "meicamod:brotenita_boots",
+    "meicamod:brotenita_pickaxe",
+    "meicamod:brotenita_axe",
+    "meicamod:brotenita_shovel",
+    "meicamod:brotenita_hoe",
+    "meicamod:brotenita_sword"
+  ]
+}

@@ -13,27 +13,74 @@ import net.minecraft.util.Identifier;
 import java.util.concurrent.CompletableFuture;
 
 public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
+
     public ModBlockTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
-        getOrCreateTagBuilder(ModTags.Blocks.NEEDS_BROTENITA_TOOL)
-                .add(ModBlocks.RAW_BROTENITA)
-                .forceAddTag(BlockTags.GOLD_ORES)
-                .forceAddTag(BlockTags.EMERALD_ORES)
-                .forceAddTag(BlockTags.REDSTONE_ORES)
-                .forceAddTag(BlockTags.LAPIS_ORES)
-                .forceAddTag(BlockTags.DIAMOND_ORES)
-                .forceAddTag(BlockTags.IRON_ORES)
-                .forceAddTag(BlockTags.COPPER_ORES)
-                .forceAddTag(BlockTags.COAL_ORES);
-
+        // Tags de minería y herramientas
         getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)
-                .add(ModBlocks.RAW_BROTENITA);
+                .add(ModBlocks.BROTENITA_BLOCK)
+                .add(ModBlocks.RAW_BROTENITA_BLOCK)
+                .add(ModBlocks.BROTENITA_STAIRS)
+                .add(ModBlocks.BROTENITA_SLAB)
+                .add(ModBlocks.BROTENITA_FENCE)
+                .add(ModBlocks.BROTENITA_FENCE_GATE)
+                .add(ModBlocks.BROTENITA_WALL)
+                .add(ModBlocks.BROTENITA_DOOR)
+                .add(ModBlocks.BROTENITA_TRAPDOOR)
+                .add(ModBlocks.BROTENITA_BUTTON)
+                .add(ModBlocks.BROTENITA_PRESSURE_PLATE)
+                .add(ModBlocks.RAW_BROTENITA)
+                .add(ModBlocks.BROTENITA_CROP);
 
-        getOrCreateTagBuilder(TagKey.of(RegistryKeys.BLOCK, new Identifier("fabric", "needs_tool_level_4")))
-                .add(ModBlocks.RAW_BROTENITA);
+        getOrCreateTagBuilder(BlockTags.NEEDS_DIAMOND_TOOL)
+                .add(ModBlocks.BROTENITA_BLOCK)
+                .add(ModBlocks.RAW_BROTENITA_BLOCK)
+                .add(ModBlocks.BROTENITA_STAIRS)
+                .add(ModBlocks.BROTENITA_SLAB)
+                .add(ModBlocks.BROTENITA_FENCE)
+                .add(ModBlocks.BROTENITA_FENCE_GATE)
+                .add(ModBlocks.BROTENITA_WALL)
+                .add(ModBlocks.BROTENITA_DOOR)
+                .add(ModBlocks.BROTENITA_TRAPDOOR)
+                .add(ModBlocks.BROTENITA_BUTTON)
+                .add(ModBlocks.BROTENITA_PRESSURE_PLATE)
+                .add(ModBlocks.RAW_BROTENITA)
+                .add(ModBlocks.BROTENITA_CROP);
+
+        // Tags de bloques estructurales
+        getOrCreateTagBuilder(BlockTags.FENCES)
+                .add(ModBlocks.BROTENITA_FENCE);
+
+        getOrCreateTagBuilder(BlockTags.FENCE_GATES)
+                .add(ModBlocks.BROTENITA_FENCE_GATE);
+
+        getOrCreateTagBuilder(BlockTags.WALLS)
+                .add(ModBlocks.BROTENITA_WALL);
+
+        getOrCreateTagBuilder(BlockTags.DOORS)
+                .add(ModBlocks.BROTENITA_DOOR);
+
+        getOrCreateTagBuilder(BlockTags.TRAPDOORS)
+                .add(ModBlocks.BROTENITA_TRAPDOOR);
+
+        getOrCreateTagBuilder(BlockTags.BUTTONS)
+                .add(ModBlocks.BROTENITA_BUTTON);
+
+        getOrCreateTagBuilder(BlockTags.PRESSURE_PLATES)
+                .add(ModBlocks.BROTENITA_PRESSURE_PLATE);
+
+        getOrCreateTagBuilder(BlockTags.SLABS)
+                .add(ModBlocks.BROTENITA_SLAB);
+
+        // Tag para herramientas personalizadas (si es necesario)
+        /*
+        getOrCreateTagBuilder(BlockTags.NEEDS_DIAMOND_TOOL)
+                .add(ModBlocks.BROTENITA_BLOCK)
+                .add(ModBlocks.RAW_BROTENITA_BLOCK);
+        */
     }
 }

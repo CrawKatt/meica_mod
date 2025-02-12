@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "meicamod:block/brotenita_crop_stage3"
+  }
+}

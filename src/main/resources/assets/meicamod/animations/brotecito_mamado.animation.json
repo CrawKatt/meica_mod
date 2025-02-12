@@ -1,0 +1,120 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.brotecito_mamado.walk": {
+      "loop": true,
+      "animation_length": 1.7917,
+      "bones": {
+        "right_arm2": {
+          "rotation": {
+            "vector": ["math.sin(query.anim_time * -360) * 25", 0, 0]
+          }
+        },
+        "left_arm2": {
+          "rotation": {
+            "vector": ["math.sin(query.anim_time * 360) * 25", 0, 0]
+          }
+        },
+        "right_leg2": {
+          "rotation": {
+            "vector": ["math.sin(query.anim_time * 360) * 25", 0, 0]
+          }
+        },
+        "left_leg2": {
+          "rotation": {
+            "vector": ["math.sin(query.anim_time * -360) * 25", 0, 0]
+          }
+        }
+      }
+    },
+    "animation.brotecito_mamado.idle": {
+      "loop": true,
+      "animation_length": 12,
+      "bones": {
+        "right_arm2": {
+          "rotation": {
+            "vector": ["math.sin(query.anim_time * -120) * 6", 0, "math.cos(query.anim_time * -100) * -4"]
+          },
+          "position": {
+            "vector": [0, "math.sin(query.anim_time * 90) * 1", 0]
+          }
+        },
+        "left_arm2": {
+          "rotation": {
+            "vector": ["math.sin(query.anim_time * 120) * 6", 0, "math.cos(query.anim_time * 100) * 4"]
+          },
+          "position": {
+            "vector": [0, "math.sin(query.anim_time * 90) * 1", 0]
+          }
+        }
+      }
+    },
+    "animation.brotecito_mamado.attack": {
+      "animation_length": 0.5,
+      "bones": {
+        "right_arm2": {
+          "rotation": {
+            "0.0": {
+              "vector": [0, 0, 0]
+            },
+            "0.25": {
+              "vector": [-180, 0, 0]
+            },
+            "0.5": {
+              "vector": [0, 0, 0]
+            }
+          }
+        },
+        "left_arm2": {
+          "rotation": {
+            "0.0": {
+              "vector": [0, 0, 0]
+            },
+            "0.25": {
+              "vector": [-180, 0, 0]
+            },
+            "0.5": {
+              "vector": [0, 0, 0]
+            }
+          }
+        }
+      }
+    },
+    "animation.brotecito_mamado.sit": {
+      "loop": "hold_on_last_frame",
+      "bones": {
+        "body": {
+          "position": {
+            "vector": [0, -14, 0]
+          }
+        },
+        "right_arm2": {
+          "rotation": {
+            "vector": [-70.29799, 7.1439, 2.89404]
+          }
+        },
+        "left_arm2": {
+          "rotation": {
+            "vector": [-71.46082, -13.38872, -4.07677]
+          }
+        },
+        "right_leg2": {
+          "rotation": {
+            "vector": [-90, 0, 0]
+          }
+        },
+        "left_leg2": {
+          "rotation": {
+            "vector": [-90, 0, 0]
+          }
+        },
+        "brotecito": {
+          "position": {
+            "vector": [0, -14, 0]
+          }
+        }
+      }
+    }
+  },
+  "geckolib_format_version": 2
+}

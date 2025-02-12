@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "meicamod:block/brotenita",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "meicamod:block/brotenita",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "meicamod:block/brotenita",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "meicamod:block/brotenita",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "meicamod:block/brotenita"
+    },
+    "facing=west": {
+      "model": "meicamod:block/brotenita",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

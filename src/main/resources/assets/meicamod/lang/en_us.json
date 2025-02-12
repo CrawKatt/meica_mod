@@ -1,8 +1,56 @@
 {
-  "item.meicamod.brotenita": "Brotenita",
+  "item.meicamod.brotenita_ingot": "Brotenita Ingot",
+  "item.meicamod.brotenita_staff": "Brotenita Staff",
+  "item.meicamod.brotenita_meal": "Brotenita Meal",
   "item.meicamod.small_brotenita": "Small Brotenita",
 
+  "item.meicamod.meica_bow": "Meica's Bow",
+
+  "item.meicamod.brotenita_sword": "Brotenita Sword",
+  "item.meicamod.brotenita_pickaxe": "Brotenita Pickaxe",
+  "item.meicamod.brotenita_axe": "brotenita Axe",
+  "item.meicamod.brotenita_shovel": "Brotenita Shovel",
+  "item.meicamod.brotenita_hoe": "Brotenita Hoe",
+
+  "item.meicamod.brotenita_helmet": "Brotenita Helmet",
+  "item.meicamod.brotenita_chestplate": "Brotenita Chestplate",
+  "item.meicamod.brotenita_leggings": "Brotenita Leggings",
+  "item.meicamod.brotenita_boots": "Brotenita Boots",
+
+  "item.meicamod.brotecito_spawn_egg": "Brotecito Spawn Egg",
+  "item.meicamod.brotecito_mamado_spawn_egg": "Brotecito Mamado Spawn Egg",
+  "item.meicamod.meica_spawn_egg": "Meica Spawn Egg",
+  "item.meicamod.player_clone_spawn_egg": "Player Clone Spawn Egg",
+
+  "block.meicamod.brotenita_block": "Block of Brotenita",
+  "block.meicamod.raw_brotenita_block": "Block of raw Brotenita",
   "block.meicamod.raw_brotenita": "Raw Brotenita",
 
-  "itemgroup.brotenita": "Brotenita Group"
+  "block.meicamod.brotenita_stairs": "Brotenita Stairs",
+  "block.meicamod.brotenita_slab": "Brotenita Slab",
+  "block.meicamod.brotenita_button": "Brotenita Button",
+  "block.meicamod.brotenita_pressure_plate": "Brotenita Pressure Plate",
+  "block.meicamod.brotenita_fence": "Brotenita Fence",
+  "block.meicamod.brotenita_fence_gate": "Brotenita Fence Gate",
+  "block.meicamod.brotenita_wall": "Brotenita Wall",
+  "block.meicamod.brotenita_door": "Brotenita Door",
+  "block.meicamod.brotenita_trapdoor": "Brotenita Trapdoor",
+  "block.meicamod.brotenita_melter": "Brotenita Melter",
+
+  "creativetab.example_tab": "Brotenita Example Tab",
+
+  "entity.meicamod.meica": "Meica",
+  "entity.meicamod.brotecito": "Brotecito",
+  "entity.meicamod.brotecito_mamado": "Brotecito Mamado",
+
+  "sounds.meicamod.meica_kill": "Meica's kill sound",
+  "sounds.meicamod.meica_death": "Meica's death sound",
+
+  "effect.meicamod.brotenita_infection": "Brotification",
+  "effect.meicamod.paranoia": "Paranoia",
+
+  "itemgroup.brotenita": "MeicaMod",
+
+  "meicamod.tooltip.liquid.amount.with.capacity": "%s / %s mB",
+    "meicamod.tooltip.liquid.amount": "%s mB"
 }

@@ -1,0 +1,38 @@
+{
+  "meica_kill": {
+    "subtitle": "sounds.meicamod.meica_kill",
+    "sounds": [
+      "meicamod:meica_kill"
+    ]
+  },
+  "meica_death": {
+    "subtitle": "sounds.meicamod.meica_death",
+    "sounds": [
+      "meicamod:meica_death"
+    ]
+  },
+  "meica_death_2": {
+    "subtitle": "sounds.meicamod.meica_death_2",
+    "sounds": [
+      "meicamod:meica_death_2"
+    ]
+  },
+  "meica_death_3": {
+    "subtitle": "sounds.meicamod.meica_death_3",
+    "sounds": [
+      "meicamod:meica_death_3"
+    ]
+  },
+  "meica_laught": {
+    "subtitle": "sounds.meicamod.meica_laught",
+    "sounds": [
+      "meicamod:meica_laught"
+    ]
+  },
+  "meica_hallo": {
+    "subtitle": "sounds.meicamod.meica_hallo",
+    "sounds": [
+      "meicamod:meica_hallo"
+    ]
+  }
+}

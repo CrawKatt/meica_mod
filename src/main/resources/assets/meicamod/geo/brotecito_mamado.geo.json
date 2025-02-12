@@ -1,0 +1,89 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 4.5,
+				"visible_bounds_offset": [0, 1.75, 0]
+			},
+			"bones": [
+				{
+					"name": "body",
+					"pivot": [0, 31, 0],
+					"cubes": [
+						{"origin": [-9, 21, -6], "size": [18, 12, 11], "uv": [0, 40]},
+						{"origin": [-4.5, 16, -3], "size": [9, 5, 6], "inflate": 0.5, "uv": [0, 70]}
+					]
+				},
+				{
+					"name": "right_arm2",
+					"parent": "body",
+					"pivot": [-11, 31, 0],
+					"cubes": [
+						{"origin": [-13, 3.5, -3], "size": [4, 30, 6], "uv": [60, 21]}
+					]
+				},
+				{
+					"name": "left_arm2",
+					"parent": "body",
+					"pivot": [11, 31, 0],
+					"cubes": [
+						{"origin": [9, 3.5, -3], "size": [4, 30, 6], "uv": [60, 58]}
+					]
+				},
+				{
+					"name": "right_leg2",
+					"parent": "body",
+					"pivot": [4.5, 16, 0],
+					"cubes": [
+						{"origin": [-7.5, 0, -3], "size": [6, 16, 5], "uv": [37, 0]}
+					]
+				},
+				{
+					"name": "left_leg2",
+					"parent": "body",
+					"pivot": [-4.5, 16, 0],
+					"cubes": [
+						{"origin": [1.5, 0, -3], "size": [6, 16, 5], "uv": [60, 0]}
+					]
+				},
+				{
+					"name": "brotecito",
+					"pivot": [0, 33, -1]
+				},
+				{
+					"name": "leaf",
+					"parent": "brotecito",
+					"pivot": [1.30449, 46.76376, 3.12615],
+					"rotation": [-180, 0, 180],
+					"cubes": [
+						{"origin": [2.60899, 42, 5.2523], "size": [1, 1, 1], "uv": [110, 86]},
+						{"origin": [1.01437, 42.41704, 4.19364], "size": [1, 1, 1], "pivot": [1.89705, 43.2706, 3.84009], "rotation": [22.5, 22.5, 0], "uv": [106, 86]},
+						{"origin": [-1.73877, 43.09502, 2.2746], "size": [5, 6, 1], "pivot": [1.64391, 44.2483, 2.12132], "rotation": [45, 22.5, 0], "uv": [68, 114]},
+						{"origin": [-0.73877, 49.09502, 2.2746], "size": [3, 1, 1], "pivot": [1.64391, 44.2483, 2.12132], "rotation": [45, 22.5, 0], "uv": [106, 84]},
+						{"origin": [-0.73877, 42.09502, 2.2746], "size": [3, 1, 1], "pivot": [1.64391, 44.2483, 2.12132], "rotation": [45, 22.5, 0], "uv": [106, 82]}
+					]
+				},
+				{
+					"name": "head",
+					"parent": "brotecito",
+					"pivot": [0.07143, 39.64286, -0.5],
+					"rotation": [-180, 0, 180],
+					"cubes": [
+						{"origin": [-4.85714, 34, 4], "size": [10, 6, 1], "uv": [95, 111]},
+						{"origin": [-4.85714, 40, -5], "size": [10, 1, 9], "uv": [28, 97]},
+						{"origin": [-3.85714, 41, -4], "size": [8, 1, 7], "uv": [89, 98]},
+						{"origin": [-3.85714, 33, -5], "size": [8, 1, 9], "uv": [24, 82]},
+						{"origin": [-5.85714, 34, -5], "size": [2, 6, 9], "uv": [2, 111]},
+						{"origin": [3.14286, 34, -5], "size": [3, 6, 9], "uv": [0, 86]},
+						{"origin": [4.14286, 34, -6], "size": [1, 6, 10], "pivot": [0.14286, 34, -1], "rotation": [0, 90, 0], "uv": [27, 110]}
+					]
+				}
+			]
+		}
+	]
+}
