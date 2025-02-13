@@ -5,6 +5,7 @@ import com.crawkatt.meicamod.effect.ModEffects;
 import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.item.ModItemGroups;
 import com.crawkatt.meicamod.item.ModItems;
+import com.crawkatt.meicamod.particle.ModParticles;
 import com.crawkatt.meicamod.sound.ModSounds;
 import com.crawkatt.meicamod.util.ModRegistries;
 import net.fabricmc.api.ModInitializer;
@@ -25,5 +26,6 @@ public class MeicaMod implements ModInitializer {
 		ModEffects.registerEffects();
 		ModEntities.registerModEntities();
 		ModSounds.registerSounds();
+		ModParticles.registerParticles();
 	}
 }

@@ -136,16 +136,16 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
 
     // Método para que los Brotecitos puedan emitir partículas personalizadas al aparearse
     @Override
-    public void handleStatus(byte id) {
-        if (id == 18) {
-            for(int i = 0; i < 7; i++) {
-                double d0 = this.random.nextGaussian() * 0.02;
-                double d1 = this.random.nextGaussian() * 0.02;
-                double d2 = this.random.nextGaussian() * 0.02;
-                this.getWorld().addParticle(ModParticles.KAPPA_PRIDE_PARTICLES, this.getParticleX(1.0),this.getRandomBodyY() + 0.5, this.getParticleZ(1.0), d0, d1, d2);
+    public void handleStatus(byte status) {
+        if (status == 18) {
+            for(int i = 0; i < 7; ++i) {
+                double d = this.random.nextGaussian() * 0.02;
+                double e = this.random.nextGaussian() * 0.02;
+                double f = this.random.nextGaussian() * 0.02;
+                this.getWorld().addParticle(ModParticles.KAPPA_PRIDE_PARTICLES, this.getParticleX(1.0), this.getRandomBodyY() + 0.5, this.getParticleZ(1.0), d, e, f);
             }
         } else {
-            super.handleStatus(id);
+            super.handleStatus(status);
         }
     }
 
@@ -187,6 +187,9 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
         Item item = itemStack.getItem();
 
         Item itemForTaming = Items.APPLE;
+        if (isBreedingItem(itemStack)) {
+            return super.interactMob(player, hand);
+        }
 
         if (item == itemForTaming && !isTamed()) {
             return this.tame(itemStack, player, hand);
@@ -215,10 +218,6 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
     }
 
     private ActionResult tame(ItemStack itemStack, PlayerEntity player, Hand hand) {
-        if (isBreedingItem(itemStack)) {
-            return super.interactMob(player, hand);
-        }
-
         if (this.getWorld().isClient) {
             return ActionResult.CONSUME;
         } else {

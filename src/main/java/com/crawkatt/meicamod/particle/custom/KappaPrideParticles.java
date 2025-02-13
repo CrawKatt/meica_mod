@@ -42,18 +42,16 @@ public class KappaPrideParticles extends SpriteBillboardParticle {
         return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-    public static class Provider implements ParticleFactory<DefaultParticleType> {
+    public static class Factory implements ParticleFactory<DefaultParticleType> {
         private final SpriteProvider sprites;
 
-        public Provider(SpriteProvider spriteSet) {
+        public Factory(SpriteProvider spriteSet) {
             this.sprites = spriteSet;
         }
 
         public Particle createParticle(DefaultParticleType particleType, ClientWorld world, double x, double y, double z,
                                        double dx, double dy, double dz) {
-            KappaPrideParticles particle = new KappaPrideParticles(world, x, y, z, sprites, dx, dy, dz);
-            particle.setSprite(this.sprites);
-            return particle;
+            return new KappaPrideParticles(world, x, y, z, this.sprites, dx, dy, dz);
         }
     }
 }
