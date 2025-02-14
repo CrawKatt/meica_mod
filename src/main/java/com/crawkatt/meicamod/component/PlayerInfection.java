@@ -1,11 +1,11 @@
-package com.crawkatt.meicamod.capabilities;
+package com.crawkatt.meicamod.component;
 
 import net.minecraft.nbt.NbtCompound;
 
 public class PlayerInfection {
     private int infection;
-    private final int MIN_INFECTION = 0;
-    private final int MAX_INFECTION = 1200;
+    private static final int MIN_INFECTION = 0;
+    private static final int MAX_INFECTION = 1200;
 
     public int getInfection() {
         return infection;
@@ -27,11 +27,11 @@ public class PlayerInfection {
         this.infection = source.infection;
     }
 
-    public void saveNBTData(NbtCompound nbt) {
+    public void saveNbt(NbtCompound nbt) {
         nbt.putInt("infection", infection);
     }
 
-    public void loadNBTData(NbtCompound nbt) {
+    public void loadNbt(NbtCompound nbt) {
         this.infection = nbt.getInt("infection");
     }
 }

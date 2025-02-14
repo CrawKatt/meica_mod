@@ -29,7 +29,6 @@ public abstract class FogRendererMixin {
                                   boolean thickFog, float tickDelta, CallbackInfo ci) {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client.player == null || client.world == null) return;
-
         if (client.player.hasStatusEffect(StatusEffects.BLINDNESS) || client.player.hasStatusEffect(StatusEffects.DARKNESS)) return;
 
         RegistryEntry<Biome> biome = client.world.getBiome(client.player.getBlockPos());
@@ -42,8 +41,8 @@ public abstract class FogRendererMixin {
                 1.0f
         );
 
-        float normalFogStart = 0.0f;
-        float normalFogEnd = getDefaultFogEnd(client, viewDistance);
+        float normalFogStart = RenderSystem.getShaderFogStart();
+        float normalFogEnd = RenderSystem.getShaderFogEnd();
 
         float targetFogStart = 0.0f;
         float targetFogEnd = 50.0f;
@@ -58,11 +57,6 @@ public abstract class FogRendererMixin {
             RenderSystem.setShaderFogEnd(normalFogEnd);
             transitionProgress = 0.0f;
         }
-    }
-
-    @Unique
-    private static float getDefaultFogEnd(MinecraftClient client, float viewDistance) {
-        return client.options.getClampedViewDistance() * viewDistance;
     }
 
     @Unique

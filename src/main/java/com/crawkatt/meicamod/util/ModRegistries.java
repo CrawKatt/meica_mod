@@ -8,13 +8,13 @@ import com.crawkatt.meicamod.entity.custom.BrotecitoEntity;
 import com.crawkatt.meicamod.entity.custom.BrotecitoMamadoEntity;
 import com.crawkatt.meicamod.entity.custom.MeicaEntity;
 import com.crawkatt.meicamod.entity.custom.PlayerCloneEntity;
-import com.crawkatt.meicamod.event.BossDeathHandler;
-import com.crawkatt.meicamod.event.DimensionEvents;
-import com.crawkatt.meicamod.event.MeicaEvents;
+import com.crawkatt.meicamod.event.*;
 import com.crawkatt.meicamod.item.ModItems;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.kyrptonaught.customportalapi.api.CustomPortalBuilder;
 import net.minecraft.sound.SoundCategory;
@@ -58,6 +58,8 @@ public class ModRegistries {
         ServerLivingEntityEvents.AFTER_DEATH.register(new MeicaEvents());
         ServerLivingEntityEvents.AFTER_DEATH.register(new BossDeathHandler());
         ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(new DimensionEvents());
+        ServerPlayerEvents.COPY_FROM.register(new PlayerInfectionEvents());
+        ServerTickEvents.END_WORLD_TICK.register(new BiomeEvents());
     }
 
     private static void registerCommands() {
