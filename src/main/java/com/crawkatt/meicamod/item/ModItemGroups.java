@@ -42,6 +42,8 @@ public class ModItemGroups {
                         entries.add(ModItems.BROTENITA_LEGGINGS);
                         entries.add(ModItems.BROTENITA_BOOTS);
 
+                        entries.add(ModBlocks.BROTENITA_MELTER);
+
                         entries.add(ModItems.MEICA_SPAWN_EGG);
                         entries.add(ModItems.BROTECITO_SPAWN_EGG);
                         entries.add(ModItems.BROTECITO_MAMADO_SPAWN_EGG);

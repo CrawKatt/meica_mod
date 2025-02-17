@@ -1,11 +1,14 @@
 package com.crawkatt.meicamod;
 
 import com.crawkatt.meicamod.block.ModBlocks;
+import com.crawkatt.meicamod.block.entity.ModBlockEntities;
 import com.crawkatt.meicamod.effect.ModEffects;
 import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.item.ModItemGroups;
 import com.crawkatt.meicamod.item.ModItems;
 import com.crawkatt.meicamod.particle.ModParticles;
+import com.crawkatt.meicamod.recipe.ModRecipes;
+import com.crawkatt.meicamod.screen.ModScreenHandlers;
 import com.crawkatt.meicamod.sound.ModSounds;
 import com.crawkatt.meicamod.util.ModRegistries;
 import net.fabricmc.api.ModInitializer;
@@ -27,5 +30,8 @@ public class MeicaMod implements ModInitializer {
 		ModEntities.registerModEntities();
 		ModSounds.registerSounds();
 		ModParticles.registerParticles();
+		ModBlockEntities.registerBlockEntities();
+		ModScreenHandlers.registerScreenHandlers();
+		ModRecipes.registerRecipes();
 	}
 }

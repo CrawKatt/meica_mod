@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "meicamod:block/brotenita_melter",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "meicamod:block/brotenita_melter"
+    },
+    "facing=south": {
+      "model": "meicamod:block/brotenita_melter",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "meicamod:block/brotenita_melter",
+      "y": 270
+    }
+  }
+}

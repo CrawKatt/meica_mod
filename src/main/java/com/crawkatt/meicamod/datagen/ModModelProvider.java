@@ -39,6 +39,8 @@ public class ModModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerDoor(ModBlocks.BROTENITA_DOOR);
         blockStateModelGenerator.registerTrapdoor(ModBlocks.BROTENITA_TRAPDOOR);
 
+        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.BROTENITA_MELTER);
+
         blockStateModelGenerator.registerParentedItemModel(ModItems.MEICA_SPAWN_EGG, ModelIds.getMinecraftNamespacedItem("template_spawn_egg"));
         blockStateModelGenerator.registerParentedItemModel(ModItems.BROTECITO_SPAWN_EGG, ModelIds.getMinecraftNamespacedItem("template_spawn_egg"));
         blockStateModelGenerator.registerParentedItemModel(ModItems.BROTECITO_MAMADO_SPAWN_EGG, ModelIds.getMinecraftNamespacedItem("template_spawn_egg"));

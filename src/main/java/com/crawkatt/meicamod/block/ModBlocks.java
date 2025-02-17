@@ -2,6 +2,7 @@ package com.crawkatt.meicamod.block;
 
 import com.crawkatt.meicamod.MeicaMod;
 import com.crawkatt.meicamod.block.custom.BrotenitaCropBlock;
+import com.crawkatt.meicamod.block.custom.BrotenitaMelterBlock;
 import com.crawkatt.meicamod.block.custom.RawBrotenitaCluster;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -58,6 +59,9 @@ public class ModBlocks {
 
     public static final Block RAW_BROTENITA_BLOCK = registerBlock("raw_brotenita_block",
             new Block(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)));
+
+    public static final Block BROTENITA_MELTER = Registry.register(Registries.BLOCK, new Identifier(MeicaMod.MOD_ID, "brotenita_melter"),
+            new BrotenitaMelterBlock(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).nonOpaque()));
 
     public static final Block BROTENITA_CROP = Registry.register(Registries.BLOCK, new Identifier(MeicaMod.MOD_ID, "brotenita_crop"),
             new BrotenitaCropBlock(FabricBlockSettings.copyOf(Blocks.SWEET_BERRY_BUSH)

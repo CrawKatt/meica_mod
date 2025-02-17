@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:bucket"
+    },
+    "F": {
+      "item": "minecraft:blast_furnace"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "L": {
+      "item": "minecraft:polished_blackstone_slab"
+    }
+  },
+  "pattern": [
+    "LLL",
+    "FIB",
+    "I I"
+  ],
+  "result": {
+    "item": "meicamod:brotenita_melter"
+  },
+  "show_notification": true
+}

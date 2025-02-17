@@ -19,6 +19,8 @@ public class ModItems {
             new Item(new FabricItemSettings()));
     public static final Item RAW_BROTENITA = registerItem("raw_brotenita",
             new BlockItem(ModBlocks.RAW_BROTENITA, new FabricItemSettings()));
+    public static final Item BROTENITA_MELTER = registerItem("brotenita_melter",
+            new BlockItem(ModBlocks.BROTENITA_MELTER, new FabricItemSettings()));
     public static final Item SMALL_BROTENITA = registerItem("small_brotenita",
             new AliasedBlockItem(ModBlocks.BROTENITA_CROP, new FabricItemSettings()));
     public static final Item BROTENITA_MEAL = registerItem("brotenita_meal",

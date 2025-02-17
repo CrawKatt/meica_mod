@@ -2,6 +2,7 @@ package com.crawkatt.meicamod.datagen;
 
 import com.crawkatt.meicamod.block.ModBlocks;
 import com.crawkatt.meicamod.item.ModItems;
+import com.crawkatt.meicamod.recipe.BrotenitaMelterRecipeBuilder;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
@@ -141,7 +142,6 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .criterion(hasItem(ModItems.BROTENITA_INGOT), conditionsFromItem(ModItems.BROTENITA_INGOT))
                 .offerTo(exporter, new Identifier(getRecipeName(ModBlocks.BROTENITA_PRESSURE_PLATE) + "_"));
 
-        /*
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ModBlocks.BROTENITA_MELTER)
                 .pattern("LLL")
                 .pattern("FIB")
@@ -151,8 +151,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .input('I', Items.IRON_INGOT)
                 .input('B', Items.BUCKET)
                 .criterion(hasItem(Items.BLAST_FURNACE), conditionsFromItem(Items.BLAST_FURNACE))
-                .offerTo(new Identifier(getRecipeName() + "_"));
-        */
+                .offerTo(exporter);
 
         ShapelessRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.BROTENITA_BUTTON)
                 .input(ModItems.BROTENITA_INGOT)
@@ -168,5 +167,9 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .input(ModBlocks.BROTENITA_BLOCK)
                 .criterion(hasItem(ModBlocks.BROTENITA_BLOCK), conditionsFromItem(ModBlocks.BROTENITA_BLOCK))
                 .offerTo(exporter, new Identifier(getRecipeName(ModItems.BROTENITA_INGOT) + "_"));
+
+        new BrotenitaMelterRecipeBuilder(ModBlocks.BROTENITA.asItem(), ModItems.BROTENITA_INGOT, 3)
+                .criterion(hasItem(ModBlocks.BROTENITA.asItem()), conditionsFromItem(ModItems.BROTENITA_INGOT))
+                .offerTo(exporter);
     }
 }
