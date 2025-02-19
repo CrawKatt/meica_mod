@@ -1,14 +1,10 @@
 package com.crawkatt.meicamod.datagen;
 
 import com.crawkatt.meicamod.block.ModBlocks;
-import com.crawkatt.meicamod.util.ModTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -20,7 +16,6 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
-        // Tags de minería y herramientas
         getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)
                 .add(ModBlocks.BROTENITA_BLOCK)
                 .add(ModBlocks.RAW_BROTENITA_BLOCK)
@@ -51,7 +46,6 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(ModBlocks.RAW_BROTENITA)
                 .add(ModBlocks.BROTENITA_CROP);
 
-        // Tags de bloques estructurales
         getOrCreateTagBuilder(BlockTags.FENCES)
                 .add(ModBlocks.BROTENITA_FENCE);
 
@@ -75,12 +69,5 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
         getOrCreateTagBuilder(BlockTags.SLABS)
                 .add(ModBlocks.BROTENITA_SLAB);
-
-        // Tag para herramientas personalizadas (si es necesario)
-        /*
-        getOrCreateTagBuilder(BlockTags.NEEDS_DIAMOND_TOOL)
-                .add(ModBlocks.BROTENITA_BLOCK)
-                .add(ModBlocks.RAW_BROTENITA_BLOCK);
-        */
     }
 }
