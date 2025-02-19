@@ -36,7 +36,7 @@
   "entity.meicamod.brotecito_mamado": "Brotecito Mamado",
   "sounds.meicamod.meica_kill": "Meica's kill sound",
   "sounds.meicamod.meica_death": "Meica's death sound",
-  "effect.meicamod.brotenita_infection": "Enfermedad del Bosque",
+  "effect.meicamod.brotenita_infection": "Fiebre del Bosque",
   "effect.meicamod.paranoia": "Paranoia",
   "itemgroup.brotenita": "MeicaMod",
   "meicamod.tooltip.liquid.amount.with.capacity": "%s / %s mB",
