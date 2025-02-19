@@ -1,4 +1,4 @@
-package com.crawkatt.meicamod.capabilities;
+package com.crawkatt.meicamod.component;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;

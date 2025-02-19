@@ -1,6 +1,6 @@
 package com.crawkatt.meicamod.event;
 
-import com.crawkatt.meicamod.capabilities.BossData;
+import com.crawkatt.meicamod.component.BossData;
 import com.crawkatt.meicamod.entity.custom.MeicaEntity;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.entity.LivingEntity;
