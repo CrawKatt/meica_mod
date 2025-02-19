@@ -6,10 +6,14 @@ import net.minecraft.nbt.NbtCompound;
 
 public class PlayerInfectionComponent implements AutoSyncedComponent {
     private int infection = 0;
-    private static final int MAX_INFECTION = 2400;
+    private static final int MAX_INFECTION = 72000;
 
     public int getInfection() {
         return infection;
+    }
+
+    public void setInfection(int infectionLevel) {
+        infection = infectionLevel;
     }
 
     public void addInfection(int amount, PlayerEntity player) {

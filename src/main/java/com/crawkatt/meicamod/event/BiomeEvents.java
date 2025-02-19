@@ -21,17 +21,14 @@ public class BiomeEvents implements ServerTickEvents.EndWorldTick {
 
             if (TARGET_BIOME.equals(currentBiome)) {
                 infection.addInfection(1, player);
-
-                if (infection.getInfection() > 200) {
-                    player.addStatusEffect(new StatusEffectInstance(
-                            ModEffects.BROTIFICATION,
-                            -1,
-                            0,
-                            true,
-                            false,
-                            true
-                    ));
-                }
+                player.addStatusEffect(new StatusEffectInstance(
+                        ModEffects.BROTIFICATION,
+                        infection.getInfection(),
+                        0,
+                        true,
+                        false,
+                        true
+                ));
             } else {
                 infection.subtractInfection(1, player);
                 if (infection.getInfection() <= 0) {
