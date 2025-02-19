@@ -116,9 +116,9 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .pattern(" C ")
                 .pattern(" S ")
                 .pattern(" S ")
-                .input('C', ModItems.RAW_BROTENITA)
+                .input('C', ModBlocks.BROTENITA)
                 .input('S', Items.STICK)
-                .criterion(hasItem(ModItems.RAW_BROTENITA), conditionsFromItem(ModItems.RAW_BROTENITA))
+                .criterion(hasItem(ModBlocks.BROTENITA), conditionsFromItem(ModBlocks.BROTENITA))
                 .offerTo(exporter, new Identifier(getRecipeName(ModItems.BROTENITA_STAFF) + "_"));
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.BROTENITA_DOOR)
@@ -159,8 +159,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .offerTo(exporter, new Identifier(getRecipeName(ModBlocks.BROTENITA_BUTTON) + "_"));
 
         ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, ModItems.BROTENITA_MEAL, 1)
-                .input(ModItems.RAW_BROTENITA)
-                .criterion(hasItem(ModItems.RAW_BROTENITA), conditionsFromItem(ModItems.RAW_BROTENITA))
+                .input(ModBlocks.BROTENITA)
+                .criterion(hasItem(ModBlocks.BROTENITA), conditionsFromItem(ModBlocks.BROTENITA))
                 .offerTo(exporter, new Identifier(getRecipeName(ModItems.BROTENITA_MEAL) + "_"));
 
         ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, ModItems.BROTENITA_INGOT, 9)

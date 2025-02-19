@@ -72,7 +72,7 @@ public class ModConfiguredFeatures {
                                 BlockStateProvider.of(Blocks.DEEPSLATE),
 
                                 // Lista de posibles bloques que aparecerán como cristales en la geoda
-                                List.of(ModBlocks.RAW_BROTENITA.getDefaultState()),
+                                List.of(ModBlocks.BROTENITA.getDefaultState()),
 
                                 // Bloques que no pueden ser reemplazados durante la generación de la geoda
                                 BlockTags.FEATURES_CANNOT_REPLACE,

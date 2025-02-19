@@ -9,11 +9,11 @@ import net.minecraft.block.Block;
 import net.minecraft.data.server.loottable.BlockLootTableGenerator;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Item;
+import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.condition.BlockStatePropertyLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.entry.LeafEntry;
-import net.minecraft.loot.entry.LootPoolEntry;
 import net.minecraft.loot.function.ApplyBonusLootFunction;
 import net.minecraft.loot.function.SetCountLootFunction;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
@@ -27,7 +27,8 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
     @Override
     public void generate() {
         addDrop(ModBlocks.BROTENITA);
-        addDrop(ModBlocks.BROTENITA_BLOCK);
+        addDrop(ModBlocks.BROTENITA, brotenitaOreWithBonusDrops(ModBlocks.BROTENITA, ModBlocks.BROTENITA.asItem(), ModItems.SMALL_BROTENITA));
+        addDrop(ModBlocks.RAW_BROTENITA_BLOCK, copperLikeOreDrops(ModBlocks.RAW_BROTENITA_BLOCK, ModBlocks.BROTENITA.asItem()));
 
         addDrop(ModBlocks.BROTENITA_STAIRS);
         addDrop(ModBlocks.BROTENITA_TRAPDOOR);
@@ -36,7 +37,7 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
         addDrop(ModBlocks.BROTENITA_FENCE_GATE);
         addDrop(ModBlocks.BROTENITA_BUTTON);
         addDrop(ModBlocks.BROTENITA_PRESSURE_PLATE);
-        //addDrop(ModBlocks.SMALL_BROTENITA);
+        addDrop(ModBlocks.BROTENITA_MELTER);
 
         addDrop(ModBlocks.BROTENITA_DOOR, doorDrops(ModBlocks.BROTENITA_DOOR));
         addDrop(ModBlocks.BROTENITA_SLAB, slabDrops(ModBlocks.BROTENITA_SLAB));
@@ -47,12 +48,25 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
     }
 
     public LootTable.Builder copperLikeOreDrops(Block drop, Item item) {
-        return BlockLootTableGenerator.dropsWithSilkTouch(drop, (LootPoolEntry.Builder)this.applyExplosionDecay(drop,
-                ((LeafEntry.Builder)
+        return BlockLootTableGenerator.dropsWithSilkTouch(drop, this.applyExplosionDecay(drop,
+                ((LeafEntry.Builder<?>)
                         ItemEntry.builder(item)
-                                .apply(SetCountLootFunction
-                                        .builder(UniformLootNumberProvider
-                                                .create(2.0f, 5.0f))))
-                        .apply(ApplyBonusLootFunction.oreDrops(Enchantments.FORTUNE))));
+                                .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2.0f, 5.0f))))
+                                .apply(ApplyBonusLootFunction.oreDrops(Enchantments.FORTUNE))));
+    }
+
+    public LootTable.Builder brotenitaOreWithBonusDrops(Block block, Item primaryItem, Item secondaryItem) {
+        return BlockLootTableGenerator.dropsWithSilkTouch(block,
+                        this.applyExplosionDecay(block, ItemEntry.builder(block)))
+                .pool(LootPool.builder()
+                        .rolls(UniformLootNumberProvider.create(1.0f, 1.0f))
+                        .with(ItemEntry.builder(primaryItem)
+                                .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f))))
+                )
+                .pool(LootPool.builder()
+                        .rolls(UniformLootNumberProvider.create(1.0f, 1.0f))
+                        .with(ItemEntry.builder(secondaryItem)
+                                .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f))))
+                );
     }
 }

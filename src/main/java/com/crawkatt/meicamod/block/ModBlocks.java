@@ -15,8 +15,8 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 
 public class ModBlocks {
-    public static final AmethystClusterBlock BROTENITA = registerBlock("brotenita",
-            new AmethystClusterBlock(7, 3, FabricBlockSettings.copyOf(Blocks.AMETHYST_CLUSTER)
+    public static final RawBrotenitaCluster BROTENITA = registerBlock("brotenita",
+            new RawBrotenitaCluster(7, 3, FabricBlockSettings.copyOf(Blocks.AMETHYST_CLUSTER)
                     .nonOpaque()
                     .solid()
                     .ticksRandomly()
@@ -52,10 +52,10 @@ public class ModBlocks {
             new WallBlock(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK)));
 
     public static final Block BROTENITA_DOOR = registerBlock("brotenita_door",
-            new DoorBlock(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK), BlockSetType.IRON));
+            new DoorBlock(FabricBlockSettings.copyOf(Blocks.OAK_DOOR), BlockSetType.OAK));
 
     public static final Block BROTENITA_TRAPDOOR = registerBlock("brotenita_trapdoor",
-            new TrapdoorBlock(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK), BlockSetType.IRON));
+            new TrapdoorBlock(FabricBlockSettings.copyOf(Blocks.OAK_TRAPDOOR), BlockSetType.OAK));
 
     public static final Block RAW_BROTENITA_BLOCK = registerBlock("raw_brotenita_block",
             new Block(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)));
@@ -70,21 +70,12 @@ public class ModBlocks {
                     .sounds(BlockSoundGroup.AMETHYST_CLUSTER)
                     .requiresTool()));
 
-    public static final Block RAW_BROTENITA = Registry.register(Registries.BLOCK, new Identifier(MeicaMod.MOD_ID, "raw_brotenita"),
-            new RawBrotenitaCluster(7, 3, FabricBlockSettings.copyOf(Blocks.AMETHYST_CLUSTER)
-                    .nonOpaque()
-                    .ticksRandomly()
-                    .strength(1.5F)
-                    .requiresTool()
-                    .sounds(BlockSoundGroup.AMETHYST_CLUSTER)
-                    .luminance((state -> 5))));
-
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
         return Registry.register(Registries.BLOCK, new Identifier(MeicaMod.MOD_ID, name), block);
     }
 
-    private static AmethystClusterBlock registerBlock(String name, AmethystClusterBlock block) {
+    private static RawBrotenitaCluster registerBlock(String name, RawBrotenitaCluster block) {
         registerBlockItem(name, block);
         return Registry.register(Registries.BLOCK, new Identifier(MeicaMod.MOD_ID, name), block);
     }

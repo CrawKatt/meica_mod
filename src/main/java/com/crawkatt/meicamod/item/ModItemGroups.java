@@ -49,7 +49,6 @@ public class ModItemGroups {
                         entries.add(ModItems.BROTECITO_MAMADO_SPAWN_EGG);
                         entries.add(ModItems.PLAYER_CLONE_SPAWN_EGG);
 
-                        entries.add(ModItems.RAW_BROTENITA);
                         entries.add(ModItems.BROTENITA_INGOT);
 
                     }).build());

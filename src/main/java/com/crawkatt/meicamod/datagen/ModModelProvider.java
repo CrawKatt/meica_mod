@@ -26,7 +26,7 @@ public class ModModelProvider extends FabricModelProvider {
         BlockStateModelGenerator.BlockTexturePool brotenitaPool = blockStateModelGenerator.registerCubeAllModelTexturePool(ModBlocks.BROTENITA_BLOCK);
 
         blockStateModelGenerator.registerAmethyst(ModBlocks.BROTENITA);
-        blockStateModelGenerator.registerAmethyst(ModBlocks.RAW_BROTENITA);
+        blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.RAW_BROTENITA_BLOCK);
 
         brotenitaPool.stairs(ModBlocks.BROTENITA_STAIRS);
         brotenitaPool.slab(ModBlocks.BROTENITA_SLAB);
@@ -54,7 +54,6 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModBlocks.BROTENITA.asItem(), Models.GENERATED);
 
         itemModelGenerator.register(ModItems.BROTENITA_INGOT, Models.GENERATED);
-        itemModelGenerator.register(ModItems.RAW_BROTENITA, Models.GENERATED);
         itemModelGenerator.register(ModItems.BROTENITA_MEAL, Models.GENERATED);
 
         itemModelGenerator.register(ModItems.BROTENITA_PICKAXE, Models.HANDHELD);

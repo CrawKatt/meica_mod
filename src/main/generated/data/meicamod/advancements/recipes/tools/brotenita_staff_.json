@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_raw_brotenita": {
+    "has_brotenita": {
       "conditions": {
         "items": [
           {
             "items": [
-              "meicamod:raw_brotenita"
+              "meicamod:brotenita"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_raw_brotenita",
+      "has_brotenita",
       "has_the_recipe"
     ]
   ],

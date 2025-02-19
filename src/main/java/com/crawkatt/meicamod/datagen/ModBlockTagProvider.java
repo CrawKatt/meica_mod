@@ -28,8 +28,9 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(ModBlocks.BROTENITA_TRAPDOOR)
                 .add(ModBlocks.BROTENITA_BUTTON)
                 .add(ModBlocks.BROTENITA_PRESSURE_PLATE)
-                .add(ModBlocks.RAW_BROTENITA)
-                .add(ModBlocks.BROTENITA_CROP);
+                .add(ModBlocks.BROTENITA)
+                .add(ModBlocks.BROTENITA_CROP)
+                .add(ModBlocks.BROTENITA_MELTER);
 
         getOrCreateTagBuilder(BlockTags.NEEDS_DIAMOND_TOOL)
                 .add(ModBlocks.BROTENITA_BLOCK)
@@ -43,8 +44,9 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(ModBlocks.BROTENITA_TRAPDOOR)
                 .add(ModBlocks.BROTENITA_BUTTON)
                 .add(ModBlocks.BROTENITA_PRESSURE_PLATE)
-                .add(ModBlocks.RAW_BROTENITA)
-                .add(ModBlocks.BROTENITA_CROP);
+                .add(ModBlocks.BROTENITA)
+                .add(ModBlocks.BROTENITA_CROP)
+                .add(ModBlocks.BROTENITA_MELTER);
 
         getOrCreateTagBuilder(BlockTags.FENCES)
                 .add(ModBlocks.BROTENITA_FENCE);

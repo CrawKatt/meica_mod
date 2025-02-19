@@ -26,6 +26,8 @@ public class MeicaModClient implements ClientModInitializer {
         // Render para la Brotenita (Necesario para que el bloque no tenga fondos negros)
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.BROTENITA, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.BROTENITA_CROP, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.BROTENITA_DOOR, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.BROTENITA_TRAPDOOR, RenderLayer.getCutout());
 
         EntityModelLayerRegistry.registerModelLayer(ModModelLayers.MEICA_LAYER, MeicaModel::createBodyLayer);
         EntityRendererRegistry.register(ModEntities.MEICA, MeicaRenderer::new);
