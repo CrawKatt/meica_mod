@@ -26,6 +26,11 @@ repositories {
 			includeGroup("com.eliotlash.mclib")
 		}
 	}
+
+	maven {
+		name = 'Ladysnake Mods'
+		url = 'https://maven.ladysnake.org/releases'
+	}
 }
 
 fabricApi {
@@ -48,6 +53,9 @@ dependencies {
 	include 'net.kyrptonaught:customportalapi:0.0.1-beta64-1.20'
 
 	modImplementation 'com.github.glitchfiend:TerraBlender-fabric:1.20.2-3.0.0.170'
+
+	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.2.1"
+	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.2.1"
 
 	include modApi('teamreborn:energy:3.0.0') {
 		exclude(group: "net.fabricmc.fabric-api")

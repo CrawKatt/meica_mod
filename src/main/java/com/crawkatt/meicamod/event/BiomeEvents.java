@@ -1,6 +1,7 @@
 package com.crawkatt.meicamod.event;
 
-import com.crawkatt.meicamod.component.PlayerInfectionState;
+import com.crawkatt.meicamod.component.ModComponents;
+import com.crawkatt.meicamod.component.PlayerInfectionComponent;
 import com.crawkatt.meicamod.effect.ModEffects;
 import com.crawkatt.meicamod.worldgen.biome.ModBiomes;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -15,19 +16,16 @@ public class BiomeEvents implements ServerTickEvents.EndWorldTick {
     @Override
     public void onEndTick(ServerWorld world) {
         world.getPlayers().forEach(player -> {
-            // Obtener el bioma actual del jugador
             RegistryKey<Biome> currentBiome = world.getBiome(player.getBlockPos()).getKey().orElse(null);
-            PlayerInfectionState infectionState = PlayerInfectionState.get(player);
+            PlayerInfectionComponent infection = ModComponents.INFECTION.get(player);
 
             if (TARGET_BIOME.equals(currentBiome)) {
-                infectionState.getInfection().addInfection(1);
-                infectionState.markDirty();
+                infection.addInfection(1, player);
 
-                // Aplicar efecto si la infección supera cierto umbral
-                if (infectionState.getInfection().getInfection() > 200 && !player.hasStatusEffect(ModEffects.BROTIFICATION)) {
+                if (infection.getInfection() > 200) {
                     player.addStatusEffect(new StatusEffectInstance(
                             ModEffects.BROTIFICATION,
-                            72000,
+                            -1,
                             0,
                             true,
                             false,
@@ -35,8 +33,8 @@ public class BiomeEvents implements ServerTickEvents.EndWorldTick {
                     ));
                 }
             } else {
-                infectionState.getInfection().subInfection(1);
-                if (infectionState.getInfection().getInfection() <= 0) {
+                infection.subtractInfection(1, player);
+                if (infection.getInfection() <= 0) {
                     player.removeStatusEffect(ModEffects.BROTIFICATION);
                 }
             }

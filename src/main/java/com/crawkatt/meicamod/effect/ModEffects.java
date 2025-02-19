@@ -13,7 +13,7 @@ public class ModEffects {
 
     public static final StatusEffect BROTIFICATION = registerStatusEffect("brotenita_infection",
             new BrotenitaInfectionEffect(StatusEffectCategory.HARMFUL, 0x996600).addAttributeModifier(EntityAttributes.GENERIC_MOVEMENT_SPEED,
-                    "7107DE5E-7CE8-4030-940E-514C1F160890", 0.025f, EntityAttributeModifier.Operation.fromId(0)));
+                    "7107DE5E-7CE8-4030-940E-514C1F160890", -0.025f, EntityAttributeModifier.Operation.fromId(0)));
 
     public static final StatusEffect CAMOUFLAGE_COOLDOWN = registerStatusEffect("camouflage_cooldown",
             new CamouflageCooldown(StatusEffectCategory.HARMFUL, 0x9966CC));

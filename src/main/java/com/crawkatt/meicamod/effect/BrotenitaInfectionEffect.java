@@ -1,6 +1,7 @@
 package com.crawkatt.meicamod.effect;
 
-import com.crawkatt.meicamod.component.PlayerInfectionState;
+import com.crawkatt.meicamod.component.ModComponents;
+import com.crawkatt.meicamod.component.PlayerInfectionComponent;
 import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.entity.custom.PlayerCloneEntity;
 import net.minecraft.entity.LivingEntity;
@@ -24,40 +25,29 @@ public class BrotenitaInfectionEffect extends StatusEffect {
     @Override
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
         if (!entity.getWorld().isClient && entity instanceof ServerPlayerEntity player) {
-            int infectionLevel = PlayerInfectionState.get(player).getInfection().getInfection();
-            addEffects(entity, infectionLevel);
+            PlayerInfectionComponent infection = ModComponents.INFECTION.get(player);
+            addEffects(entity, infection.getInfection());
         }
         super.applyUpdateEffect(entity, amplifier);
     }
 
     private void addEffects(LivingEntity entity, int infectionLevel) {
-        if (infectionLevel >= 72000) { // 60 minutos
+        if (infectionLevel >= 2400) { // 60 minutos
             entity.kill(); // Muerte
-        } else if (infectionLevel >= 60000) { // 50 minutos
+        } else if (infectionLevel >= 2000) { // 50 minutos
             entity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 32767, 0, true, false, false));
             entity.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 32767, 0, true, false, false));
             spawnPlayerClonesAround(entity);
-        } else if (infectionLevel >= 48000) { // 40 minutos
+        } else if (infectionLevel >= 1600) { // 40 minutos
             spawnPlayerClonesAround(entity);
-        } else if (infectionLevel >= 36000) { // 30 minutos
+        } else if (infectionLevel >= 1200) { // 30 minutos
             entity.addStatusEffect(new StatusEffectInstance(ModEffects.PARANOIA, 32767, 0, true, false, false));
-        } else if (infectionLevel >= 24000) { // 20 minutos
-            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.HUNGER, 32767, 0, true, false, false));
-        } else if (infectionLevel >= 12000) { // 10 minutos
-            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 32767, 0, true, false, false));
+        } else if (infectionLevel >= 800) { // 20 minutos
+            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.HUNGER, 32767, 0, true, true, true));
+        } else if (infectionLevel >= 200) { // 10 minutos
+            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 32767, 0, true, true, true));
         }
     }
-
-    /*
-    private int getDuration(LivingEntity entity) {
-        for (StatusEffectInstance effectInstance : entity.getStatusEffects()) {
-            if (effectInstance.getEffectType() == this) {
-                return effectInstance.getDuration();
-            }
-        }
-        return 0;
-    }
-    */
 
     private void spawnPlayerClonesAround(LivingEntity entity) {
         if (entity.getWorld() instanceof ServerWorld serverWorld) {

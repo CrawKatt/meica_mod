@@ -58,7 +58,6 @@ public class ModRegistries {
         ServerLivingEntityEvents.AFTER_DEATH.register(new MeicaEvents());
         ServerLivingEntityEvents.AFTER_DEATH.register(new BossDeathHandler());
         ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(new DimensionEvents());
-        ServerPlayerEvents.COPY_FROM.register(new PlayerInfectionEvents());
         ServerTickEvents.END_WORLD_TICK.register(new BiomeEvents());
     }
 
