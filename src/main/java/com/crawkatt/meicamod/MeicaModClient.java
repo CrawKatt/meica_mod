@@ -5,6 +5,8 @@ import com.crawkatt.meicamod.block.entity.ModBlockEntities;
 import com.crawkatt.meicamod.block.entity.renderer.BrotenitaMelterBlockEntityRenderer;
 import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.entity.client.*;
+import com.crawkatt.meicamod.event.FogHandler;
+import com.crawkatt.meicamod.event.FogModifyCallback;
 import com.crawkatt.meicamod.networking.ModMessages;
 import com.crawkatt.meicamod.particle.ModParticles;
 import com.crawkatt.meicamod.particle.custom.KappaPrideParticles;
@@ -46,5 +48,7 @@ public class MeicaModClient implements ClientModInitializer {
         ModMessages.registerS2CPackets();
 
         BlockEntityRendererFactories.register(ModBlockEntities.BROTENITA_MELTER_BE, BrotenitaMelterBlockEntityRenderer::new);
+
+        FogModifyCallback.EVENT.register(new FogHandler());
     }
 }

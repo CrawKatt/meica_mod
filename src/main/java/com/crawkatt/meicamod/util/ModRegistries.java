@@ -58,7 +58,6 @@ public class ModRegistries {
         ServerLivingEntityEvents.AFTER_DEATH.register(new BossDeathHandler());
         ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(new DimensionEvents());
         ServerTickEvents.END_WORLD_TICK.register(new BiomeEvents());
-        FogModifyCallback.EVENT.register(new FogHandler());
     }
 
     private static void registerCommands() {

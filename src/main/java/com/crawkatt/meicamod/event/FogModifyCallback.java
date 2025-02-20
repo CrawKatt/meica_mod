@@ -1,10 +1,13 @@
 package com.crawkatt.meicamod.event;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.client.render.BackgroundRenderer;
 import net.minecraft.client.render.Camera;
 
+@Environment(EnvType.CLIENT)
 public interface FogModifyCallback {
     Event<FogModifyCallback> EVENT = EventFactory.createArrayBacked(FogModifyCallback.class,
             (listeners) -> (camera, fogType, viewDistance, thickFog, tickDelta) -> {
