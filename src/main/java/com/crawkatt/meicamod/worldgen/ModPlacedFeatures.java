@@ -9,9 +9,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.YOffset;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.PlacedFeature;
-import net.minecraft.world.gen.feature.PlacedFeatures;
+import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.placementmodifier.*;
 
 import java.util.List;
@@ -25,24 +23,22 @@ public class ModPlacedFeatures {
         RegistryEntryLookup<ConfiguredFeature<?, ?>> configuredFeatures = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
 
         register(context, BROTENITA_ORE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.OVERWORLD_BROTENITA_ORE_KEY),
-                ModOrePlacement.rareOrePlacement(12,
-                        HeightRangePlacementModifier.uniform(YOffset.fixed(-64), YOffset.fixed(80))));
+                ModOrePlacement.rareOrePlacement(12, HeightRangePlacementModifier.uniform(YOffset.fixed(-64), YOffset.fixed(80))));
 
         register(context, BIG_OAK_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.BIG_OAK_KEY),
-                List.of(
-                        CountPlacementModifier.of(16),
-                        SquarePlacementModifier.of(), // Distribución en cuadrícula uniforme dentro de un chunk
-                        SurfaceWaterDepthFilterPlacementModifier.of(0), // Evita que se genere en agua
-                        PlacedFeatures.OCEAN_FLOOR_HEIGHTMAP, // Genera los árboles en la tierra
-                        PlacedFeatures.wouldSurvive(Blocks.OAK_SAPLING), // Esto arregla el problema de los árboles flotantes
-                        BiomePlacementModifier.of()
-                )
+                CountPlacementModifier.of(16),
+                SquarePlacementModifier.of(), // Distribución en cuadrícula uniforme dentro de un chunk
+                SurfaceWaterDepthFilterPlacementModifier.of(0), // Evita que se genere en agua
+                PlacedFeatures.OCEAN_FLOOR_HEIGHTMAP, // Genera los árboles en la tierra
+                PlacedFeatures.wouldSurvive(Blocks.OAK_SAPLING), // Esto arregla el problema de los árboles flotantes
+                BiomePlacementModifier.of()
         );
 
         register(context, BROTENITA_GEODE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.BROTENITA_GEODE_KEY),
-                List.of(RarityFilterPlacementModifier.of(50), SquarePlacementModifier.of(),
-                        HeightRangePlacementModifier.uniform(YOffset.aboveBottom(6), YOffset.fixed(50)),
-                        BiomePlacementModifier.of()));
+                RarityFilterPlacementModifier.of(50),
+                SquarePlacementModifier.of(),
+                HeightRangePlacementModifier.uniform(YOffset.aboveBottom(6), YOffset.fixed(50)),
+                BiomePlacementModifier.of());
     }
 
     private static RegistryKey<PlacedFeature> registerKey(String name) {
@@ -52,5 +48,11 @@ public class ModPlacedFeatures {
     private static void register(Registerable<PlacedFeature> context, RegistryKey<PlacedFeature> key, RegistryEntry<ConfiguredFeature<?, ?>> configuration,
                                  List<PlacementModifier> modifiers) {
         context.register(key, new PlacedFeature(configuration, List.copyOf(modifiers)));
+    }
+
+    private static <FC extends FeatureConfig, F extends Feature<FC>> void register(Registerable<PlacedFeature> context, RegistryKey<PlacedFeature> key,
+                                                                                   RegistryEntry<ConfiguredFeature<?, ?>> configuration,
+                                                                                   PlacementModifier... modifiers) {
+        register(context, key, configuration, List.of(modifiers));
     }
 }
