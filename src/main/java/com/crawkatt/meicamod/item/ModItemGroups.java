@@ -35,6 +35,7 @@ public class ModItemGroups {
                         entries.add(ModItems.BROTENITA_SWORD);
                         entries.add(ModItems.BROTENITA_HOE);
                         entries.add(ModItems.BROTENITA_STAFF);
+                        entries.add(ModItems.BROTENITA_MEAL);
                         entries.add(ModItems.MEICA_BOW);
 
                         entries.add(ModItems.BROTENITA_HELMET);
@@ -50,6 +51,9 @@ public class ModItemGroups {
                         entries.add(ModItems.PLAYER_CLONE_SPAWN_EGG);
 
                         entries.add(ModItems.BROTENITA_INGOT);
+
+                        entries.add(ModBlocks.HOLLOW_OAK_LOG);
+                        entries.add(ModBlocks.STRIPPED_HOLLOW_OAK_LOG);
 
                     }).build());
 
