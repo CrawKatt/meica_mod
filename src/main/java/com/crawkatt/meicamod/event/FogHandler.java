@@ -6,6 +6,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ViewportEvent.RenderFog;
@@ -24,10 +25,10 @@ public class FogHandler {
         LocalPlayer player = minecraft.player;
 
         if (player == null) return;
+        if (player.hasEffect(MobEffects.BLINDNESS) || player.hasEffect(MobEffects.DARKNESS)) return;
 
         ResourceKey<Biome> biomeKey = player.level().getBiome(player.blockPosition()).unwrapKey().orElse(null);
         if (biomeKey != null && biomeKey.equals(ResourceKey.create(Registries.BIOME, new ResourceLocation(MeicaMod.MODID, "meica_forest")))) {
-            // Si el jugador está en el bioma personalizado
             if (!biomeKey.equals(currentBiome)) {
                 currentBiome = biomeKey;
                 timeInBiome = 0;
