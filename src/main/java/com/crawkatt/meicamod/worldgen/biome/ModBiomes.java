@@ -119,9 +119,6 @@ public class ModBiomes {
         // Cavernas y Lagos
         globalDimGeneration(biomeBuilder);
 
-        // Generación de Árboles Gigantes (PRIORIZAR ANTES DE LO DEMÁS ABAJO)
-        biomeBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION, ModPlacedFeatures.BIG_OAK_PLACED_KEY);
-
         // Vegetación base
         DefaultBiomeFeatures.addSweetBerryBushes(biomeBuilder);
         DefaultBiomeFeatures.addForestFlowers(biomeBuilder);
