@@ -18,6 +18,6 @@ public class BrotecitoModel extends GeoModel<BrotecitoEntity> {
 
 	@Override
 	public ResourceLocation getAnimationResource(BrotecitoEntity brotecitoEntity) {
-		return null;
+		return new ResourceLocation(MeicaMod.MODID, "animations/brotecito.animation.json");
 	}
 }

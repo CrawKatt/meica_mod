@@ -24,7 +24,7 @@ public class BrotecitoRenderer extends GeoEntityRenderer<BrotecitoEntity> {
         this.shadowRadius = 0.6f; // Tamaño de la sombra de la Entidad
 
         this.addRenderLayer(new BlockAndItemGeoLayer<>(this, (bone, animatable) -> {
-            if (Objects.equals(bone.getName(), "rightArm")) //right hand
+            if (Objects.equals(bone.getName(), "ir_rightArm")) //right hand
                 return animatable.getItemInHand(InteractionHand.MAIN_HAND);
             return null;
         }, (bone, animatable) -> null) {
