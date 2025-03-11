@@ -80,18 +80,7 @@ public class MeicaEntity extends HostileEntity implements RangedAttackMob {
 
     public void activateCamouflage() {
         this.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 200, 0, false, false));
-        DefaultParticleType particle = ParticleTypes.SPORE_BLOSSOM_AIR;
-        for (int i = 0; i < 100; i++) {
-            double offsetX = (this.random.nextDouble() - 0.5) * 2.0;
-            double offsetY = this.random.nextDouble() * 2.0;
-            double offsetZ = (this.random.nextDouble() - 0.5) * 2.0;
-
-            double speedX = (this.random.nextDouble() - 0.5) * 5.0;
-            double speedY = this.random.nextDouble() * 5.0;
-            double speedZ = (this.random.nextDouble() - 0.5) * 5.0;
-
-            this.getWorld().addParticle(particle, this.getX() + offsetX, this.getY() + offsetY, this.getZ() + offsetZ, speedX, speedY, speedZ);
-        }
+        spawnParticles();
 
         // Intentar encontrar una posición alejada del jugador y moverse allí
         for (int i = 0; i < 10; i++) {
@@ -104,6 +93,21 @@ public class MeicaEntity extends HostileEntity implements RangedAttackMob {
 
                 break;
             }
+        }
+    }
+
+    private void spawnParticles() {
+        DefaultParticleType particle = ParticleTypes.SPORE_BLOSSOM_AIR;
+        for (int i = 0; i < 100; i++) {
+            double offsetX = (this.random.nextDouble() - 0.5) * 2.0;
+            double offsetY = this.random.nextDouble() * 2.0;
+            double offsetZ = (this.random.nextDouble() - 0.5) * 2.0;
+
+            double speedX = (this.random.nextDouble() - 0.5) * 5.0;
+            double speedY = this.random.nextDouble() * 5.0;
+            double speedZ = (this.random.nextDouble() - 0.5) * 5.0;
+
+            this.getWorld().addParticle(particle, this.getX() + offsetX, this.getY() + offsetY, this.getZ() + offsetZ, speedX, speedY, speedZ);
         }
     }
 
