@@ -2,7 +2,9 @@
   "required": true,
   "package": "com.crawkatt.meicamod.mixin",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [],
+  "mixins": [
+    "TrunkPlacerTypeInvoker"
+  ],
   "client": [
     "FogRendererMixin",
     "ItemRendererAccessor",

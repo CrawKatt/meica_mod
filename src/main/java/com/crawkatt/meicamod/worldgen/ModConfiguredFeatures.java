@@ -2,6 +2,7 @@ package com.crawkatt.meicamod.worldgen;
 
 import com.crawkatt.meicamod.MeicaMod;
 import com.crawkatt.meicamod.block.ModBlocks;
+import com.crawkatt.meicamod.worldgen.tree.custom.HollowOakTrunkPlacer;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryKey;
@@ -14,6 +15,8 @@ import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.feature.size.ThreeLayersFeatureSize;
+import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
+import net.minecraft.world.gen.foliage.BlobFoliagePlacer;
 import net.minecraft.world.gen.foliage.DarkOakFoliagePlacer;
 import net.minecraft.world.gen.stateprovider.BlockStateProvider;
 import net.minecraft.world.gen.trunk.DarkOakTrunkPlacer;
@@ -25,6 +28,7 @@ public class ModConfiguredFeatures {
     public static final RegistryKey<ConfiguredFeature<?, ?>> OVERWORLD_BROTENITA_ORE_KEY = registerKey("brotenita_ore");
     public static final RegistryKey<ConfiguredFeature<?, ?>> BIG_OAK_KEY = registerKey("big_oak");
     public static final RegistryKey<ConfiguredFeature<?, ?>> BROTENITA_GEODE_KEY = registerKey("brotenita_geode");
+    public static final RegistryKey<ConfiguredFeature<?, ?>> FALLEN_HOLLOW_LOG_KEY = registerKey("fallen_hollow_log");
 
     public static void bootstrap(Registerable<ConfiguredFeature<?, ?>> context) {
         RuleTest stoneReplaceable = new TagMatchRuleTest(BlockTags.STONE_ORE_REPLACEABLES);
@@ -87,6 +91,13 @@ public class ModConfiguredFeatures {
                         -18, 18, 0.075D, 1
                 )
         );
+
+        register(context, FALLEN_HOLLOW_LOG_KEY, Feature.TREE, new TreeFeatureConfig.Builder(
+                BlockStateProvider.of(ModBlocks.HOLLOW_OAK_LOG),
+                new HollowOakTrunkPlacer(2, 1, 1),
+                BlockStateProvider.of(Blocks.AIR),
+                new BlobFoliagePlacer(ConstantIntProvider.create(0), ConstantIntProvider.create(0), 0),
+                new TwoLayersFeatureSize(1, 0, 0)).dirtProvider(BlockStateProvider.of(Blocks.DIRT)).build());
     }
 
     public static RegistryKey<ConfiguredFeature<?, ?>> registerKey(String name) {

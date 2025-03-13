@@ -18,6 +18,7 @@ public class ModPlacedFeatures {
     public static final RegistryKey<PlacedFeature> BROTENITA_ORE_PLACED_KEY = registerKey("brotenita_ore_placed");
     public static final RegistryKey<PlacedFeature> BIG_OAK_PLACED_KEY = registerKey("big_oak_placed");
     public static final RegistryKey<PlacedFeature> BROTENITA_GEODE_PLACED_KEY = registerKey("brotenita_geode_placed");
+    public static final RegistryKey<PlacedFeature> FALLEN_HOLLOW_LOG_PLACED_KEY = registerKey("fallen_hollow_log_placed");
 
     public static void bootstrap(Registerable<PlacedFeature> context) {
         RegistryEntryLookup<ConfiguredFeature<?, ?>> configuredFeatures = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
@@ -39,6 +40,15 @@ public class ModPlacedFeatures {
                 SquarePlacementModifier.of(),
                 HeightRangePlacementModifier.uniform(YOffset.aboveBottom(6), YOffset.fixed(50)),
                 BiomePlacementModifier.of());
+
+        register(context, FALLEN_HOLLOW_LOG_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.FALLEN_HOLLOW_LOG_KEY),
+                CountPlacementModifier.of(1),
+                SquarePlacementModifier.of(),
+                BiomePlacementModifier.of(),
+                PlacedFeatures.OCEAN_FLOOR_HEIGHTMAP,
+                SurfaceWaterDepthFilterPlacementModifier.of(0),
+                PlacedFeatures.wouldSurvive(Blocks.OAK_SAPLING)
+        );
     }
 
     private static RegistryKey<PlacedFeature> registerKey(String name) {

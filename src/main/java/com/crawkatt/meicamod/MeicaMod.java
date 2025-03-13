@@ -13,6 +13,7 @@ import com.crawkatt.meicamod.screen.ModScreenHandlers;
 import com.crawkatt.meicamod.sound.ModSounds;
 import com.crawkatt.meicamod.util.ModRegistries;
 import com.crawkatt.meicamod.worldgen.gen.ModWorldGeneration;
+import com.crawkatt.meicamod.worldgen.tree.ModTrunkPlacerTypes;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import net.fabricmc.api.ModInitializer;
@@ -37,6 +38,7 @@ public class MeicaMod implements ModInitializer, EntityComponentInitializer {
 		ModBlockEntities.registerBlockEntities();
 		ModScreenHandlers.registerScreenHandlers();
 		ModRecipes.registerRecipes();
+		ModTrunkPlacerTypes.register();
 		ModWorldGeneration.generateModWorldGeneration();
 	}
 
