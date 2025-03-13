@@ -37,6 +37,7 @@
   "sounds.meicamod.meica_kill": "Meica's kill sound",
   "sounds.meicamod.meica_death": "Meica's death sound",
   "effect.meicamod.brotenita_infection": "Forest Fever",
+  "effect.meicamod.blessing_forest": "Blessing Forest",
   "effect.meicamod.paranoia": "Paranoia",
   "itemgroup.brotenita": "MeicaMod",
   "meicamod.tooltip.liquid.amount.with.capacity": "%s / %s mB",
