@@ -40,8 +40,8 @@ public class BrotecitoMamadoEntity extends TamableAnimal implements NeutralMob, 
     @Nullable
     private UUID persistentAngerTarget;
     private static final UniformInt PERSISTENT_ANGER_TIME = UniformInt.of(20, 39);
-    private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BrotecitoEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(BrotecitoEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BrotecitoMamadoEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(BrotecitoMamadoEntity.class, EntityDataSerializers.BOOLEAN);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int attackAnimationTick;
     private static final int ATTACK_DURATION = 20;
