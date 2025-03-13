@@ -258,8 +258,16 @@ public class MeicaEntity extends HostileEntity implements RangedAttackMob {
         };
     }
 
+    private SoundEvent selectRandomKillSound() {
+        return switch (this.random.nextInt(3)) {
+            case 0 -> ModSounds.MEICA_KILL_ENTITY;
+            case 1 -> ModSounds.MEICA_KILL_ENTITY_LAUGHT;
+            default -> ModSounds.MEICA_LAUGHT;
+        };
+    }
+
     // Método para reproducir un sonido cuando Meica mata a una entidad
     public void playKillSound() {
-        this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.MEICA_KILL_ENTITY, this.getSoundCategory(), 1.0F, 1.0F, this.random.nextLong());
+        this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(), selectRandomKillSound(), this.getSoundCategory(), 1.0F, 1.0F, this.random.nextLong());
     }
 }

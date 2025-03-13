@@ -8,6 +8,7 @@ import net.minecraft.util.Identifier;
 
 public class ModSounds {
     public static final SoundEvent MEICA_KILL_ENTITY = registerSoundEvents("meica_kill");
+    public static final SoundEvent MEICA_KILL_ENTITY_LAUGHT = registerSoundEvents("meica_kill_laught");
     public static final SoundEvent MEICA_DEATH = registerSoundEvents("meica_death");
     public static final SoundEvent MEICA_DEATH_2 = registerSoundEvents("meica_death_2");
     public static final SoundEvent MEICA_DEATH_3 = registerSoundEvents("meica_death_3");

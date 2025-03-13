@@ -5,6 +5,12 @@
       "meicamod:meica_kill"
     ]
   },
+  "meica_kill_laught": {
+    "subtitle": "sounds.meicamod.meica_kill_laught",
+    "sounds": [
+      "meicamod:meica_kill_laught"
+    ]
+  },
   "meica_death": {
     "subtitle": "sounds.meicamod.meica_death",
     "sounds": [
