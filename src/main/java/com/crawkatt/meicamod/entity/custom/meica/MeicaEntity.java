@@ -251,8 +251,16 @@ public class MeicaEntity extends Monster implements RangedAttackMob {
         };
     }
 
+    private SoundEvent selectRandomKillSound() {
+        return switch (this.random.nextInt(3)) {
+            case 0 -> ModSounds.MEICA_KILL_ENTITY.get();
+            case 1 -> ModSounds.MEICA_KILL_ENTITY_LAUGHT.get();
+            default -> ModSounds.MEICA_LAUGHT.get();
+        };
+    }
+
     // Método para reproducir un sonido cuando Meica mata a una entidad
     public void playKillSound() {
-        this.level().playSeededSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.MEICA_KILL_ENTITY.get(), this.getSoundSource(), 1.0F, 1.0F, this.random.nextLong());
+        this.level().playSeededSound(null, this.getX(), this.getY(), this.getZ(), selectRandomKillSound(), this.getSoundSource(), 1.0F, 1.0F, this.random.nextLong());
     }
 }

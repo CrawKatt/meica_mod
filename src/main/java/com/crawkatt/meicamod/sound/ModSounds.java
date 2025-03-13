@@ -13,6 +13,7 @@ public class ModSounds {
             DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MeicaMod.MODID);
 
     public static final RegistryObject<SoundEvent> MEICA_KILL_ENTITY = registerSoundEvents("meica_kill");
+    public static final RegistryObject<SoundEvent> MEICA_KILL_ENTITY_LAUGHT = registerSoundEvents("meica_kill_laught");
     public static final RegistryObject<SoundEvent> MEICA_DEATH = registerSoundEvents("meica_death");
     public static final RegistryObject<SoundEvent> MEICA_DEATH_2 = registerSoundEvents("meica_death_2");
     public static final RegistryObject<SoundEvent> MEICA_DEATH_3 = registerSoundEvents("meica_death_3");
