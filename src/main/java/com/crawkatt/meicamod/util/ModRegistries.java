@@ -65,7 +65,7 @@ public class ModRegistries {
     }
 
     private static void registerPotionRecipes() {
-        BrewingRecipeRegistryMixin.invokeRegisterPotionRecipe(Potions.AWKWARD, ModBlocks.BROTENITA.asItem(), ModPotions.BLESSING_FOREST_POTION);
+        BrewingRecipeRegistryMixin.invokeRegisterPotionRecipe(Potions.AWKWARD, ModItems.BROTENITA_MEAL, ModPotions.BLESSING_FOREST_POTION);
     }
 
     private static void registerCommands() {
