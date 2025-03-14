@@ -3,6 +3,7 @@
   "package": "com.crawkatt.meicamod.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "BrewingRecipeRegistryMixin",
     "TrunkPlacerTypeInvoker"
   ],
   "client": [

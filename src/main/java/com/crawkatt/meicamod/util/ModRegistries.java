@@ -10,12 +10,15 @@ import com.crawkatt.meicamod.entity.custom.MeicaEntity;
 import com.crawkatt.meicamod.entity.custom.PlayerCloneEntity;
 import com.crawkatt.meicamod.event.*;
 import com.crawkatt.meicamod.item.ModItems;
+import com.crawkatt.meicamod.mixin.BrewingRecipeRegistryMixin;
+import com.crawkatt.meicamod.potion.ModPotions;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.kyrptonaught.customportalapi.api.CustomPortalBuilder;
+import net.minecraft.potion.Potions;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
@@ -26,6 +29,7 @@ public class ModRegistries {
         registerEvents();
         registerAttributes();
         registerCommands();
+        registerPotionRecipes();
     }
 
     private static void createPortal() {
@@ -58,6 +62,10 @@ public class ModRegistries {
         ServerLivingEntityEvents.AFTER_DEATH.register(new BossDeathHandler());
         ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(new DimensionEvents());
         ServerTickEvents.END_WORLD_TICK.register(new BiomeEvents());
+    }
+
+    private static void registerPotionRecipes() {
+        BrewingRecipeRegistryMixin.invokeRegisterPotionRecipe(Potions.AWKWARD, ModBlocks.BROTENITA.asItem(), ModPotions.BLESSING_FOREST_POTION);
     }
 
     private static void registerCommands() {
