@@ -20,6 +20,7 @@
   "item.minecraft.potion.effect.blessing_potion": "Poción de Bendición del Bosque",
   "item.minecraft.splash_potion.effect.blessing_potion": "Poción de Bendición del Bosque Arrojadiza",
   "item.minecraft.lingering_potion.effect.blessing_potion": "Poción de Bendición del Bosque Instantánea",
+  "item.minecraft.tipped_arrow.effect.blessing_potion": "Flecha de Bendición del Bosque",
   "block.meicamod.brotenita_block": "Bloque de Brotenita",
   "block.meicamod.raw_brotenita_block": "Mena de Brotenita",
   "block.meicamod.brotenita": "Brotenita",
@@ -44,5 +45,7 @@
   "effect.meicamod.paranoia": "Paranoia",
   "itemgroup.brotenita": "MeicaMod",
   "meicamod.tooltip.liquid.amount.with.capacity": "%s / %s mB",
-  "meicamod.tooltip.liquid.amount": "%s mB"
+  "meicamod.tooltip.liquid.amount": "%s mB",
+  "block.meicamod.hollow_oak_log": "Hollow Oak",
+  "block.meicamod.stripped_hollow_oak_log": "Hollow Oak"
 }
