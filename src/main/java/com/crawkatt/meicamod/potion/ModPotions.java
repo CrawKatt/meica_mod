@@ -9,8 +9,9 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 public class ModPotions {
+    // NO REMOVER LAS PARTÍCULAS DE LOS EFECTOS EN POCIONES. EL COLOR DE LA POCIÓN SE VUELVE NEGRO AL DEFINIR `showParticles` EN `false`
     public static final Potion BLESSING_FOREST_POTION = registerPotion("blessing_forest_potion",
-            new Potion("blessing_potion", new StatusEffectInstance(ModEffects.FOREST_BLESSING, 6000, 0, true, false, true)));
+            new Potion("blessing_potion", new StatusEffectInstance(ModEffects.FOREST_BLESSING, 9600, 0)));
 
     private static Potion registerPotion(String name, Potion potion) {
         return Registry.register(Registries.POTION, new Identifier(MeicaMod.MOD_ID, name), potion);
