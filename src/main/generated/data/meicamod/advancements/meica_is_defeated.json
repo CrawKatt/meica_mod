@@ -1,0 +1,41 @@
+{
+  "parent": "meicamod:meicamod",
+  "criteria": {
+    "has_meica_is_defeated": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "meicamod:meica"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "meicamod:textures/block/brotenita.png",
+    "description": {
+      "text": "Derrota a Meica"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "meicamod:brotenita"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "Es solo una planta esquizofrénica"
+    }
+  },
+  "requirements": [
+    [
+      "has_meica_is_defeated"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
