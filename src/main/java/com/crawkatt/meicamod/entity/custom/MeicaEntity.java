@@ -50,6 +50,7 @@ public class MeicaEntity extends HostileEntity implements RangedAttackMob {
 
     public MeicaEntity(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world);
+        this.setEquipmentDropChance(EquipmentSlot.MAINHAND, 1.0F);
     }
 
     // Método para definir el equipo de Meica (arco por defecto)
@@ -193,6 +194,15 @@ public class MeicaEntity extends HostileEntity implements RangedAttackMob {
         this.goalSelector.add(3, new AvoidPlayerWhileCamouflagedGoal(this, 1, 1.5D, 10.0D));
         this.goalSelector.add(4, new WanderAroundFarGoal(this, 1.0D));
         this.goalSelector.add(10, new LookAroundGoal(this));
+    }
+
+    @Override
+    protected void dropEquipment(DamageSource source, int lootingMultiplier, boolean allowDrops) {
+        if (!this.getWorld().isClient) {
+            ItemStack meicaBow = this.getEquippedStack(EquipmentSlot.MAINHAND);
+            meicaBow.setDamage(0);
+            this.dropStack(meicaBow);
+        }
     }
 
     /* Boss Bar*/
