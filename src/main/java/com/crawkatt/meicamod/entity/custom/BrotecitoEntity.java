@@ -197,8 +197,16 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
         }
 
         if (isTamed() && item instanceof SwordItem) {
-            this.equipStack(EquipmentSlot.MAINHAND, itemStack);
-            itemStack.decrement(1);
+            if (!this.getWorld().isClient) {
+                ItemStack copy = itemStack.copy();
+                copy.setCount(1);
+                this.equipStack(EquipmentSlot.MAINHAND, copy);
+            }
+
+            if (!player.getAbilities().creativeMode) {
+                itemStack.decrement(1);
+            }
+
             return ActionResult.SUCCESS;
         }
 
