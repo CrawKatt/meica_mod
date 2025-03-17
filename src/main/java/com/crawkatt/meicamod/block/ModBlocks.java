@@ -1,10 +1,7 @@
 package com.crawkatt.meicamod.block;
 
 import com.crawkatt.meicamod.MeicaMod;
-import com.crawkatt.meicamod.block.custom.BrotenitaCropBlock;
-import com.crawkatt.meicamod.block.custom.BrotenitaMelterBlock;
-import com.crawkatt.meicamod.block.custom.HollowLogBlock;
-import com.crawkatt.meicamod.block.custom.RawBrotenitaCluster;
+import com.crawkatt.meicamod.block.custom.*;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
@@ -25,6 +22,14 @@ public class ModBlocks {
                     .requiresTool()
                     .luminance(state -> 5)
                     .sounds(BlockSoundGroup.AMETHYST_CLUSTER)));
+
+    public static final Block BROTECITO_SPROUT = registerBlock("brotecito_sprout",
+            new BrotecitoSproutBlock(AbstractBlock.Settings.create()
+                    .nonOpaque()
+                    .noCollision()
+                    .ticksRandomly()
+                    .breakInstantly()
+                    .sounds(BlockSoundGroup.CROP)));
 
     public static final Block BROTENITA_BLOCK = registerBlock("brotenita_block",
             new Block(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK)
