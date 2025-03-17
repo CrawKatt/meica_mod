@@ -28,7 +28,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         Advancement rootAdvancement = Advancement.Builder.create()
                 .display(new AdvancementDisplay(new ItemStack(ModBlocks.BROTENITA.asItem()),
                         Text.literal("Un mineral extraño y peligroso"), Text.literal("Extrae un mineral de Brotenita"),
-                        new Identifier(MeicaMod.MOD_ID, "textures/block/brotenita.png"), AdvancementFrame.TASK,
+                        new Identifier("minecraft", "textures/block/oak_log.png"), AdvancementFrame.TASK,
                         true, true, false))
                 .criterion("has_brotenita", InventoryChangedCriterion.Conditions.items(ModBlocks.BROTENITA.asItem()))
                 .build(consumer, MeicaMod.MOD_ID + ":meicamod");

@@ -25,11 +25,12 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "meicamod:brotenita"
+      "item": "meicamod:brotenita_sword",
+      "nbt": "{Damage:0}"
     },
     "show_toast": true,
     "title": {
-      "text": "Es solo una planta esquizofrénica"
+      "text": "Una planta muy esquizo"
     }
   },
   "requirements": [

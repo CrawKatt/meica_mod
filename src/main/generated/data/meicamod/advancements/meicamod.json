@@ -15,7 +15,7 @@
   },
   "display": {
     "announce_to_chat": true,
-    "background": "meicamod:textures/block/brotenita.png",
+    "background": "minecraft:textures/block/oak_log.png",
     "description": {
       "text": "Extrae un mineral de Brotenita"
     },
