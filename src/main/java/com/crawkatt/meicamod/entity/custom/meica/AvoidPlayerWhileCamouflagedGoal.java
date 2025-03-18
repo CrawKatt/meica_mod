@@ -11,6 +11,12 @@ import net.minecraft.world.phys.Vec3;
 import java.util.EnumSet;
 
 public class AvoidPlayerWhileCamouflagedGoal extends Goal {
+    private enum State {
+        IDLE,
+        AVOIDING,
+        ATTACKING
+    }
+
     private final Monster entity;
     private final double farSpeed;
     private final double nearSpeed;
@@ -19,6 +25,7 @@ public class AvoidPlayerWhileCamouflagedGoal extends Goal {
 
     private Player closestPlayer;
     private int ticksSinceLastSeen;
+    private State currentState = State.IDLE;
 
     public AvoidPlayerWhileCamouflagedGoal(Monster entity, double farSpeed, double nearSpeed, double avoidDistance) {
         this.entity = entity;
@@ -33,38 +40,38 @@ public class AvoidPlayerWhileCamouflagedGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (!((MeicaEntity) this.entity).isCamouflaged()) {
+        if (!(entity instanceof MeicaEntity meica) || !meica.isCamouflaged()) {
             return false;
         }
 
         this.closestPlayer = this.level.getNearestPlayer(this.entity, avoidDistance);
-        return this.closestPlayer != null && this.entity.distanceToSqr(this.closestPlayer) < avoidDistance * avoidDistance;
-    }
+        if (this.closestPlayer != null && this.entity.distanceToSqr(this.closestPlayer) < avoidDistance * avoidDistance) {
+            this.currentState = State.AVOIDING;
+            return true;
+        }
 
-    @Override
-    public void start() {
-        // Inicia el goal cuando comienza a evitar al jugador
-        this.ticksSinceLastSeen = 0;
+        return false;
     }
 
     @Override
     public void tick() {
         if (this.closestPlayer == null || !this.closestPlayer.isAlive()) {
+            this.currentState = State.IDLE;
             return;
         }
 
-        if (this.entity.distanceToSqr(this.closestPlayer) < 16.0D) {
-            RangedBowAttackGoal<MeicaEntity> attackGoal = new RangedBowAttackGoal<>((MeicaEntity) this.entity, nearSpeed, 20, 15.0F);
-            attackGoal.tick();
-        }
+        double distanceSquared = this.entity.distanceToSqr(this.closestPlayer);
 
-        // Si el jugador no está demasiado cerca, la entidad ententará escapar
-        if (this.entity.distanceToSqr(this.closestPlayer) >= 10.0D && this.ticksSinceLastSeen > 40) {
-            Vec3 escapePos = this.getEscapePos();
-
-            if (escapePos != null) {
-                this.entity.getNavigation().moveTo(escapePos.x, escapePos.y, escapePos.z, farSpeed);
-            }
+        switch (this.currentState) {
+            case AVOIDING:
+                handleAvoiding(distanceSquared);
+                break;
+            case ATTACKING:
+                handleAttacking(distanceSquared);
+                break;
+            case IDLE:
+            default:
+                break;
         }
 
         this.ticksSinceLastSeen++;
@@ -72,8 +79,32 @@ public class AvoidPlayerWhileCamouflagedGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        // Continuar evitando al jugador si aún está camuflado y no ha huido completamente
-        return ((MeicaEntity) this.entity).isCamouflaged() && this.closestPlayer != null && this.entity.distanceToSqr(this.closestPlayer) < avoidDistance * avoidDistance;
+        return (entity instanceof MeicaEntity meica && meica.isCamouflaged())
+                && this.closestPlayer != null
+                && this.entity.distanceToSqr(this.closestPlayer) < avoidDistance * avoidDistance;
+    }
+
+    private void handleAvoiding(double distanceSquared) {
+        if (distanceSquared < 16.0D) {
+            this.currentState = State.ATTACKING;
+            return;
+        }
+
+        Vec3 escapePos = getEscapePos();
+        if (escapePos != null) {
+            this.entity.getNavigation().moveTo(escapePos.x, escapePos.y, escapePos.z, farSpeed);
+        }
+    }
+
+    private void handleAttacking(double distanceSquared) {
+        if (this.entity instanceof MeicaEntity meica) {
+            RangedBowAttackGoal<MeicaEntity> attackGoal = new RangedBowAttackGoal<>(meica, nearSpeed, 20, 15.0F);
+            attackGoal.tick();
+        }
+
+        if (distanceSquared >= 16.0D) {
+            this.currentState = State.AVOIDING;
+        }
     }
 
     private Vec3 getEscapePos() {
