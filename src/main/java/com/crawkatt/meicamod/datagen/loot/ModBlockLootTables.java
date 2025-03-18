@@ -56,6 +56,9 @@ public class ModBlockLootTables extends BlockLootSubProvider {
                 ModItems.RAW_BROTENITA.get(), ModItems.SMALL_BROTENITA.get(), lootItemConditionBuilder));
 
         this.dropSelf(ModBlocks.BROTENITA_MELTER.get());
+
+        this.dropSelf(ModBlocks.HOLLOW_OAK_LOG.get());
+        this.dropSelf(ModBlocks.STRIPPED_HOLLOW_OAK_LOG.get());
     }
 
     protected LootTable.Builder createCopperLikeOreDrops(Block pBlock, Item item) {
