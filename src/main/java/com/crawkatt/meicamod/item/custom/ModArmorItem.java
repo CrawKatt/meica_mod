@@ -1,14 +1,16 @@
 package com.crawkatt.meicamod.item.custom;
 
+import com.crawkatt.meicamod.effect.ModEffects;
 import com.google.common.collect.ImmutableMap;
 import com.crawkatt.meicamod.item.ModArmorMaterials;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +18,7 @@ import java.util.Map;
 public class ModArmorItem extends ArmorItem {
     private static final Map<ArmorMaterial, MobEffectInstance> MATERIAL_TO_EFFECT_MAP =
             (new ImmutableMap.Builder<ArmorMaterial, MobEffectInstance>())
-                    .put(ModArmorMaterials.BROTENITA, new MobEffectInstance(MobEffects.NIGHT_VISION, -1, 1,
+                    .put(ModArmorMaterials.BROTENITA, new MobEffectInstance(ModEffects.FOREST_BLESSING.get(), -1, 0,
                             false, false, true)).build();
 
     private static final Map<Player, Map<ArmorMaterial, MobEffectInstance>> PLAYER_EFFECTS = new HashMap<>();
@@ -26,14 +28,13 @@ public class ModArmorItem extends ArmorItem {
     }
 
     @Override
-    public void onInventoryTick(ItemStack stack, Level world, Player player, int slotIndex, int selectedIndex) {
-        if(!world.isClientSide()) {
-            if(hasFullSuitOfArmorOn(player)) {
+    public void inventoryTick(@NotNull ItemStack pStack, Level pLevel, @NotNull Entity pEntity, int pSlotId, boolean pIsSelected) {
+        if (!pLevel.isClientSide()) {
+            if (pEntity instanceof Player player) {
                 evaluateArmorEffects(player);
-            } else {
-                removeArmorEffects(player);
             }
         }
+        super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
     }
 
     private void evaluateArmorEffects(Player player) {
@@ -43,8 +44,27 @@ public class ModArmorItem extends ArmorItem {
 
             if (hasCorrectArmorOn(mapArmorMaterial, player)) {
                 addStatusEffectForMaterial(player, mapArmorMaterial, mapStatusEffect);
+            } else {
+                removeStatusEffectIfPresent(player, mapStatusEffect);
             }
         }
+    }
+
+    private void removeStatusEffectIfPresent(Player player, MobEffectInstance mapStatusEffect) {
+        if (player.hasEffect(mapStatusEffect.getEffect())) {
+            MobEffectInstance currentEffect = player.getEffect(mapStatusEffect.getEffect());
+            if (currentEffect != null && effectsMatch(currentEffect, mapStatusEffect)) {
+                player.removeEffect(mapStatusEffect.getEffect());
+            }
+        }
+    }
+
+    private boolean effectsMatch(MobEffectInstance a, MobEffectInstance b) {
+        return a.getEffect() == b.getEffect() &&
+                a.getAmplifier() == b.getAmplifier() &&
+                a.isAmbient() == b.isAmbient() &&
+                a.isVisible() == b.isVisible() &&
+                a.showIcon() == b.showIcon();
     }
 
     private void addStatusEffectForMaterial(Player player, ArmorMaterial mapArmorMaterial,
@@ -55,33 +75,6 @@ public class ModArmorItem extends ArmorItem {
             player.addEffect(new MobEffectInstance(mapStatusEffect));
             PLAYER_EFFECTS.computeIfAbsent(player, k -> new HashMap<>()).put(material, mapStatusEffect);
         }
-    }
-
-    private void removeArmorEffects(Player player) {
-        if (PLAYER_EFFECTS.containsKey(player)) {
-            Map<ArmorMaterial, MobEffectInstance> activeEffects = PLAYER_EFFECTS.get(player);
-            for (Map.Entry<ArmorMaterial, MobEffectInstance> entry : activeEffects.entrySet()) {
-                MobEffectInstance effect = entry.getValue();
-                if (!hasCorrectArmorOn(entry.getKey(), player)) {
-                    player.removeEffect(effect.getEffect());
-                }
-            }
-
-            activeEffects.entrySet().removeIf(entry -> !hasCorrectArmorOn(entry.getKey(), player));
-            if (activeEffects.isEmpty()) {
-                PLAYER_EFFECTS.remove(player);
-            }
-        }
-    }
-
-    private boolean hasFullSuitOfArmorOn(Player player) {
-        ItemStack boots = player.getInventory().getArmor(0);
-        ItemStack leggings = player.getInventory().getArmor(1);
-        ItemStack breastplate = player.getInventory().getArmor(2);
-        ItemStack helmet = player.getInventory().getArmor(3);
-
-        return !helmet.isEmpty() && !breastplate.isEmpty()
-                && !leggings.isEmpty() && !boots.isEmpty();
     }
 
     private boolean hasCorrectArmorOn(ArmorMaterial material, Player player) {
@@ -99,5 +92,4 @@ public class ModArmorItem extends ArmorItem {
         return helmet.getMaterial() == material && breastplate.getMaterial() == material
                 && leggings.getMaterial() == material && boots.getMaterial() == material;
     }
-
 }
