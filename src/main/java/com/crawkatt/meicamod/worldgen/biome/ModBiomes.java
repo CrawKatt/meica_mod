@@ -83,6 +83,7 @@ public class ModBiomes {
 
         // Generación de Árboles Gigantes (PRIORIZAR ANTES DE LO DEMÁS ABAJO)
         biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacedFeatures.BIG_OAK_PLACED_KEY);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacedFeatures.FALLEN_HOLLOW_LOG_PLACED_KEY);
 
         // Vegetación base
         BiomeDefaultFeatures.addForestFlowers(biomeBuilder);
@@ -134,8 +135,8 @@ public class ModBiomes {
         BiomeDefaultFeatures.addDefaultExtraVegetation(biomeBuilder);
 
         return new Biome.BiomeBuilder()
-                .hasPrecipitation(true)
-                .downfall(0.8f)
+                .hasPrecipitation(false)
+                .downfall(0.0f)
                 .temperature(0.7f)
                 .generationSettings(biomeBuilder.build())
                 .mobSpawnSettings(spawnBuilder.build())

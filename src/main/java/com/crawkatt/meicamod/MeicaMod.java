@@ -19,6 +19,7 @@ import com.crawkatt.meicamod.screen.ModMenuTypes;
 import com.crawkatt.meicamod.sound.ModSounds;
 import com.crawkatt.meicamod.worldgen.biome.ModTerrablender;
 import com.crawkatt.meicamod.worldgen.biome.surface.ModSurfaceRules;
+import com.crawkatt.meicamod.worldgen.tree.ModTrunkPlacerTypes;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -83,6 +84,9 @@ public class MeicaMod {
 
         // Registra las recetas
         ModRecipes.register(modEventBus);
+
+        // Registra los troncos
+        ModTrunkPlacerTypes.register(modEventBus);
 
         // Registra el setup (Necesario para que cargue las reglas de superficie)
         modEventBus.addListener(this::commonSetup);

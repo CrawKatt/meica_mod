@@ -19,6 +19,7 @@ public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> BROTENITA_ORE_PLACED_KEY = registerKey("brotenita_ore_placed");
     public static final ResourceKey<PlacedFeature> BIG_OAK_PLACED_KEY = registerKey("big_oak_placed");
     public static final ResourceKey<PlacedFeature> BROTENITA_GEODE_PLACED_KEY = registerKey("brotenita_geode_placed");
+    public static final ResourceKey<PlacedFeature> FALLEN_HOLLOW_LOG_PLACED_KEY = registerKey("fallen_hollow_log_placed");
 
     public static void bootstrap(BootstapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
@@ -42,6 +43,17 @@ public class ModPlacedFeatures {
                 List.of(RarityFilter.onAverageOnceEvery(50), InSquarePlacement.spread(),
                         HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(6), VerticalAnchor.absolute(50)),
                         BiomeFilter.biome()));
+
+        register(context, FALLEN_HOLLOW_LOG_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.FALLEN_HOLLOW_LOG_KEY),
+                List.of(
+                        CountPlacement.of(1),
+                        InSquarePlacement.spread(),
+                        SurfaceWaterDepthFilter.forMaxDepth(0),
+                        PlacementUtils.HEIGHTMAP_OCEAN_FLOOR,
+                        PlacementUtils.filteredByBlockSurvival(Blocks.OAK_SAPLING),
+                        BiomeFilter.biome()
+                )
+        );
     }
 
     private static ResourceKey<PlacedFeature> registerKey(String name) {

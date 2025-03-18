@@ -2,6 +2,7 @@ package com.crawkatt.meicamod.worldgen;
 
 import com.crawkatt.meicamod.MeicaMod;
 import com.crawkatt.meicamod.block.ModBlocks;
+import com.crawkatt.meicamod.worldgen.tree.custom.HollowOakTrunkPlacer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
@@ -20,6 +21,8 @@ import net.minecraft.world.level.levelgen.feature.configurations.GeodeConfigurat
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.ThreeLayersFeatureSize;
+import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.DarkOakFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.DarkOakTrunkPlacer;
@@ -33,6 +36,7 @@ public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> OVERWORLD_BROTENITA_ORE_KEY = registerKey("brotenita_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> BIG_OAK_KEY = registerKey("big_oak");
     public static final ResourceKey<ConfiguredFeature<?, ?>> BROTENITA_GEODE_KEY = registerKey("brotenita_geode");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> FALLEN_HOLLOW_LOG_KEY = registerKey("fallen_hollow_log");
 
     public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
         RuleTest stoneReplaceable = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
@@ -95,6 +99,14 @@ public class ModConfiguredFeatures {
                         -18, 18, 0.075D, 1
                 )
         );
+
+        register(context, FALLEN_HOLLOW_LOG_KEY, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                BlockStateProvider.simple(ModBlocks.HOLLOW_OAK_LOG.get()),
+                new HollowOakTrunkPlacer(2, 1, 1),
+                BlockStateProvider.simple(Blocks.AIR),
+                new BlobFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), 0),
+                new TwoLayersFeatureSize(1, 0, 0)).dirt(BlockStateProvider.simple(Blocks.DIRT)
+        ).build());
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
