@@ -15,7 +15,7 @@ public class ModCreativeModeTabs {
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MeicaMod.MODID);
 
     public static final RegistryObject<CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab",
-            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.BROTENITA_INGOT.get()))
+            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModBlocks.RAW_BROTENITA.get()))
                     .title(Component.translatable("creativetab.example_tab"))
                     .displayItems((pParameters, pOutput) -> {
                         pOutput.accept(ModItems.BROTENITA_INGOT.get());
@@ -56,6 +56,9 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.BROTECITO_MAMADO_SPAWN_EGG.get());
                         pOutput.accept(ModItems.MEICA_SPAWN_EGG.get());
                         pOutput.accept(ModItems.PLAYER_CLONE_SPAWN_EGG.get());
+
+                        pOutput.accept(ModBlocks.HOLLOW_OAK_LOG.get());
+                        pOutput.accept(ModBlocks.STRIPPED_HOLLOW_OAK_LOG.get());
                     })
                     .build());
 

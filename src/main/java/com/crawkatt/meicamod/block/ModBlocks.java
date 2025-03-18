@@ -3,6 +3,7 @@ package com.crawkatt.meicamod.block;
 import com.crawkatt.meicamod.MeicaMod;
 import com.crawkatt.meicamod.block.custom.BrotenitaCropBlock;
 import com.crawkatt.meicamod.block.custom.BrotenitaMelterBlock;
+import com.crawkatt.meicamod.block.custom.HollowLogBlock;
 import com.crawkatt.meicamod.block.portal.MeicaPortalBlock;
 import com.crawkatt.meicamod.block.custom.RawBrotenitaCluster;
 import com.crawkatt.meicamod.item.ModItems;
@@ -81,6 +82,20 @@ public class ModBlocks {
             () -> new BrotenitaMelterBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
 
     public static final RegistryObject<Block> MEICA_PORTAL = registerBlock("meica_portal", MeicaPortalBlock::new);
+
+    public static final RegistryObject<Block> STRIPPED_HOLLOW_OAK_LOG = registerBlock("stripped_hollow_oak_log",
+            () -> createStrippedHollowLogBlock(Blocks.STRIPPED_OAK_LOG));
+
+    public static final RegistryObject<Block> HOLLOW_OAK_LOG = registerBlock("hollow_oak_log",
+            () -> createHollowLogBlock(STRIPPED_HOLLOW_OAK_LOG.get(), Blocks.OAK_LOG));
+
+    private static HollowLogBlock createStrippedHollowLogBlock(BlockBehaviour counterpart) {
+        return new HollowLogBlock(null, (BlockBehaviour.Properties.copy(counterpart)));
+    }
+
+    private static HollowLogBlock createHollowLogBlock(Block strippedBlock, BlockBehaviour counterpart) {
+        return new HollowLogBlock(strippedBlock.defaultBlockState(), BlockBehaviour.Properties.copy(counterpart));
+    }
 
     public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
