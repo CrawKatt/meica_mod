@@ -10,10 +10,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = MeicaMod.MODID)
@@ -33,7 +31,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {
-            if (!event.getObject().getCapability(PlayerInfectionProvider.TIME_IN_BIOME).isPresent()) {
+            if (!event.getObject().getCapability(PlayerInfectionProvider.INFECTION).isPresent()) {
                 event.addCapability(new ResourceLocation(MeicaMod.MODID, "properties"), new PlayerInfectionProvider());
             }
         }
@@ -43,8 +41,8 @@ public class ModEvents {
     public static void onPlayerCloned(PlayerEvent.Clone event) {
         Player original = event.getOriginal();
         Player player = event.getEntity();
-        original.getCapability(PlayerInfectionProvider.TIME_IN_BIOME).ifPresent(oldStore -> {
-            player.getCapability(PlayerInfectionProvider.TIME_IN_BIOME).ifPresent(newStore -> {
+        original.getCapability(PlayerInfectionProvider.INFECTION).ifPresent(oldStore -> {
+            player.getCapability(PlayerInfectionProvider.INFECTION).ifPresent(newStore -> {
                 newStore.copyFrom(oldStore);
                 int remainingDuration = 72000 - oldStore.getInfection();
                 if (remainingDuration > 0) {
@@ -52,16 +50,5 @@ public class ModEvents {
                 }
             });
         });
-    }
-
-    @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.side == LogicalSide.SERVER) {
-            event.player.getCapability(PlayerInfectionProvider.TIME_IN_BIOME).ifPresent(infection -> {
-                if (infection.getInfection() > 0 && event.player.getRandom().nextFloat() < 0.005f) {
-                    infection.subInfection(1);
-                }
-            });
-        }
     }
 }
