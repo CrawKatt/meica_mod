@@ -1,11 +1,11 @@
 package com.crawkatt.meicamod.event;
 
 import com.crawkatt.meicamod.MeicaMod;
+import com.crawkatt.meicamod.worldgen.biome.ModBiomes;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Holder;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,41 +15,45 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = MeicaMod.MODID, value = Dist.CLIENT)
 public class FogHandler {
-    private static ResourceKey<Biome> currentBiome = null;
-    private static long timeInBiome = 0;
-    private static final long TRANSITION_DURATION = 100; // Duración de la transición en ticks (100 ticks = 5 segundos)
+    private static float transitionProgress = 0.0f;
+    private static final float TRANSITION_SPEED = 0.008f;
+    private static final float FOG_CUTOFF_THRESHOLD = 0.001f;
 
     @SubscribeEvent
     public static void onRenderFog(RenderFog event) {
         Minecraft minecraft = Minecraft.getInstance();
-        LocalPlayer player = minecraft.player;
+        if (minecraft.player == null || minecraft.level == null) return;
+        if (minecraft.player.hasEffect(MobEffects.BLINDNESS) || minecraft.player.hasEffect(MobEffects.DARKNESS)) return;
 
-        if (player == null) return;
-        if (player.hasEffect(MobEffects.BLINDNESS) || player.hasEffect(MobEffects.DARKNESS)) return;
+        Holder<Biome> biome = minecraft.level.getBiome(minecraft.player.getOnPos());
+        boolean isInTargetBiome = biome.is(ModBiomes.MEICA_FOREST);
 
-        ResourceKey<Biome> biomeKey = player.level().getBiome(player.blockPosition()).unwrapKey().orElse(null);
-        if (biomeKey != null && biomeKey.equals(ResourceKey.create(Registries.BIOME, new ResourceLocation(MeicaMod.MODID, "meica_forest")))) {
-            if (!biomeKey.equals(currentBiome)) {
-                currentBiome = biomeKey;
-                timeInBiome = 0;
-            } else {
-                timeInBiome++;
-            }
+        float transitionDelta = (float) (TRANSITION_SPEED * (minecraft.isPaused() ? 0.0F : event.getPartialTick()));
+        transitionProgress = Mth.clamp(
+                transitionProgress + (isInTargetBiome ? transitionDelta : -transitionDelta),
+                0.0f,
+                1.0f
+        );
 
-            float transitionFactor = Math.min(1.0f, (float) timeInBiome / TRANSITION_DURATION);
-            float nearPlaneDistance = 0.1f + (1.0f - 0.1f) * (1.0f - transitionFactor);
-            float farPlaneDistance = 50.0f + (100.0f - 50.0f) * (1.0f - transitionFactor);
+        float normalFogStart = RenderSystem.getShaderFogStart();
+        float normalFogEnd = RenderSystem.getShaderFogEnd();
 
-            event.setNearPlaneDistance(nearPlaneDistance);
-            event.setFarPlaneDistance(farPlaneDistance);
-            event.setCanceled(true);
+        float targetFogStart = 0.0f;
+        float targetFogEnd = 50.0f;
 
+        float easedProgress = smoothStep(transitionProgress);
+
+        if (transitionProgress > FOG_CUTOFF_THRESHOLD) {
+            RenderSystem.setShaderFogStart(Mth.lerp(easedProgress, normalFogStart, targetFogStart));
+            RenderSystem.setShaderFogEnd(Mth.lerp(easedProgress, normalFogEnd, targetFogEnd));
         } else {
-            // Si el jugador sale del bioma, reiniciar el tiempo
-            if (currentBiome != null) {
-                currentBiome = null;
-                timeInBiome = 0;
-            }
+            RenderSystem.setShaderFogStart(normalFogStart);
+            RenderSystem.setShaderFogEnd(normalFogEnd);
+            transitionProgress = 0.0f;
         }
+    }
+
+    private static float smoothStep(float x) {
+        return x * x * x * (x * (x * 6 - 15) + 10);
     }
 }
