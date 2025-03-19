@@ -1,0 +1,38 @@
+{
+  "criteria": {
+    "has_brotenita": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "meicamod:brotenita"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "minecraft:textures/block/oak_log.png",
+    "description": {
+      "text": "Extrae un mineral de Brotenita"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "meicamod:brotenita"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "Un mineral extraño y peligroso"
+    }
+  },
+  "requirements": [
+    [
+      "has_brotenita"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

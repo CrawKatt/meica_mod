@@ -127,6 +127,20 @@
 							"vector": [1, 1, 1]
 						}
 					}
+				},
+				"sprout": {
+					"scale": 0
+				}
+			}
+		},
+		"animation.brotecito.sit": {
+			"loop": "hold_on_last_frame",
+			"bones": {
+				"h_head": {
+					"scale": 0
+				},
+				"sprout": {
+					"scale": 1
 				}
 			}
 		},

@@ -45,6 +45,9 @@ public class ModItems {
     public static final Item BROTENITA_BOOTS = registerItem("brotenita_boots",
             new ModArmorItem(ModArmorMaterials.BROTENITA, ArmorItem.Type.BOOTS, new FabricItemSettings()));
 
+    public static final Item BROTECITO_SEEDS = registerItem("brotecito_seeds",
+            new AliasedBlockItem(ModBlocks.BROTECITO_SPROUT, new FabricItemSettings()));
+
     public static final Item BROTECITO_SPAWN_EGG = registerItem("brotecito_spawn_egg",
             new SpawnEggItem(ModEntities.BROTECITO, 0x00FF00, 0xFFDAB9, new FabricItemSettings()));
     public static final Item MEICA_SPAWN_EGG = registerItem("meica_spawn_egg",

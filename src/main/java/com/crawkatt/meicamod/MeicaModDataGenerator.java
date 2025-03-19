@@ -22,6 +22,7 @@ public class MeicaModDataGenerator implements DataGeneratorEntrypoint {
 		pack.addProvider(ModModelProvider::new);
 		pack.addProvider(ModRecipeProvider::new);
 		pack.addProvider(ModWorldGenerator::new);
+		pack.addProvider(ModAdvancementProvider::new);
 	}
 
 	@Override

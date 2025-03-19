@@ -8,15 +8,18 @@ import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.item.ModItemGroups;
 import com.crawkatt.meicamod.item.ModItems;
 import com.crawkatt.meicamod.particle.ModParticles;
+import com.crawkatt.meicamod.potion.ModPotions;
 import com.crawkatt.meicamod.recipe.ModRecipes;
 import com.crawkatt.meicamod.screen.ModScreenHandlers;
 import com.crawkatt.meicamod.sound.ModSounds;
 import com.crawkatt.meicamod.util.ModRegistries;
 import com.crawkatt.meicamod.worldgen.gen.ModWorldGeneration;
+import com.crawkatt.meicamod.worldgen.tree.ModTrunkPlacerTypes;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import net.fabricmc.api.ModInitializer;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,9 +37,11 @@ public class MeicaMod implements ModInitializer, EntityComponentInitializer {
 		ModEntities.registerModEntities();
 		ModSounds.registerSounds();
 		ModParticles.registerParticles();
+		ModPotions.registerPotions();
 		ModBlockEntities.registerBlockEntities();
 		ModScreenHandlers.registerScreenHandlers();
 		ModRecipes.registerRecipes();
+		ModTrunkPlacerTypes.register();
 		ModWorldGeneration.generateModWorldGeneration();
 	}
 

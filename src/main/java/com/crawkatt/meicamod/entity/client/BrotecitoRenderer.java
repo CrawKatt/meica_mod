@@ -35,6 +35,10 @@ public class BrotecitoRenderer extends GeoEntityRenderer<BrotecitoEntity> {
 
             @Override
             protected void renderStackForBone(MatrixStack poseStack, GeoBone bone, ItemStack stack, BrotecitoEntity animatable, VertexConsumerProvider bufferSource, float partialTick, int packedLight, int packedOverlay) {
+                if (animatable.isSitting()) {
+                    return;
+                }
+
                 // Traslación del objeto
                 poseStack.translate(bone.getPosX(), -bone.getPosY() - 0.20F, bone.getPosZ() - 0.15F);
 

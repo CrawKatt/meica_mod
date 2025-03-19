@@ -50,6 +50,7 @@ public class MeicaEntity extends HostileEntity implements RangedAttackMob {
 
     public MeicaEntity(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world);
+        this.setEquipmentDropChance(EquipmentSlot.MAINHAND, 1.0F);
     }
 
     // Método para definir el equipo de Meica (arco por defecto)
@@ -66,12 +67,48 @@ public class MeicaEntity extends HostileEntity implements RangedAttackMob {
             this.heal(0.30F);
         }
 
+        if (this.getY() < 20) {
+            escapeVoid();
+        }
+
         if (!this.isAlive()) {
             return;
         }
 
         // Invocar a Meica con un arco por defecto
         this.initEquipment(this.random, this.getWorld().getLocalDifficulty(this.getBlockPos()));
+    }
+
+    private void escapeVoid() {
+        World world = this.getWorld();
+        PlayerEntity nearestPlayer = world.getClosestPlayer(this, 100);
+
+        if (nearestPlayer != null) {
+            Vec3d playerPos = nearestPlayer.getPos();
+            Vec3d meicaPos = this.getPos();
+
+            if (!nearestPlayer.getAbilities().flying || !nearestPlayer.getAbilities().creativeMode) {
+                this.teleport(playerPos.x, playerPos.y, playerPos.z);
+                nearestPlayer.teleport(meicaPos.x, meicaPos.y, meicaPos.z);
+                nearestPlayer.playSound(ModSounds.MEICA_KILL_ENTITY_LAUGHT, this.getSoundCategory(), 1.0F, 1.0F);
+            }
+
+        } else {
+            teleportToSafeLocation();
+        }
+    }
+
+    private void teleportToSafeLocation() {
+        for (int i = 0; i < 10; i++) {
+            Vec3d startPos = this.getPos();
+            Vec3d safePos = FuzzyTargeting.findFrom(this, 16, 7, startPos);
+
+            if (safePos != null && isSafeTeleportPosition(safePos)) {
+                this.teleport(safePos.x, safePos.y, safePos.z);
+                spawnParticles();
+                break;
+            }
+        }
     }
 
     public boolean isCamouflaged() {
@@ -193,6 +230,15 @@ public class MeicaEntity extends HostileEntity implements RangedAttackMob {
         this.goalSelector.add(3, new AvoidPlayerWhileCamouflagedGoal(this, 1, 1.5D, 10.0D));
         this.goalSelector.add(4, new WanderAroundFarGoal(this, 1.0D));
         this.goalSelector.add(10, new LookAroundGoal(this));
+    }
+
+    @Override
+    protected void dropEquipment(DamageSource source, int lootingMultiplier, boolean allowDrops) {
+        if (!this.getWorld().isClient) {
+            ItemStack meicaBow = this.getEquippedStack(EquipmentSlot.MAINHAND);
+            meicaBow.setDamage(0);
+            this.dropStack(meicaBow);
+        }
     }
 
     /* Boss Bar*/

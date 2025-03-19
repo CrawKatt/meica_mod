@@ -18,6 +18,9 @@ public class ModEffects {
     public static final StatusEffect CAMOUFLAGE_COOLDOWN = registerStatusEffect("camouflage_cooldown",
             new CamouflageCooldown(StatusEffectCategory.HARMFUL, 0x9966CC));
 
+    public static final StatusEffect FOREST_BLESSING = registerStatusEffect("forest_blessing",
+            new ForestBlessingEffect(StatusEffectCategory.BENEFICIAL, 0xFFFF00));
+
     public static final StatusEffect PARANOIA = registerStatusEffect("paranoia",
             new ParanoiaEffect(StatusEffectCategory.HARMFUL, 0x996600));
 

@@ -1,9 +1,7 @@
 package com.crawkatt.meicamod.block;
 
 import com.crawkatt.meicamod.MeicaMod;
-import com.crawkatt.meicamod.block.custom.BrotenitaCropBlock;
-import com.crawkatt.meicamod.block.custom.BrotenitaMelterBlock;
-import com.crawkatt.meicamod.block.custom.RawBrotenitaCluster;
+import com.crawkatt.meicamod.block.custom.*;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
@@ -24,6 +22,14 @@ public class ModBlocks {
                     .requiresTool()
                     .luminance(state -> 5)
                     .sounds(BlockSoundGroup.AMETHYST_CLUSTER)));
+
+    public static final Block BROTECITO_SPROUT = registerBlock("brotecito_sprout",
+            new BrotecitoSproutBlock(AbstractBlock.Settings.create()
+                    .nonOpaque()
+                    .noCollision()
+                    .ticksRandomly()
+                    .breakInstantly()
+                    .sounds(BlockSoundGroup.CROP)));
 
     public static final Block BROTENITA_BLOCK = registerBlock("brotenita_block",
             new Block(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK)
@@ -69,6 +75,17 @@ public class ModBlocks {
                     .luminance(state -> 5)
                     .sounds(BlockSoundGroup.AMETHYST_CLUSTER)
                     .requiresTool()));
+
+    public static final Block STRIPPED_HOLLOW_OAK_LOG = registerBlock("stripped_hollow_oak_log", createStrippedHollowLogBlock(Blocks.STRIPPED_OAK_LOG));
+    public static final Block HOLLOW_OAK_LOG = registerBlock("hollow_oak_log", createHollowLogBlock(STRIPPED_HOLLOW_OAK_LOG, Blocks.OAK_LOG));
+
+    private static HollowLogBlock createStrippedHollowLogBlock(AbstractBlock counterpart) {
+        return new HollowLogBlock(null, FabricBlockSettings.copy(counterpart));
+    }
+
+    private static HollowLogBlock createHollowLogBlock(Block strippedBlock, AbstractBlock counterpart) {
+        return new HollowLogBlock(strippedBlock.getDefaultState(), FabricBlockSettings.copy(counterpart));
+    }
 
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);

@@ -1,11 +1,10 @@
 package com.crawkatt.meicamod.item.custom;
 
+import com.crawkatt.meicamod.effect.ModEffects;
 import com.crawkatt.meicamod.item.ModArmorMaterials;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
@@ -17,7 +16,7 @@ import java.util.Map;
 public class ModArmorItem extends ArmorItem {
     public static final Map<ArmorMaterial, StatusEffectInstance> MATERIAL_TO_EFFECT_MAP =
             (new ImmutableMap.Builder<ArmorMaterial, StatusEffectInstance>())
-                    .put(ModArmorMaterials.BROTENITA, new StatusEffectInstance(StatusEffects.NIGHT_VISION, -1, 1,
+                    .put(ModArmorMaterials.BROTENITA, new StatusEffectInstance(ModEffects.FOREST_BLESSING, -1, 0,
                             false, false, true)).build();
 
     public ModArmorItem(ArmorMaterial material, Type type, Settings settings) {
@@ -27,7 +26,7 @@ public class ModArmorItem extends ArmorItem {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         if (!world.isClient()) {
-            if (entity instanceof PlayerEntity player && hasFullSuitOfArmorOn(player)) {
+            if (entity instanceof PlayerEntity player) {
                 evaluateArmorEffects(player);
             }
         }
@@ -41,8 +40,27 @@ public class ModArmorItem extends ArmorItem {
 
             if (hasCorrectArmorOn(mapArmorMaterial, player)) {
                 addStatusEffectForMaterial(player, mapArmorMaterial, mapStatusEffect);
+            } else {
+                removeStatusEffectIfPresent(player, mapStatusEffect);
             }
         }
+    }
+
+    private void removeStatusEffectIfPresent(PlayerEntity player, StatusEffectInstance mapStatusEffect) {
+        if (player.hasStatusEffect(mapStatusEffect.getEffectType())) {
+            StatusEffectInstance currentEffect = player.getStatusEffect(mapStatusEffect.getEffectType());
+            if (currentEffect != null && effectsMatch(currentEffect, mapStatusEffect)) {
+                player.removeStatusEffect(mapStatusEffect.getEffectType());
+            }
+        }
+    }
+
+    private boolean effectsMatch(StatusEffectInstance a, StatusEffectInstance b) {
+        return a.getEffectType() == b.getEffectType() &&
+                a.getAmplifier() == b.getAmplifier() &&
+                a.isAmbient() == b.isAmbient() &&
+                a.shouldShowParticles() == b.shouldShowParticles() &&
+                a.shouldShowIcon() == b.shouldShowIcon();
     }
 
     private void addStatusEffectForMaterial(PlayerEntity player, ArmorMaterial mapArmorMaterial, StatusEffectInstance mapStatusEffect) {
@@ -51,16 +69,6 @@ public class ModArmorItem extends ArmorItem {
         if (hasCorrectArmorOn(mapArmorMaterial, player) && !hasPlayerEffect) {
             player.addStatusEffect(new StatusEffectInstance(mapStatusEffect));
         }
-    }
-
-    private boolean hasFullSuitOfArmorOn(PlayerEntity player) {
-        ItemStack boots = player.getInventory().getArmorStack(0);
-        ItemStack leggings = player.getInventory().getArmorStack(1);
-        ItemStack breastplate = player.getInventory().getArmorStack(2);
-        ItemStack helmet = player.getInventory().getArmorStack(3);
-
-        return !helmet.isEmpty() && !breastplate.isEmpty()
-                && !leggings.isEmpty() && !boots.isEmpty();
     }
 
     private boolean hasCorrectArmorOn(ArmorMaterial material, PlayerEntity player) {

@@ -155,8 +155,8 @@ public class BrotenitaMelterBlockEntity extends BlockEntity implements ExtendedS
 
         return switch (localDir) {
             default -> // NORTH
-                        side.getOpposite() == Direction.NORTH && slot == INPUT_SLOT ||
-                        side.getOpposite() == Direction.WEST && slot == INPUT_SLOT;
+                    side.getOpposite() == Direction.NORTH && slot == INPUT_SLOT ||
+                    side.getOpposite() == Direction.WEST && slot == INPUT_SLOT;
 
             case EAST ->
                     side.rotateYClockwise() == Direction.NORTH && slot == INPUT_SLOT ||
@@ -294,9 +294,31 @@ public class BrotenitaMelterBlockEntity extends BlockEntity implements ExtendedS
 
     private void fillUpOnIron() {
         if (hasIronItemInIronSlot(IRON_ITEM_SLOT)) {
-            try(Transaction transaction = Transaction.openOuter()) {
-                this.ironStorage.insert(64, transaction);
+            try (Transaction transaction = Transaction.openOuter()) {
+                long REQUIRED_FLUID = 500;
+                long MAX_IRON_AMOUNT = 64;
+
+                FluidVariant lavaVariant = FluidVariant.of(Fluids.LAVA);
+                long extracted = this.fluidStorage.extract(lavaVariant, REQUIRED_FLUID, transaction);
+
+                if (extracted < REQUIRED_FLUID) {
+                    transaction.abort();
+                    return;
+                }
+
+                long inserted = this.ironStorage.insert(MAX_IRON_AMOUNT, transaction);
+
+                if (inserted < MAX_IRON_AMOUNT) {
+                    transaction.abort();
+                    return;
+                }
+
                 transaction.commit();
+
+                ItemStack stack = getStack(IRON_ITEM_SLOT);
+                stack.decrement(1);
+                setStack(IRON_ITEM_SLOT, stack);
+                markDirty();
             }
         }
     }

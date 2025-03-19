@@ -2,7 +2,6 @@ package com.crawkatt.meicamod.worldgen.biome;
 
 import com.crawkatt.meicamod.MeicaMod;
 import com.crawkatt.meicamod.entity.ModEntities;
-import com.crawkatt.meicamod.worldgen.ModPlacedFeatures;
 import net.minecraft.client.sound.MusicType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.particle.ParticleTypes;
@@ -130,7 +129,7 @@ public class ModBiomes {
         DefaultBiomeFeatures.addDefaultVegetation(biomeBuilder);
 
         return new Biome.Builder()
-                .precipitation(true)
+                .precipitation(false)
                 .downfall(0.8f)
                 .temperature(0.7f)
                 .generationSettings(biomeBuilder.build())

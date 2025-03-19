@@ -52,6 +52,9 @@ public class ModItemGroups {
 
                         entries.add(ModItems.BROTENITA_INGOT);
 
+                        entries.add(ModBlocks.HOLLOW_OAK_LOG);
+                        entries.add(ModBlocks.STRIPPED_HOLLOW_OAK_LOG);
+
                     }).build());
 
     public static void registerItemGroups() {
