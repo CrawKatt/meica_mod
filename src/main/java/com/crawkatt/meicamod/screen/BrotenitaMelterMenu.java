@@ -65,34 +65,32 @@ public class BrotenitaMelterMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int pIndex) {
-        Slot sourceSlot = slots.get(pIndex);
-        if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;
-        ItemStack sourceStack = sourceSlot.getItem();
-        ItemStack copyOfSourceStack = sourceStack.copy();
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
+        ItemStack retStack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(index);
 
-        if (pIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
-            if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, TE_INVENTORY_FIRST_SLOT_INDEX
-                    + TE_INVENTORY_SLOT_COUNT, false)) {
+        if (slot.hasItem()) {
+            ItemStack stack = slot.getItem();
+            retStack = stack.copy();
+
+            // De máquina a inventario
+            if (index < TE_INVENTORY_SLOT_COUNT) {
+                if (!moveItemStackTo(stack, TE_INVENTORY_SLOT_COUNT, slots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+            // De inventario a máquina
+            else if (!moveItemStackTo(stack, 0, TE_INVENTORY_SLOT_COUNT, false)) {
                 return ItemStack.EMPTY;
             }
-        } else if (pIndex < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
-            if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX
-                    + VANILLA_SLOT_COUNT, false)) {
-                return ItemStack.EMPTY;
-            }
-        } else {
-            System.err.println("Invalid slotIndex:" + pIndex);
-            return ItemStack.EMPTY;
-        }
 
-        if (sourceStack.getCount() == 0) {
-            sourceSlot.set(ItemStack.EMPTY);
-        } else {
-            sourceSlot.setChanged();
+            if (stack.isEmpty()) {
+                slot.set(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
         }
-        sourceSlot.onTake(player, sourceStack);
-        return copyOfSourceStack;
+        return retStack;
     }
 
     @Override

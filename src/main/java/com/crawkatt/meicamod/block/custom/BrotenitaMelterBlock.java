@@ -34,16 +34,19 @@ public class BrotenitaMelterBlock extends BaseEntityBlock {
 
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 12, 16);
 
-    public @NotNull BlockState rotate(BlockState pState, Rotation pRotation) {
+    @NotNull
+    public BlockState rotate(BlockState pState, Rotation pRotation) {
         return pState.setValue(FACING, pRotation.rotate(pState.getValue(FACING)));
     }
 
-    public @NotNull BlockState mirror(BlockState pState, Mirror pMirror) {
+    @NotNull
+    public BlockState mirror(BlockState pState, Mirror pMirror) {
         return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
     }
 
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+    @NotNull
+    public VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
         return SHAPE;
     }
 
@@ -65,7 +68,13 @@ public class BrotenitaMelterBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void onRemove(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pNewState, boolean pMovedByPiston) {
+    public void onRemove(
+            @NotNull BlockState pState,
+            @NotNull Level pLevel,
+            @NotNull BlockPos pPos,
+            @NotNull BlockState pNewState,
+            boolean pMovedByPiston)
+    {
         if (pState.getBlock() != pNewState.getBlock()) {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
             if (blockEntity instanceof BrotenitaMelterBlockEntity) {
@@ -77,7 +86,12 @@ public class BrotenitaMelterBlock extends BaseEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public InteractionResult use(
+            @NotNull BlockState pState, Level pLevel,
+            @NotNull BlockPos pPos,
+            @NotNull Player pPlayer,
+            @NotNull InteractionHand pHand,
+            @NotNull BlockHitResult pHit) {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if (entity instanceof BrotenitaMelterBlockEntity) {
@@ -97,7 +111,7 @@ public class BrotenitaMelterBlock extends BaseEntityBlock {
 
     @Override
     @Nullable
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, @NotNull BlockState pState, @NotNull BlockEntityType<T> pBlockEntityType) {
         if (pLevel.isClientSide) {
             return null;
         }

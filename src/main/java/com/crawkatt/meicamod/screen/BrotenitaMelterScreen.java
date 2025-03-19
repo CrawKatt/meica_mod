@@ -3,16 +3,13 @@ package com.crawkatt.meicamod.screen;
 import com.crawkatt.meicamod.MeicaMod;
 import com.crawkatt.meicamod.screen.renderer.IronMeltDisplayTooltipArea;
 import com.crawkatt.meicamod.screen.renderer.FluidTankRenderer;
-import com.crawkatt.meicamod.util.MouseUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -37,93 +34,75 @@ public class BrotenitaMelterScreen extends AbstractContainerScreen<BrotenitaMelt
         assignFluidRenderer();
     }
 
-    /*
-    private void assignFluidRenderer() {
-        fluidRenderer = new FluidTankRenderer(64000, true, 16, 39);
-    }
-    */
-
     private void assignFluidRenderer() {
         fluidRenderer = new FluidTankRenderer(64000, true, 8, 64);
     }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int pMouseX, int pMouseY) {
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
+    protected void renderLabels(@NotNull GuiGraphics guiGraphics, int pMouseX, int pMouseY) {
+        // Convertir coordenadas absolutas a relativas
+        double adjustedMouseX = pMouseX - leftPos;
+        double adjustedMouseY = pMouseY - topPos;
 
-        renderEnergyAreaTooltip(guiGraphics, pMouseX, pMouseY, x, y);
-        renderFluidTooltipArea(guiGraphics, pMouseX, pMouseY, x, y, menu.blockEntity.getFluid(), 156, 11, fluidRenderer);
-    }
+        // Tooltip hierro
+        if (isMouseOverIronArea(pMouseX, pMouseY)) {
+            guiGraphics.renderTooltip(
+                    this.font,
+                    ironMeltInfoArea.getTooltips(),
+                    Optional.empty(),
+                    (int) adjustedMouseX,
+                    (int) adjustedMouseY
+            );
+        }
 
-    /*
-    private void renderFluidTooltipArea(GuiGraphics guiGraphics, int pMouseX, int pMouseY, int x, int y,
-                                        FluidStack stack, int offsetX, int offsetY, FluidTankRenderer renderer) {
-        if (isMouseAboveArea(pMouseX, pMouseY, x, y, offsetX, offsetY, renderer)) {
-            guiGraphics.renderTooltip(this.font, renderer.getTooltip(stack, TooltipFlag.Default.NORMAL),
-                    Optional.empty(), pMouseX - x, pMouseY - y);
+        // Tooltip fluido
+        if (isMouseOverFluidArea(pMouseX, pMouseY)) {
+            guiGraphics.renderTooltip(
+                    this.font,
+                    fluidRenderer.getTooltip(
+                            menu.blockEntity.getFluid(),
+                            TooltipFlag.Default.NORMAL
+                    ),
+                    Optional.empty(),
+                    (int) adjustedMouseX,
+                    (int) adjustedMouseY
+            );
         }
     }
-    */
-
-    private void renderFluidTooltipArea(GuiGraphics guiGraphics, int pMouseX, int pMouseY, int x, int y,
-                                        FluidStack stack, int offsetX, int offsetY, FluidTankRenderer renderer) {
-        // Cambiar el offsetX para que refleje la nueva posición de la barra de lava a la derecha
-        if (isMouseAboveArea(pMouseX, pMouseY, x, y, offsetX, offsetY, renderer)) { // Cambiar a 156
-            guiGraphics.renderTooltip(this.font, renderer.getTooltip(stack, TooltipFlag.Default.NORMAL),
-                    Optional.empty(), pMouseX - x, pMouseY - y);
-        }
-    }
-
-    /*
-    private void renderEnergyAreaTooltip(GuiGraphics guiGraphics, int pMouseX, int pMouseY, int x, int y) {
-        if (isMouseAboveArea(pMouseX, pMouseY, x, y, 156, 11, 8, 64)) {
-            guiGraphics.renderTooltip(this.font, energyInfoArea.getTooltips(),
-                    Optional.empty(), pMouseX - x, pMouseY - y);
-        }
-    }
-    */
-
-    private void renderEnergyAreaTooltip(GuiGraphics guiGraphics, int pMouseX, int pMouseY, int x, int y) {
-        if (isMouseAboveArea(pMouseX, pMouseY, x, y, 26, 11, 16, 64)) {
-            guiGraphics.renderTooltip(this.font, ironMeltInfoArea.getTooltips(),
-                    Optional.empty(), pMouseX - x, pMouseY - y);
-        }
-    }
-
-    /*
-    private void assignEnergyInfoArea() {
-        energyInfoArea = new EnergyDisplayTooltipArea(((width - imageWidth) / 2) + 156,
-                ((height - imageHeight) / 2)  + 11, menu.blockEntity.getEnergyStorage());
-    }
-    */
 
     private void assignIronInfoArea() {
-        ironMeltInfoArea = new IronMeltDisplayTooltipArea(((width - imageWidth) / 2) + 26,
-                ((height - imageHeight) / 2) + 11, menu.blockEntity.getIronStorage(), 16, 39);
+        ironMeltInfoArea = new IronMeltDisplayTooltipArea(leftPos + 26, topPos + 11, menu.blockEntity.getIronStorage(), 16, 39);
     }
 
     @Override
     protected void renderBg(@NotNull GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
+        guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 
-        guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+        renderProgressArrow(guiGraphics);
 
-        renderProgressArrow(guiGraphics, x, y);
+        // Render fluid
+        fluidRenderer.render(guiGraphics,
+                leftPos + 156,
+                topPos + 11,
+                menu.blockEntity.getFluid()
+        );
 
+        // Render iron
         ironMeltInfoArea.render(guiGraphics);
-        //fluidRenderer.render(guiGraphics, x + 26, y + 11, menu.blockEntity.getFluid());
-        // 134 y editar la textura de la GUI?
-        fluidRenderer.render(guiGraphics, x + 156, y + 11, menu.blockEntity.getFluid());
     }
 
-    private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
+
+    private void renderProgressArrow(GuiGraphics guiGraphics) {
         if (menu.isCrafting()) {
-            guiGraphics.blit(TEXTURE, x + 85, y + 30, 176, 0, 8, menu.getScaledProgress());
+            guiGraphics.blit(TEXTURE,
+                    leftPos + 85,
+                    topPos + 30,
+                    176,
+                    0,
+                    8,
+                    menu.getScaledProgress()
+            );
         }
     }
 
@@ -134,11 +113,23 @@ public class BrotenitaMelterScreen extends AbstractContainerScreen<BrotenitaMelt
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
     }
 
-    private boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY, FluidTankRenderer renderer) {
-        return MouseUtil.isMouseOver(pMouseX, pMouseY, x + offsetX, y + offsetY, renderer.getWidth(), renderer.getHeight());
+    private boolean isMouseOverIronArea(double pMouseX, double pMouseY) {
+        int x = leftPos + 26;
+        int y = topPos + 11;
+        int width = 16;
+        int height = 39;
+
+        return (pMouseX >= x && pMouseX <= x + width) &&
+                (pMouseY >= y && pMouseY <= y + height);
     }
 
-    private boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY, int width, int height) {
-        return MouseUtil.isMouseOver(pMouseX, pMouseY, x + offsetX, y + offsetY, width, height);
+    private boolean isMouseOverFluidArea(double pMouseX, double pMouseY) {
+        int x = leftPos + 156;
+        int y = topPos + 11;
+        int width = 8;
+        int height = 64;
+
+        return (pMouseX >= x && pMouseX <= x + width) &&
+                (pMouseY >= y && pMouseY <= y + height);
     }
 }
