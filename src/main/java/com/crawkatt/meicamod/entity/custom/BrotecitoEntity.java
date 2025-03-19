@@ -4,6 +4,8 @@ import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.entity.goal.BrotecitoMateGoal;
 import com.crawkatt.meicamod.item.ModItems;
 import com.crawkatt.meicamod.particle.ModParticles;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -24,8 +26,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.BlockStateParticleEffect;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.scoreboard.AbstractTeam;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
@@ -139,14 +145,36 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
     @Override
     public void handleStatus(byte status) {
         if (status == 18) {
-            for(int i = 0; i < 7; ++i) {
-                double d = this.random.nextGaussian() * 0.02;
-                double e = this.random.nextGaussian() * 0.02;
-                double f = this.random.nextGaussian() * 0.02;
-                this.getWorld().addParticle(ModParticles.KAPPA_PRIDE_PARTICLES, this.getParticleX(1.0), this.getRandomBodyY() + 0.5, this.getParticleZ(1.0), d, e, f);
-            }
+            spawnBreedingParticles();
+        } else if (status == 19 || status == 20) {
+            spawnSitParticles();
         } else {
             super.handleStatus(status);
+        }
+    }
+
+    private void spawnBreedingParticles() {
+        for(int i = 0; i < 7; ++i) {
+            double d = this.random.nextGaussian() * 0.02;
+            double e = this.random.nextGaussian() * 0.02;
+            double f = this.random.nextGaussian() * 0.02;
+            this.getWorld().addParticle(ModParticles.KAPPA_PRIDE_PARTICLES, this.getParticleX(1.0), this.getRandomBodyY() + 0.5, this.getParticleZ(1.0), d, e, f);
+        }
+    }
+
+    public void spawnSitParticles() {
+        BlockState dirtState = Blocks.DIRT.getDefaultState();
+        ParticleEffect particleOptions = new BlockStateParticleEffect(ParticleTypes.BLOCK, dirtState);
+        for (int i = 0; i < 15; ++i) {
+            double offsetX = (this.random.nextDouble() - 0.5) * 0.5;
+            double offsetY = 0.3;
+            double offsetZ = (this.random.nextDouble() - 0.5) * 0.5;
+
+            this.getWorld().addParticle(
+                    particleOptions,
+                    this.getX() + offsetX, this.getY() + offsetY, this.getZ() + offsetZ,
+                    0.0, 0.1, 0.0
+            );
         }
     }
 
@@ -326,8 +354,12 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
     }
 
     public void sitEntity(boolean sitting) {
-        this.dataTracker.set(SITTING, sitting);
-        this.setSitting(sitting);
+        if (this.isSitting() != sitting) {
+            this.dataTracker.set(SITTING, sitting);
+            this.setSitting(sitting);
+            this.playSound(sitting ? SoundEvents.BLOCK_GRAVEL_BREAK : SoundEvents.BLOCK_GRASS_BREAK, 1.0F, 0.8F);
+            this.getWorld().sendEntityStatus(this, sitting ? (byte) 19 : (byte) 20);
+        }
     }
 
     public boolean isSitting() {
