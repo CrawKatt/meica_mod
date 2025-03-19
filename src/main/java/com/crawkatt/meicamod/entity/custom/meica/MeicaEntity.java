@@ -20,6 +20,7 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -76,6 +77,13 @@ public class MeicaEntity extends Monster implements RangedAttackMob {
         this.populateDefaultEquipmentSlots(this.random, this.level().getCurrentDifficultyAt(this.blockPosition()));
     }
 
+    @Override
+    protected void dropCustomDeathLoot(@NotNull DamageSource pSource, int pLooting, boolean pRecentlyHit) {
+        ItemStack meicaBow = this.getItemInHand(InteractionHand.MAIN_HAND);
+        meicaBow.setDamageValue(0);
+        this.spawnAtLocation(meicaBow);
+    }
+
     private void escapeVoid() {
         Level level = this.level();
         Player nearestPlayer = level.getNearestPlayer(this, 100);
@@ -104,13 +112,6 @@ public class MeicaEntity extends Monster implements RangedAttackMob {
                 spawnParticles();
                 break;
             }
-        }
-    }
-
-    @Override
-    public void setDropChance(@NotNull EquipmentSlot pSlot, float pChance) {
-        if (pSlot.getType() == EquipmentSlot.Type.HAND) {
-            return;
         }
     }
 

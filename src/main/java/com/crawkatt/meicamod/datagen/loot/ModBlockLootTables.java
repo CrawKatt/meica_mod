@@ -54,6 +54,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 
         this.add(ModBlocks.BROTENITA_CROP.get(), this.createCropDrops(ModBlocks.BROTENITA_CROP.get(),
                 ModItems.RAW_BROTENITA.get(), ModItems.SMALL_BROTENITA.get(), lootItemConditionBuilder));
+        this.add(ModBlocks.BROTECITO_SPROUT.get(), noDrop());
 
         this.dropSelf(ModBlocks.BROTENITA_MELTER.get());
 
