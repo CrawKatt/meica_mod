@@ -37,7 +37,7 @@ public class ModRegistries {
                 .frameBlock(ModBlocks.BROTENITA_BLOCK)
                 .lightWithItem(ModItems.BROTENITA_STAFF)
                 .destDimID(new Identifier(MeicaMod.MOD_ID, "meicadim"))
-                .tintColor(0x32ab32)
+                .tintColor(0x00740b)
                 .onlyLightInOverworld()
                 .registerIgniteEvent(((player, world, portalPos, framePos, portalIgnitionSource) -> world.playSound(
                         null,

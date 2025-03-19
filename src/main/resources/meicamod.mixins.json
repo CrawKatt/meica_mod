@@ -4,13 +4,15 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BrewingRecipeRegistryMixin",
-    "TrunkPlacerTypeInvoker"
+    "TrunkPlacerTypeInvoker",
+    "CustomPortalBlockMixin"
   ],
   "client": [
     "FogRendererMixin",
     "ItemRendererAccessor",
     "ItemRendererMixin",
-    "ModelLoaderMixin"
+    "ModelLoaderMixin",
+    "CustomPortalBlockMixin"
   ],
   "server": [],
   "injectors": {
