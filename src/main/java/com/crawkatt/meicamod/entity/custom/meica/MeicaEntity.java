@@ -71,6 +71,13 @@ public class MeicaEntity extends Monster implements RangedAttackMob {
         this.populateDefaultEquipmentSlots(this.random, this.level().getCurrentDifficultyAt(this.blockPosition()));
     }
 
+    @Override
+    public void setDropChance(@NotNull EquipmentSlot pSlot, float pChance) {
+        if (pSlot.getType() == EquipmentSlot.Type.HAND) {
+            return;
+        }
+    }
+
     public boolean isCamouflaged() {
         return this.hasEffect(ModEffects.CAMOUFLAGE_COOLDOWN.get());
     }
