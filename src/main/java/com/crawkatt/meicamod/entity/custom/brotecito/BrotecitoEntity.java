@@ -4,11 +4,15 @@ import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.entity.custom.meica.MeicaEntity;
 import com.crawkatt.meicamod.item.ModItems;
 import com.crawkatt.meicamod.particle.ModParticles;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -28,6 +32,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
@@ -97,7 +103,7 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
         this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
         this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0, true));
         this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F, false));
-        this.goalSelector.addGoal(7, new BreedGoal(this, 1.0));
+        this.goalSelector.addGoal(7, new BrotecitoBreedGoal(this, 1.0));
         this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
@@ -135,21 +141,43 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(@NotNull ServerLevel pLevel, @NotNull AgeableMob pOtherParent) {
-        return ModEntities.BROTECITO.get().create(pLevel);
+        return null;
     }
 
     // Método para que los Brotecitos puedan emitir partículas personalizadas al aparearse
     @Override
     public void handleEntityEvent(byte id) {
         if (id == 18) {
-            for(int i = 0; i < 7; i++) {
-                double d0 = this.random.nextGaussian() * 0.02;
-                double d1 = this.random.nextGaussian() * 0.02;
-                double d2 = this.random.nextGaussian() * 0.02;
-                this.level().addParticle(ModParticles.KAPPA_PRIDE_PARTICLES.get(), this.getRandomX(1.0),this.getRandomY() + 0.5, this.getRandomZ(1.0), d0, d1, d2);
-            }
+            spawnBreedingParticles();
+        } else if (id == 19 || id == 20) {
+            spawnSitParticles();
         } else {
             super.handleEntityEvent(id);
+        }
+    }
+
+    private void spawnBreedingParticles() {
+        for(int i = 0; i < 7; i++) {
+            double d0 = this.random.nextGaussian() * 0.02;
+            double d1 = this.random.nextGaussian() * 0.02;
+            double d2 = this.random.nextGaussian() * 0.02;
+            this.level().addParticle(ModParticles.KAPPA_PRIDE_PARTICLES.get(), this.getRandomX(1.0),this.getRandomY() + 0.5, this.getRandomZ(1.0), d0, d1, d2);
+        }
+    }
+
+    public void spawnSitParticles() {
+        BlockState dirtState = Blocks.DIRT.defaultBlockState();
+        ParticleOptions particleOptions = new BlockParticleOption(ParticleTypes.BLOCK, dirtState);
+        for (int i = 0; i < 15; ++i) {
+            double offsetX = (this.random.nextDouble() - 0.5) * 0.5;
+            double offsetY = 0.3;
+            double offsetZ = (this.random.nextDouble() - 0.5) * 0.5;
+
+            this.level().addParticle(
+                    particleOptions,
+                    this.getX() + offsetX, this.getY() + offsetY, this.getZ() + offsetZ,
+                    0.0, 0.1, 0.0
+            );
         }
     }
 
@@ -191,18 +219,29 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
         Item item = itemStack.getItem();
 
         Item itemForTaming = Items.APPLE;
+        if (isFood(itemStack)) {
+            return super.mobInteract(player, hand);
+        }
 
         if (item == itemForTaming && !isTame()) {
             return this.tame(itemStack, player, hand);
         }
 
         if (isTame() && item instanceof SwordItem) {
-            this.setItemSlot(EquipmentSlot.MAINHAND, itemStack);
-            itemStack.shrink(1);
+            if (!this.level().isClientSide) {
+                ItemStack copy = itemStack.copy();
+                copy.setCount(1);
+                this.setItemSlot(EquipmentSlot.MAINHAND, copy);
+            }
+
+            if (!player.getAbilities().instabuild) {
+                itemStack.shrink(1);
+            }
+
             return InteractionResult.SUCCESS;
         }
 
-        if (isTame() && item == ModItems.BROTENITA_MEAL.get()) {
+        if (isTame()) {
             if (item == ModItems.BROTENITA_MEAL.get()) {
                 return this.evolve(player, itemStack);
             } else if (!this.level().isClientSide && hand == InteractionHand.MAIN_HAND) {
@@ -326,8 +365,25 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
     }
 
     public void setSitting(boolean sitting) {
-        this.entityData.set(SITTING, sitting);
-        this.setOrderedToSit(sitting);
+        if (this.isSitting() != sitting) {
+            this.entityData.set(SITTING, sitting);
+            this.setOrderedToSit(sitting);
+            this.playSound(sitting ? SoundEvents.GRAVEL_BREAK : SoundEvents.GRASS_BREAK, 1.0F, 0.8F);
+            this.level().broadcastEntityEvent(this, sitting ? (byte) 19 : (byte) 20);
+
+            /*
+            if (!this.level().isClientSide) {
+                ServerLevel serverLevel = (ServerLevel) this.level();
+                BlockState dirtState = Blocks.DIRT.defaultBlockState();
+
+                serverLevel.sendParticles(
+                        new BlockParticleOption(ParticleTypes.BLOCK, dirtState),
+                        this.getX(), this.getY() + 0.3, this.getZ(),
+                        15, 0.3, 0.2, 0.3, 0.05
+                );
+            }
+            */
+        }
     }
 
     public boolean isSitting() {
@@ -370,7 +426,7 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
             tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito.idle", Animation.LoopType.LOOP));
             return PlayState.CONTINUE;
         } else if (this.isInSittingPose()) {
-            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito.idle", Animation.LoopType.HOLD_ON_LAST_FRAME));
+            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito.sit", Animation.LoopType.HOLD_ON_LAST_FRAME));
             return PlayState.CONTINUE;
         }
 

@@ -318,9 +318,28 @@ public class BrotenitaMelterBlockEntity extends BlockEntity implements MenuProvi
     }
 
     private void fillUpIron() {
-        if (hasIronBlockInSlot() && hasSpaceInIronStorage()) {
-            this.IRON_STORAGE.addIron(2500, false); // Añadir hierro al almacenamiento
-            removeIronBlockFromSlot(); // Elimina el bloque de hierro del slot
+        if (hasIronBlockInSlot(IRON_ITEM_SLOT)) {
+            int requiredFluid = 500;
+            int ironToAdd = 64;
+
+            // Verificar si hay suficiente lava en el tanque
+            if (FLUID_TANK.getFluidAmount() >= requiredFluid) {
+                // Intentar añadir hierro (primero en modo simulación)
+                int actuallyAdded = IRON_STORAGE.addIron(ironToAdd, true); // Simular
+
+                if (actuallyAdded == ironToAdd) {
+                    // Si la simulación fue exitosa, realizar la operación real
+                    IRON_STORAGE.addIron(ironToAdd, false); // Ejecutar
+                    FLUID_TANK.drain(requiredFluid, IFluidHandler.FluidAction.EXECUTE);
+                    itemHandler.extractItem(IRON_ITEM_SLOT, 1, false);
+
+                    // Actualizar cambios
+                    setChanged();
+                    if (level != null) {
+                        level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+                    }
+                }
+            }
         }
     }
 
@@ -328,12 +347,8 @@ public class BrotenitaMelterBlockEntity extends BlockEntity implements MenuProvi
         return this.IRON_STORAGE.getIronStored() < this.IRON_STORAGE.getCapacity();
     }
 
-    private boolean hasIronBlockInSlot() {
-        return this.itemHandler.getStackInSlot(IRON_ITEM_SLOT).getItem() == Items.IRON_BLOCK; // Revisa si hay un bloque de hierro
-    }
-
-    private void removeIronBlockFromSlot() {
-        this.itemHandler.extractItem(IRON_ITEM_SLOT, 1, false); // Elimina el bloque de hierro
+    private boolean hasIronBlockInSlot(int slot) {
+        return this.itemHandler.getStackInSlot(slot).getItem() == Items.IRON_BLOCK;
     }
 
     private void craftItem() {

@@ -12,37 +12,25 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class PlayerInfectionProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
-    public static final Capability<PlayerInfection> TIME_IN_BIOME = CapabilityManager.get(new CapabilityToken<PlayerInfection>() {});
+    public static final Capability<PlayerInfection> INFECTION = CapabilityManager.get(new CapabilityToken<>() {});
 
-    private PlayerInfection infection = null;
-    private final LazyOptional<PlayerInfection> optional = LazyOptional.of(this::createPlayerInfection);
-
-    private PlayerInfection createPlayerInfection() {
-        if (this.infection == null) {
-            this.infection = new PlayerInfection();
-        }
-
-        return this.infection;
-    }
+    private final PlayerInfection infection = new PlayerInfection();
+    private final LazyOptional<PlayerInfection> optional = LazyOptional.of(() -> infection);
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == TIME_IN_BIOME) {
-            return optional.cast();
-        }
-
-        return LazyOptional.empty();
+        return cap == INFECTION ? optional.cast() : LazyOptional.empty();
     }
 
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag nbt = new CompoundTag();
-        createPlayerInfection().saveNBTData(nbt);
+        infection.saveNBTData(nbt);
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        createPlayerInfection().loadNBTData(nbt);
+        infection.loadNBTData(nbt);
     }
 }

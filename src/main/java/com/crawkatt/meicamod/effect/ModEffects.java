@@ -15,14 +15,17 @@ public class ModEffects {
         DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, MeicaMod.MODID);
 
     public static final RegistryObject<MobEffect> BROTIFICATION = MOB_EFFECTS.register("brotenita_infection",
-        () -> new BrotenitaInfectionEffect(MobEffectCategory.HARMFUL, 0x996600).addAttributeModifier(Attributes.MOVEMENT_SPEED,
-                "7107DE5E-7CE8-4030-940E-514C1F160890", -0.025f, AttributeModifier.Operation.fromValue(0)));
-
-    public static final RegistryObject<MobEffect> PARANOIA = MOB_EFFECTS.register("paranoia",
-            () -> new ParanoiaEffect(MobEffectCategory.HARMFUL, 0x9966CC));
+            () -> new BrotenitaInfectionEffect(MobEffectCategory.HARMFUL, 0x996600).addAttributeModifier(Attributes.MOVEMENT_SPEED,
+                    "7107DE5E-7CE8-4030-940E-514C1F160890", -0.025f, AttributeModifier.Operation.fromValue(0)));
 
     public static final RegistryObject<MobEffect> CAMOUFLAGE_COOLDOWN = MOB_EFFECTS.register("camouflage_cooldown",
             () -> new CamouflageCooldown(MobEffectCategory.HARMFUL, 0x9966CC));
+
+    public static final RegistryObject<MobEffect> FOREST_BLESSING = MOB_EFFECTS.register("forest_blessing",
+            () -> new ForestBlessingEffect(MobEffectCategory.BENEFICIAL, 0xFFFF00));
+
+    public static final RegistryObject<MobEffect> PARANOIA = MOB_EFFECTS.register("paranoia",
+            () -> new ParanoiaEffect(MobEffectCategory.HARMFUL, 0x9966CC));
 
     public static void register(IEventBus pEventBus) {
         MOB_EFFECTS.register(pEventBus);

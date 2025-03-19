@@ -83,6 +83,7 @@ public class ModBiomes {
 
         // Generación de Árboles Gigantes (PRIORIZAR ANTES DE LO DEMÁS ABAJO)
         biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacedFeatures.BIG_OAK_PLACED_KEY);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacedFeatures.FALLEN_HOLLOW_LOG_PLACED_KEY);
 
         // Vegetación base
         BiomeDefaultFeatures.addForestFlowers(biomeBuilder);
@@ -114,10 +115,6 @@ public class ModBiomes {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
         spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(ModEntities.BROTECITO.get(), 5, 4, 4));
 
-        // Spawn de Mobs
-        //BiomeDefaultFeatures.farmAnimals(spawnBuilder);
-        BiomeDefaultFeatures.commonSpawns(spawnBuilder);
-
         BiomeGenerationSettings.Builder biomeBuilder =
                 new BiomeGenerationSettings.Builder(context.lookup(Registries.PLACED_FEATURE), context.lookup(Registries.CONFIGURED_CARVER));
         //we need to follow the same order as vanilla biomes for the BiomeDefaultFeatures
@@ -138,8 +135,8 @@ public class ModBiomes {
         BiomeDefaultFeatures.addDefaultExtraVegetation(biomeBuilder);
 
         return new Biome.BiomeBuilder()
-                .hasPrecipitation(true)
-                .downfall(0.8f)
+                .hasPrecipitation(false)
+                .downfall(0.0f)
                 .temperature(0.7f)
                 .generationSettings(biomeBuilder.build())
                 .mobSpawnSettings(spawnBuilder.build())

@@ -1,5 +1,7 @@
 package com.crawkatt.meicamod.effect;
 
+import com.crawkatt.meicamod.capabilities.PlayerInfection;
+import com.crawkatt.meicamod.capabilities.PlayerInfectionProvider;
 import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.entity.custom.player_clone.PlayerCloneEntity;
 import net.minecraft.core.BlockPos;
@@ -21,37 +23,29 @@ public class BrotenitaInfectionEffect extends MobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity entity, int amplifier) {
-        if (!entity.level().isClientSide) {
-            addEffects(entity, this.getDuration(entity));
+        if (!entity.level().isClientSide && entity instanceof Player player) {
+            PlayerInfection infection =  player.getCapability(PlayerInfectionProvider.INFECTION).orElse(null);
+            addEffects(entity, infection.getInfection());
         }
         super.applyEffectTick(entity, amplifier);
     }
 
-    private void addEffects(LivingEntity entity, int duration) {
-        if (duration >= 72000) { // 60 minutos
+    private void addEffects(LivingEntity entity, int infectionLevel) {
+        if (infectionLevel >= 72000) { // 60 minutos
             entity.kill(); // Muerte
-        } else if (duration >= 60000) { // 50 minutos
-            entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 32767, 0, true, false, false));
-            entity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 32767, 0, true, false, false));
+        } else if (infectionLevel >= 60000) { // 50 minutos
+            entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, infectionLevel, 0, true, false, false));
+            entity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, infectionLevel, 0, true, false, false));
             spawnPlayerClonesAround(entity);
-        } else if (duration >= 48000) { // 40 minutos
+        } else if (infectionLevel >= 48000) { // 40 minutos
             spawnPlayerClonesAround(entity);
-        } else if (duration >= 36000) { // 30 minutos
-            entity.addEffect(new MobEffectInstance(ModEffects.PARANOIA.get(), 32767, 0, true, false, false));
-        } else if (duration >= 24000) { // 20 minutos
-            entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 32767, 0, true, false, false));
-        } else if (duration >= 12000) { // 10 minutos
-            entity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 32767, 0, true, false, false));
+        } else if (infectionLevel >= 36000) { // 30 minutos
+            entity.addEffect(new MobEffectInstance(ModEffects.PARANOIA.get(), infectionLevel, 0, true, false, false));
+        } else if (infectionLevel >= 24000) { // 20 minutos
+            entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, infectionLevel, 0, true, false, false));
+        } else if (infectionLevel >= 12000) { // 10 minutos
+            entity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, infectionLevel, 0, true, false, false));
         }
-    }
-
-    private int getDuration(LivingEntity entity) {
-        for (MobEffectInstance effectInstance : entity.getActiveEffects()) {
-            if (effectInstance.getEffect() == this) {
-                return effectInstance.getDuration();
-            }
-        }
-        return 0;
     }
 
     private void spawnPlayerClonesAround(LivingEntity entity) {

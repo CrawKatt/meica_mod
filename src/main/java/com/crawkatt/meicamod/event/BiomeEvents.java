@@ -10,48 +10,46 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
-
-import java.util.Optional;
 
 @Mod.EventBusSubscriber
 public class BiomeEvents {
+    private static final ResourceKey<Biome> TARGET_BIOME = ModBiomes.MEICA_FOREST;
 
     @SubscribeEvent
     public static void onTickPlayer(TickEvent.PlayerTickEvent event) {
+        if (event.side != LogicalSide.SERVER || event.phase != TickEvent.Phase.END) {
+            return;
+        }
+
         Player player = event.player;
         Level level = player.level();
 
-        if (level.isClientSide) {
-            return;
-        }
-
-        ResourceKey<Biome> playerBiomeKey = level.getBiome(player.blockPosition()).unwrapKey().orElse(null);
-        if (playerBiomeKey == null) {
-            return;
-        }
-
-        if (!playerBiomeKey.equals(ModBiomes.MEICA_FOREST)) {
-            player.getCapability(PlayerInfectionProvider.TIME_IN_BIOME).ifPresent(capability -> {
-                capability.setInfection(0);
-                if (player.hasEffect(ModEffects.BROTIFICATION.get())) {
-                    player.removeEffect(ModEffects.BROTIFICATION.get());
-                }
-            });
-
-            return;
-        }
-
-        player.getCapability(PlayerInfectionProvider.TIME_IN_BIOME).ifPresent(capability -> {
-            capability.addInfection(1);
-            int ticksInBiome = capability.getInfection();
-
-            if (player.hasEffect(ModEffects.BROTIFICATION.get())) {
-                Optional.ofNullable(player.getEffect(ModEffects.BROTIFICATION.get()))
-                        .ifPresent(effectInstance -> effectInstance.update(new MobEffectInstance(ModEffects.BROTIFICATION.get(), ticksInBiome, 0)));
+        ResourceKey<Biome> currentBiome = level.getBiome(player.blockPosition()).unwrapKey().orElse(null);
+        player.getCapability(PlayerInfectionProvider.INFECTION).ifPresent(infection -> {
+            if (player.hasEffect(ModEffects.FOREST_BLESSING.get())) {
+                infection.setInfection(0);
+                player.removeEffect(ModEffects.BROTIFICATION.get());
+                return;
             }
 
-            player.addEffect(new MobEffectInstance(ModEffects.BROTIFICATION.get(), ticksInBiome, 0));
+            if (TARGET_BIOME.equals(currentBiome)) {
+                infection.addInfection(1);
+                player.addEffect(new MobEffectInstance(
+                        ModEffects.BROTIFICATION.get(),
+                        infection.getInfection(),
+                        0,
+                        true,
+                        false,
+                        true
+                ));
+            } else {
+                infection.substractInfection(1);
+                if (infection.getInfection() <= 0) {
+                    player.removeEffect(ModEffects.BROTIFICATION.get());
+                }
+            }
         });
     }
 }

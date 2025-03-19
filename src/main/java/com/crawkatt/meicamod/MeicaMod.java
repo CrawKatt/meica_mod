@@ -12,6 +12,8 @@ import com.crawkatt.meicamod.item.ModCreativeModeTabs;
 import com.crawkatt.meicamod.item.ModItemProperties;
 import com.crawkatt.meicamod.item.ModItems;
 import com.crawkatt.meicamod.particle.ModParticles;
+import com.crawkatt.meicamod.potion.BetterBrewingRecipe;
+import com.crawkatt.meicamod.potion.ModPotions;
 import com.crawkatt.meicamod.recipe.ModRecipes;
 import com.crawkatt.meicamod.registry.ModPOIs;
 import com.crawkatt.meicamod.screen.BrotenitaMelterScreen;
@@ -19,12 +21,18 @@ import com.crawkatt.meicamod.screen.ModMenuTypes;
 import com.crawkatt.meicamod.sound.ModSounds;
 import com.crawkatt.meicamod.worldgen.biome.ModTerrablender;
 import com.crawkatt.meicamod.worldgen.biome.surface.ModSurfaceRules;
+import com.crawkatt.meicamod.worldgen.tree.ModTrunkPlacerTypes;
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -60,6 +68,9 @@ public class MeicaMod {
         // Registra los efectos
         ModEffects.register(modEventBus);
 
+        // Registra las pociones
+        ModPotions.register(modEventBus);
+
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
@@ -84,6 +95,9 @@ public class MeicaMod {
         // Registra las recetas
         ModRecipes.register(modEventBus);
 
+        // Registra los troncos
+        ModTrunkPlacerTypes.register(modEventBus);
+
         // Registra el setup (Necesario para que cargue las reglas de superficie)
         modEventBus.addListener(this::commonSetup);
 
@@ -101,6 +115,8 @@ public class MeicaMod {
             // NO COLOCAR EN EL MÉTODO CONSTRUCTOR DEL MOD
             ModTerrablender.registerBiomes();
             SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
+
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, ModItems.BROTENITA_MEAL.get(), ModPotions.BLESSING_FOREST_POTION.get()));
         });
     }
 
@@ -129,6 +145,12 @@ public class MeicaMod {
 
             EntityRenderers.register(ModEntities.BROTECITO.get(), BrotecitoRenderer::new);
             EntityRenderers.register(ModEntities.MEICA.get(), MeicaRenderer::new);
+
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.BROTECITO_SPROUT.get(), RenderType.cutout());
+
+            Minecraft.getInstance().getBlockColors().register((state, level, pos, tintIndex) -> 14731036,
+                    ModBlocks.BROTECITO_SPROUT.get()
+            );
         }
     }
 }
