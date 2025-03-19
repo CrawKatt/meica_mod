@@ -92,8 +92,8 @@ public class ModBiomes {
         DefaultBiomeFeatures.addDefaultVegetation(biomeBuilder);
 
         return new Biome.Builder()
-                .precipitation(false)
-                .downfall(0.0f)
+                .precipitation(true)
+                .downfall(0.8f)
                 .temperature(0.7f)
                 .generationSettings(biomeBuilder.build())
                 .spawnSettings(spawnBuilder.build())
@@ -129,7 +129,7 @@ public class ModBiomes {
         DefaultBiomeFeatures.addDefaultVegetation(biomeBuilder);
 
         return new Biome.Builder()
-                .precipitation(true)
+                .precipitation(false)
                 .downfall(0.8f)
                 .temperature(0.7f)
                 .generationSettings(biomeBuilder.build())
