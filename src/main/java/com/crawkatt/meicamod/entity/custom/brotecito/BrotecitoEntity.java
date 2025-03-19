@@ -228,8 +228,16 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
         }
 
         if (isTame() && item instanceof SwordItem) {
-            this.setItemSlot(EquipmentSlot.MAINHAND, itemStack);
-            itemStack.shrink(1);
+            if (!this.level().isClientSide) {
+                ItemStack copy = itemStack.copy();
+                copy.setCount(1);
+                this.setItemSlot(EquipmentSlot.MAINHAND, copy);
+            }
+
+            if (!player.getAbilities().instabuild) {
+                itemStack.shrink(1);
+            }
+
             return InteractionResult.SUCCESS;
         }
 
