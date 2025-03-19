@@ -16,6 +16,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.DifficultyInstance;
@@ -63,12 +64,47 @@ public class MeicaEntity extends Monster implements RangedAttackMob {
             this.heal(0.30F);
         }
 
+        if (this.getY() < 20) {
+            escapeVoid();
+        }
+
         if (!this.isAlive()) {
             return;
         }
 
         // Invocar a Meica con un arco por defecto
         this.populateDefaultEquipmentSlots(this.random, this.level().getCurrentDifficultyAt(this.blockPosition()));
+    }
+
+    private void escapeVoid() {
+        Level level = this.level();
+        Player nearestPlayer = level.getNearestPlayer(this, 100);
+
+        if (nearestPlayer != null) {
+            Vec3 playerPos = nearestPlayer.position();
+            Vec3 meicaPos = this.position();
+
+            if (!nearestPlayer.getAbilities().flying || !nearestPlayer.getAbilities().instabuild) {
+                this.teleportTo(playerPos.x, playerPos.y, playerPos.z);
+                nearestPlayer.teleportTo(meicaPos.x, meicaPos.y, meicaPos.z);
+                nearestPlayer.playNotifySound(ModSounds.MEICA_KILL_ENTITY_LAUGHT.get(), this.getSoundSource(), 1.0F, 1.0F);
+            }
+        } else {
+            teleportToSafeLocation();
+        }
+    }
+
+    private void teleportToSafeLocation() {
+        for (int i = 0; i < 10; i++) {
+            Vec3 startPos = this.position();
+            Vec3 safePos = LandRandomPos.getPosAway(this, 16, 7, startPos);
+
+            if (safePos != null && isSafeTeleportPosition(safePos)) {
+                this.teleportTo(safePos.x, safePos.y, safePos.z);
+                spawnParticles();
+                break;
+            }
+        }
     }
 
     @Override
@@ -84,18 +120,7 @@ public class MeicaEntity extends Monster implements RangedAttackMob {
 
     public void activateCamouflage() {
         this.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 200, 0, false, false));
-        SimpleParticleType particle = ParticleTypes.SPORE_BLOSSOM_AIR;
-        for (int i = 0; i < 100; i++) {
-            double offsetX = (this.random.nextDouble() - 0.5) * 2.0;
-            double offsetY = this.random.nextDouble() * 2.0;
-            double offsetZ = (this.random.nextDouble() - 0.5) * 2.0;
-
-            double speedX = (this.random.nextDouble() - 0.5) * 5.0;
-            double speedY = this.random.nextDouble() * 5.0;
-            double speedZ = (this.random.nextDouble() - 0.5) * 5.0;
-
-            this.level().addParticle(particle, this.getX() + offsetX, this.getY() + offsetY, this.getZ() + offsetZ, speedX, speedY, speedZ);
-        }
+        spawnParticles();
 
         // Intentar encontrar una posición alejada del jugador y moverse allí
         for (int i = 0; i < 10; i++) {
@@ -108,6 +133,19 @@ public class MeicaEntity extends Monster implements RangedAttackMob {
 
                 break;
             }
+        }
+    }
+
+    private void spawnParticles() {
+        SimpleParticleType particle = ParticleTypes.SPORE_BLOSSOM_AIR;
+        for (int i = 0; i < 100; i++) {
+            double offsetX = (this.random.nextDouble() - 0.5) * 2.0;
+            double offsetY = this.random.nextDouble() * 2.0;
+            double offsetZ = (this.random.nextDouble() - 0.5) * 2.0;
+            double speedX = (this.random.nextDouble() - 0.5) * 5.0;
+            double speedY = this.random.nextDouble() * 5.0;
+            double speedZ = (this.random.nextDouble() - 0.5) * 5.0;
+            this.level().addParticle(particle, this.getX() + offsetX, this.getY() + offsetY, this.getZ() + offsetZ, speedX, speedY, speedZ);
         }
     }
 
@@ -213,7 +251,7 @@ public class MeicaEntity extends Monster implements RangedAttackMob {
 
     @Override
     public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
-        //if (pSource.is(DamageTypeTags.IS_EXPLOSION) || pSource.is(DamageTypeTags.IS_FALL) || this.hasEffect(MobEffects.POISON)) return false;
+        if (pSource.is(DamageTypeTags.IS_EXPLOSION) || pSource.is(DamageTypeTags.IS_FALL) || this.hasEffect(MobEffects.POISON)) return false;
         if (this.getHealth() < this.getMaxHealth() * 0.5 && !isCamouflaged()) {
             if (this.getTarget() != null) {
                 this.getTarget().addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200, 1, false, false));
