@@ -1,11 +1,8 @@
 package com.crawkatt.meicamod.block;
 
 import com.crawkatt.meicamod.MeicaMod;
-import com.crawkatt.meicamod.block.custom.BrotenitaCropBlock;
-import com.crawkatt.meicamod.block.custom.BrotenitaMelterBlock;
-import com.crawkatt.meicamod.block.custom.HollowLogBlock;
+import com.crawkatt.meicamod.block.custom.*;
 import com.crawkatt.meicamod.block.portal.MeicaPortalBlock;
-import com.crawkatt.meicamod.block.custom.RawBrotenitaCluster;
 import com.crawkatt.meicamod.item.ModItems;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
@@ -77,6 +74,14 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.AMETHYST_CLUSTER)
                     .lightLevel((state -> 5))));
+
+    public static final RegistryObject<Block> BROTECITO_SPROUT = BLOCKS.register("brotecito_sprout",
+            () -> new BrotecitoSproutBlock(BlockBehaviour.Properties.copy(Blocks.PUMPKIN_STEM)
+                    .noOcclusion()
+                    .noCollission()
+                    .randomTicks()
+                    .instabreak()
+                    .sound(SoundType.CROP)));
 
     public static final RegistryObject<Block> BROTENITA_MELTER = registerBlock("brotenita_melter",
             () -> new BrotenitaMelterBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));

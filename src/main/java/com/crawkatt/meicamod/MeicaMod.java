@@ -23,7 +23,10 @@ import com.crawkatt.meicamod.worldgen.biome.ModTerrablender;
 import com.crawkatt.meicamod.worldgen.biome.surface.ModSurfaceRules;
 import com.crawkatt.meicamod.worldgen.tree.ModTrunkPlacerTypes;
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.alchemy.Potions;
@@ -142,6 +145,12 @@ public class MeicaMod {
 
             EntityRenderers.register(ModEntities.BROTECITO.get(), BrotecitoRenderer::new);
             EntityRenderers.register(ModEntities.MEICA.get(), MeicaRenderer::new);
+
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.BROTECITO_SPROUT.get(), RenderType.cutout());
+
+            Minecraft.getInstance().getBlockColors().register((state, level, pos, tintIndex) -> 14731036,
+                    ModBlocks.BROTECITO_SPROUT.get()
+            );
         }
     }
 }

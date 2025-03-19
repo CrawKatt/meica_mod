@@ -61,6 +61,9 @@ public class ModItems {
     public static final RegistryObject<Item> BROTENITA_BOOTS = ITEMS.register("brotenita_boots",
             () -> new ModArmorItem(ModArmorMaterials.BROTENITA, ArmorItem.Type.BOOTS, new Item.Properties()));
 
+    public static final RegistryObject<Item> BROTECITO_SEEDS = ITEMS.register("brotecito_seeds",
+            () -> new ItemNameBlockItem(ModBlocks.BROTECITO_SPROUT.get(), new Item.Properties()));
+
     public static final RegistryObject<Item> BROTECITO_SPAWN_EGG = ITEMS.register("brotecito_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.BROTECITO, 0x00FF00, 0xFFDAB9, new Item.Properties()));
 
