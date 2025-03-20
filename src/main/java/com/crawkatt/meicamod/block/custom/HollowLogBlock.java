@@ -40,6 +40,7 @@ public class HollowLogBlock extends RotatedPillarBlock implements SimpleWaterlog
 
     /**
      * Crea la forma del tronco hueco restando un agujero de un cubo completo.
+     *
      * @param holeShape Cuboide que representa el hueco en el tronco.
      * @return VoxelShape del tronco hueco.
      */
@@ -51,7 +52,7 @@ public class HollowLogBlock extends RotatedPillarBlock implements SimpleWaterlog
 
     /**
      * @param strippedState El tronco pelado que se genera al usar un hacha.
-     * @param properties Configuración del bloque.
+     * @param properties    Configuración del bloque.
      */
     public HollowLogBlock(BlockState strippedState, BlockBehaviour.Properties properties) {
         super(properties);
@@ -142,5 +143,20 @@ public class HollowLogBlock extends RotatedPillarBlock implements SimpleWaterlog
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
+    }
+
+    @Override
+    public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return true;
+    }
+
+    @Override
+    public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return 5;
+    }
+
+    @Override
+    public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return 5;
     }
 }

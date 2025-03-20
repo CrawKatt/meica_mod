@@ -7,6 +7,7 @@ import com.crawkatt.meicamod.item.ModItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import org.jetbrains.annotations.NotNull;
 
@@ -150,6 +151,16 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('B', Items.BUCKET)
                 .unlockedBy(getHasName(Items.BLAST_FURNACE), has(Items.BLAST_FURNACE))
                 .save(pWriter);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.OAK_SLAB)
+                .requires(ModBlocks.HOLLOW_OAK_LOG.get())
+                .unlockedBy(getHasName(ModBlocks.HOLLOW_OAK_LOG.get()), has(ModBlocks.HOLLOW_OAK_LOG.get()))
+                .save(pWriter, "oak_slab_from_hollow_oak_log");
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.OAK_SLAB)
+                .requires(ModBlocks.STRIPPED_HOLLOW_OAK_LOG.get())
+                .unlockedBy(getHasName(ModBlocks.STRIPPED_HOLLOW_OAK_LOG.get()), has(ModBlocks.STRIPPED_HOLLOW_OAK_LOG.get()))
+                .save(pWriter, "oak_slab_from_stripped_hollow_oak_log");
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, ModBlocks.BROTENITA_BUTTON.get())
                 .requires(ModItems.BROTENITA_INGOT.get())
