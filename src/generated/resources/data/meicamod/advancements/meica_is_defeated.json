@@ -1,0 +1,40 @@
+{
+  "parent": "meicamod:meicamod",
+  "criteria": {
+    "has_meica_is_defeated": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "meicamod:meica"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "text": "Derrota a Meica"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "meicamod:raw_brotenita"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "Una planta muy esquizo"
+    }
+  },
+  "requirements": [
+    [
+      "has_meica_is_defeated"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
