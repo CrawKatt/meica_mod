@@ -40,6 +40,10 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                         ModBlocks.RAW_BROTENITA.get(),
                         ModBlocks.BROTENITA_CROP.get());
 
+        this.tag(BlockTags.MINEABLE_WITH_AXE)
+                .add(ModBlocks.HOLLOW_OAK_LOG.get())
+                .add(ModBlocks.STRIPPED_HOLLOW_OAK_LOG.get());
+
         this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
                 .add(ModBlocks.BROTENITA_BLOCK.get())
                 .add(ModBlocks.RAW_BROTENITA_BLOCK.get())
