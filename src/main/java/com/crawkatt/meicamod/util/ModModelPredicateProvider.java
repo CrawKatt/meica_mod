@@ -3,7 +3,6 @@ package com.crawkatt.meicamod.util;
 import com.crawkatt.meicamod.item.ModItems;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 
 public class ModModelPredicateProvider {
@@ -12,7 +11,7 @@ public class ModModelPredicateProvider {
     }
 
     private static void registerBow(Item bow) {
-        ModelPredicateProviderRegistry.register(Items.BOW, new Identifier("pull"), (stack, world, entity, seed) -> {
+        ModelPredicateProviderRegistry.register(bow, new Identifier("pull"), (stack, world, entity, seed) -> {
             if (entity == null) {
                 return 0.0F;
             }
