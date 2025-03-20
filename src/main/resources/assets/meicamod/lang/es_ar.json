@@ -47,6 +47,6 @@
   "itemgroup.brotenita": "MeicaMod",
   "meicamod.tooltip.liquid.amount.with.capacity": "%s / %s mB",
   "meicamod.tooltip.liquid.amount": "%s mB",
-  "block.meicamod.hollow_oak_log": "Hollow Oak",
-  "block.meicamod.stripped_hollow_oak_log": "Hollow Oak"
+  "block.meicamod.hollow_oak_log": "Tronco de roble hueco",
+  "block.meicamod.stripped_hollow_oak_log": "Tronco de roble hueco sin corteza"
 }

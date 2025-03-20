@@ -35,8 +35,6 @@
   "block.meicamod.brotenita_door": "Puerta de Brotenita",
   "block.meicamod.brotenita_trapdoor": "Trampilla de Brotenita",
   "block.meicamod.brotenita_melter": "Brotenita Melter",
-  "block.meicamod.hollow_oak_log": "Hollow Oak",
-  "block.meicamod.stripped_hollow_oak_log": "Hollow Oak",
   "creativetab.example_tab": "Meica Mod",
   "entity.meicamod.meica": "Meica",
   "entity.meicamod.brotecito": "Brotecito",
@@ -48,5 +46,7 @@
   "effect.meicamod.paranoia": "Paranoia",
   "itemgroup.brotenita": "MeicaMod",
   "meicamod.tooltip.liquid.amount.with.capacity": "%s / %s mB",
-  "meicamod.tooltip.liquid.amount": "%s mB"
+  "meicamod.tooltip.liquid.amount": "%s mB",
+  "block.meicamod.hollow_oak_log": "Tronco de roble hueco",
+  "block.meicamod.stripped_hollow_oak_log": "Tronco de roble hueco sin corteza"
 }
