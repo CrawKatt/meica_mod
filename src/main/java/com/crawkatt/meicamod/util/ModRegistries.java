@@ -17,6 +17,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.kyrptonaught.customportalapi.api.CustomPortalBuilder;
 import net.minecraft.potion.Potions;
 import net.minecraft.sound.SoundCategory;
@@ -27,6 +28,7 @@ public class ModRegistries {
     public static void registerModStuffs() {
         createPortal();
         registerEvents();
+        registerFlammables();
         registerAttributes();
         registerCommands();
         registerPotionRecipes();
@@ -55,6 +57,11 @@ public class ModRegistries {
         FabricDefaultAttributeRegistry.register(ModEntities.BROTECITO_MAMADO, BrotecitoMamadoEntity.createBrotecitoMamadoAttributes());
         FabricDefaultAttributeRegistry.register(ModEntities.BROTECITO, BrotecitoEntity.createBrotecitoAttributes());
         FabricDefaultAttributeRegistry.register(ModEntities.PLAYER_CLONE, PlayerCloneEntity.createPlayerCloneAttributes());
+    }
+
+    private static void registerFlammables() {
+        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.HOLLOW_OAK_LOG, 5, 5);
+        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.STRIPPED_HOLLOW_OAK_LOG, 5, 5);
     }
 
     private static void registerEvents() {
