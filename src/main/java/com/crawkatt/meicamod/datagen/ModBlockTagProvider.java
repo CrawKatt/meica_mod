@@ -32,6 +32,10 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(ModBlocks.BROTENITA_CROP)
                 .add(ModBlocks.BROTENITA_MELTER);
 
+        getOrCreateTagBuilder(BlockTags.AXE_MINEABLE)
+                .add(ModBlocks.HOLLOW_OAK_LOG)
+                .add(ModBlocks.STRIPPED_HOLLOW_OAK_LOG);
+
         getOrCreateTagBuilder(BlockTags.NEEDS_DIAMOND_TOOL)
                 .add(ModBlocks.BROTENITA_BLOCK)
                 .add(ModBlocks.RAW_BROTENITA_BLOCK)
