@@ -5,6 +5,7 @@ import com.crawkatt.meicamod.item.ModItems;
 import com.crawkatt.meicamod.recipe.BrotenitaMelterRecipeBuilder;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.block.Blocks;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
@@ -152,6 +153,16 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .input('B', Items.BUCKET)
                 .criterion(hasItem(Items.BLAST_FURNACE), conditionsFromItem(Items.BLAST_FURNACE))
                 .offerTo(exporter);
+
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, Blocks.OAK_SLAB)
+                .input(ModBlocks.HOLLOW_OAK_LOG)
+                .criterion(hasItem(ModBlocks.HOLLOW_OAK_LOG), conditionsFromItem(ModBlocks.HOLLOW_OAK_LOG))
+                .offerTo(exporter, new Identifier(getRecipeName(Blocks.OAK_SLAB) + "_from_hollow_oak_log"));
+
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, Blocks.OAK_SLAB)
+                .input(ModBlocks.STRIPPED_HOLLOW_OAK_LOG)
+                .criterion(hasItem(ModBlocks.STRIPPED_HOLLOW_OAK_LOG), conditionsFromItem(ModBlocks.STRIPPED_HOLLOW_OAK_LOG))
+                .offerTo(exporter, new Identifier(getRecipeName(Blocks.OAK_SLAB) + "_from_stripped_hollow_oak_log"));
 
         ShapelessRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.BROTENITA_BUTTON)
                 .input(ModItems.BROTENITA_INGOT)
