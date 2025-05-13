@@ -143,6 +143,36 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .criterion(hasItem(ModItems.BROTENITA_INGOT), conditionsFromItem(ModItems.BROTENITA_INGOT))
                 .offerTo(exporter, new Identifier(getRecipeName(ModBlocks.BROTENITA_PRESSURE_PLATE) + "_"));
 
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.BROTENITA_HELMET)
+                .pattern("BBB")
+                .pattern("B B")
+                .input('B', ModItems.BROTENITA_INGOT)
+                .criterion(hasItem(ModItems.BROTENITA_INGOT), conditionsFromItem(ModItems.BROTENITA_INGOT))
+                .offerTo(exporter, new Identifier(getRecipeName(ModItems.BROTENITA_HELMET) + "_"));
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.BROTENITA_CHESTPLATE)
+                .pattern("B B")
+                .pattern("BBB")
+                .pattern("BBB")
+                .input('B', ModItems.BROTENITA_INGOT)
+                .criterion(hasItem(ModItems.BROTENITA_INGOT), conditionsFromItem(ModItems.BROTENITA_INGOT))
+                .offerTo(exporter, new Identifier(getRecipeName(ModItems.BROTENITA_CHESTPLATE) + "_"));
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.BROTENITA_LEGGINGS)
+                .pattern("BBB")
+                .pattern("B B")
+                .pattern("B B")
+                .input('B', ModItems.BROTENITA_INGOT)
+                .criterion(hasItem(ModItems.BROTENITA_INGOT), conditionsFromItem(ModItems.BROTENITA_INGOT))
+                .offerTo(exporter, new Identifier(getRecipeName(ModItems.BROTENITA_LEGGINGS) + "_"));
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.BROTENITA_BOOTS)
+                .pattern("B B")
+                .pattern("B B")
+                .input('B', ModItems.BROTENITA_INGOT)
+                .criterion(hasItem(ModItems.BROTENITA_INGOT), conditionsFromItem(ModItems.BROTENITA_INGOT))
+                .offerTo(exporter, new Identifier(getRecipeName(ModItems.BROTENITA_BOOTS) + "_"));
+
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ModBlocks.BROTENITA_MELTER)
                 .pattern("LLL")
                 .pattern("FIB")
