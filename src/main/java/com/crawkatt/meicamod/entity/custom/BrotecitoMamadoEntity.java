@@ -247,17 +247,23 @@ public class BrotecitoMamadoEntity extends TameableEntity implements Angerable, 
     }
 
     private <T extends GeoAnimatable> PlayState predicate(AnimationState<T> tAnimationState) {
+        if (this.isInSittingPose()) {
+            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito_mamado.sit", Animation.LoopType.HOLD_ON_LAST_FRAME));
+            return PlayState.CONTINUE;
+        }
+
         if (this.isAttacking()) {
             tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito_mamado.attack", Animation.LoopType.PLAY_ONCE));
             return PlayState.CONTINUE;
-        } else if (tAnimationState.isMoving()) {
+        }
+
+        if (tAnimationState.isMoving()) {
             tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito_mamado.walk", Animation.LoopType.LOOP));
             return PlayState.CONTINUE;
-        } else if (!tAnimationState.isMoving() && !this.isInSittingPose()) {
+        }
+
+        if (!tAnimationState.isMoving()) {
             tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito_mamado.idle", Animation.LoopType.LOOP));
-            return PlayState.CONTINUE;
-        } else if (this.isInSittingPose()) {
-            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito_mamado.sit", Animation.LoopType.HOLD_ON_LAST_FRAME));
             return PlayState.CONTINUE;
         }
 

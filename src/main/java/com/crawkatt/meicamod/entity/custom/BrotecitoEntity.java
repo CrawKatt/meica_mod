@@ -102,8 +102,18 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
         this.goalSelector.add(6, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F, false));
         this.goalSelector.add(7, new BrotecitoMateGoal(this, 1.0));
         this.goalSelector.add(8, new WanderAroundFarGoal(this, 1.0));
-        this.goalSelector.add(10, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.add(10, new LookAroundGoal(this));
+        this.goalSelector.add(10, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F) {
+            @Override
+            public boolean canStart() {
+                return !BrotecitoEntity.this.isSitting() && super.canStart();
+            }
+        });
+        this.goalSelector.add(10, new LookAroundGoal(this) {
+            @Override
+            public boolean canStart() {
+                return !BrotecitoEntity.this.isSitting() && super.canStart();
+            }
+        });
         if (this.isAgressiveMode()) {
             this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
         } else {
@@ -396,14 +406,18 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
     }
 
     private <T extends GeoAnimatable> PlayState predicate(AnimationState<T> tAnimationState) {
+        if (this.isSitting()) {
+            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito.sit", Animation.LoopType.HOLD_ON_LAST_FRAME));
+            return PlayState.CONTINUE;
+        }
+
         if (tAnimationState.isMoving()) {
             tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito.walk", Animation.LoopType.LOOP));
             return PlayState.CONTINUE;
-        } else if (!tAnimationState.isMoving() && !this.isInSittingPose()) {
+        }
+
+        if (!tAnimationState.isMoving()) {
             tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito.idle", Animation.LoopType.LOOP));
-            return PlayState.CONTINUE;
-        } else if (this.isInSittingPose()) {
-            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito.sit", Animation.LoopType.HOLD_ON_LAST_FRAME));
             return PlayState.CONTINUE;
         }
 
