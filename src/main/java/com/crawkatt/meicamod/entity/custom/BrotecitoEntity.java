@@ -158,8 +158,24 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
             spawnBreedingParticles();
         } else if (status == 19 || status == 20) {
             spawnSitParticles();
+        } else if (status == 6) {
+            spawnEvolveParticles();
         } else {
             super.handleStatus(status);
+        }
+    }
+
+    private void spawnEvolveParticles() {
+        for (int i = 0; i < 7; ++i) {
+            this.getWorld().addParticle(
+                    ParticleTypes.SMOKE,
+                    this.getParticleX(1.0),
+                    this.getRandomBodyY() + 0.5,
+                    this.getParticleZ(1.0),
+                    (this.random.nextDouble() - 0.5) * 0.1,
+                    0.0,
+                    (this.random.nextDouble() - 0.5) * 0.1
+            );
         }
     }
 
@@ -291,6 +307,7 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
                 itemStack.decrement(1);
             }
 
+            this.getWorld().sendEntityStatus(this, (byte)6);
             this.increaseEvolutionProgress(1);
             if (this.getEvolutionProgress() >= this.getMaxEvolutionProgress()) {
                 World world = this.getWorld();
