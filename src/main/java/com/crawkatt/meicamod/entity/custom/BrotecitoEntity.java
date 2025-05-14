@@ -61,6 +61,7 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
 
     public BrotecitoEntity(EntityType<? extends TameableEntity> pEntityType, World world) {
         super(pEntityType, world);
+        this.setTamed(false);
     }
 
     public int getEvolutionProgress() {
@@ -158,7 +159,7 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
             spawnBreedingParticles();
         } else if (status == 19 || status == 20) {
             spawnSitParticles();
-        } else if (status == 6) {
+        } else if (status == 44) {
             spawnEvolveParticles();
         } else {
             super.handleStatus(status);
@@ -241,30 +242,49 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
         ItemStack itemStack = player.getStackInHand(hand);
         Item item = itemStack.getItem();
 
-        Item itemForTaming = Items.APPLE;
+        if (this.getWorld().isClient) {
+            boolean canInteract = this.isOwner(player) || this.isTamed() || (itemStack.isOf(Items.APPLE) && !this.isTamed() && !this.hasAngerTime());
+            return canInteract ? ActionResult.CONSUME : ActionResult.PASS;
+        }
+
         if (isBreedingItem(itemStack)) {
             return super.interactMob(player, hand);
         }
 
-        if (item == itemForTaming && !isTamed()) {
-            return this.tame(itemStack, player, hand);
-        }
-
-        if (isTamed() && item instanceof SwordItem) {
-            if (!this.getWorld().isClient) {
-                ItemStack copy = itemStack.copy();
-                copy.setCount(1);
-                this.equipStack(EquipmentSlot.MAINHAND, copy);
-            }
-
+        if (itemStack.isOf(Items.APPLE) && !this.isTamed() && !this.hasAngerTime()) {
             if (!player.getAbilities().creativeMode) {
                 itemStack.decrement(1);
+            }
+
+            if (this.random.nextInt(3) == 0) {
+                this.setOwner(player);
+                this.navigation.stop();
+                this.setTarget(null);
+                this.setSitting(true);
+                this.getWorld().sendEntityStatus(this, (byte)7);
+            } else {
+                this.getWorld().sendEntityStatus(this, (byte)6);
             }
 
             return ActionResult.SUCCESS;
         }
 
+        // Resto de interacciones cuando está domesticado
         if (isTamed()) {
+            if (item instanceof SwordItem) {
+                if (!this.getWorld().isClient) {
+                    ItemStack copy = itemStack.copy();
+                    copy.setCount(1);
+                    this.equipStack(EquipmentSlot.MAINHAND, copy);
+                }
+
+                if (!player.getAbilities().creativeMode) {
+                    itemStack.decrement(1);
+                }
+
+                return ActionResult.SUCCESS;
+            }
+
             if (item == ModItems.BROTENITA_MEAL) {
                 return this.evolve(player, itemStack);
             } else if (!this.getWorld().isClient && hand == Hand.MAIN_HAND) {
@@ -273,29 +293,11 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
             }
         }
 
-        if (itemStack.getItem() == itemForTaming) {
+        if (itemStack.isOf(Items.APPLE)) {
             return ActionResult.PASS;
         }
 
         return super.interactMob(player, hand);
-    }
-
-    private ActionResult tame(ItemStack itemStack, PlayerEntity player, Hand hand) {
-        if (this.getWorld().isClient) {
-            return ActionResult.CONSUME;
-        } else {
-            if (!player.getAbilities().creativeMode) {
-                itemStack.decrement(1);
-            }
-
-            super.setOwner(player);
-            this.navigation.recalculatePath();
-            this.setTarget(null);
-            this.getWorld().sendEntityStatus(this, (byte) 7);
-            setSitting(false);
-
-            return ActionResult.SUCCESS;
-        }
     }
 
     // Método para evolucionar al Brotecito
@@ -307,7 +309,7 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
                 itemStack.decrement(1);
             }
 
-            this.getWorld().sendEntityStatus(this, (byte)6);
+            this.getWorld().sendEntityStatus(this, (byte)44);
             this.increaseEvolutionProgress(1);
             if (this.getEvolutionProgress() >= this.getMaxEvolutionProgress()) {
                 World world = this.getWorld();
@@ -365,18 +367,21 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
     public void readCustomDataFromNbt(@NotNull NbtCompound tag) {
         super.readCustomDataFromNbt(tag);
         setSitting(tag.getBoolean("isSitting"));
+        this.readAngerFromNbt(this.getWorld(), tag);
     }
 
     @Override
     public void writeCustomDataToNbt(@NotNull NbtCompound tag) {
         super.writeCustomDataToNbt(tag);
         tag.putBoolean("isSitting", this.isSitting());
+        this.writeAngerToNbt(tag);
     }
 
     // Método para que el Brotecito pueda sentarse y levantarse
     @Override
     protected void initDataTracker() {
         super.initDataTracker();
+        this.dataTracker.startTracking(DATA_REMAINING_ANGER_TIME, 0);
         this.dataTracker.startTracking(SITTING, false);
     }
 
