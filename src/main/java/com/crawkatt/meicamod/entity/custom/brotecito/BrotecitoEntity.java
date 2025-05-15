@@ -105,8 +105,18 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
         this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(7, new BrotecitoBreedGoal(this, 1.0));
         this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0));
-        this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F) {
+            @Override
+            public boolean canUse() {
+                return !BrotecitoEntity.this.isSitting() && super.canUse();
+            }
+        });
+        this.goalSelector.addGoal(10, new RandomLookAroundGoal(this) {
+            @Override
+            public boolean canUse() {
+                return !BrotecitoEntity.this.isSitting() && super.canUse();
+            }
+        });
         if (this.isAgressiveMode()) {
             this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
         } else {
@@ -370,19 +380,6 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
             this.setOrderedToSit(sitting);
             this.playSound(sitting ? SoundEvents.GRAVEL_BREAK : SoundEvents.GRASS_BREAK, 1.0F, 0.8F);
             this.level().broadcastEntityEvent(this, sitting ? (byte) 19 : (byte) 20);
-
-            /*
-            if (!this.level().isClientSide) {
-                ServerLevel serverLevel = (ServerLevel) this.level();
-                BlockState dirtState = Blocks.DIRT.defaultBlockState();
-
-                serverLevel.sendParticles(
-                        new BlockParticleOption(ParticleTypes.BLOCK, dirtState),
-                        this.getX(), this.getY() + 0.3, this.getZ(),
-                        15, 0.3, 0.2, 0.3, 0.05
-                );
-            }
-            */
         }
     }
 
@@ -419,14 +416,18 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
     }
 
     private <T extends GeoAnimatable> PlayState predicate(AnimationState<T> tAnimationState) {
+        if (this.isSitting()) {
+            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito.sit", Animation.LoopType.HOLD_ON_LAST_FRAME));
+            return PlayState.CONTINUE;
+        }
+
         if (tAnimationState.isMoving()) {
             tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito.walk", Animation.LoopType.LOOP));
             return PlayState.CONTINUE;
-        } else if (!tAnimationState.isMoving() && !this.isInSittingPose()) {
+        }
+
+        if (!tAnimationState.isMoving()) {
             tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito.idle", Animation.LoopType.LOOP));
-            return PlayState.CONTINUE;
-        } else if (this.isInSittingPose()) {
-            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito.sit", Animation.LoopType.HOLD_ON_LAST_FRAME));
             return PlayState.CONTINUE;
         }
 
