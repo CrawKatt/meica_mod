@@ -161,8 +161,24 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
             spawnBreedingParticles();
         } else if (id == 19 || id == 20) {
             spawnSitParticles();
+        } else if (id == 44) {
+            spawnEvolveParticles();
         } else {
             super.handleEntityEvent(id);
+        }
+    }
+
+    private void spawnEvolveParticles() {
+        for (int i = 0; i < 7; ++i) {
+            this.level().addParticle(
+                    ParticleTypes.SMOKE,
+                    this.getRandomX(1.0),
+                    this.getRandomY() + 0.5,
+                    this.getRandomZ(1.0),
+                    (this.random.nextDouble() - 0.5) * 0.1,
+                    0.0,
+                    (this.random.nextDouble() - 0.5) * 0.1
+            );
         }
     }
 
@@ -302,6 +318,7 @@ public class BrotecitoEntity extends TamableAnimal implements NeutralMob, GeoEnt
                 itemStack.shrink(1);
             }
 
+            this.level().broadcastEntityEvent(this, (byte)6);
             this.increaseEvolutionProgress(1);
             if (this.getEvolutionProgress() >= this.getMaxEvolutionProgress()) {
                 Level level = this.level();
