@@ -61,6 +61,7 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
 
     public BrotecitoEntity(EntityType<? extends TameableEntity> pEntityType, World world) {
         super(pEntityType, world);
+        this.setTamed(false);
     }
 
     public int getEvolutionProgress() {
@@ -102,8 +103,18 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
         this.goalSelector.add(6, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F, false));
         this.goalSelector.add(7, new BrotecitoMateGoal(this, 1.0));
         this.goalSelector.add(8, new WanderAroundFarGoal(this, 1.0));
-        this.goalSelector.add(10, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.add(10, new LookAroundGoal(this));
+        this.goalSelector.add(10, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F) {
+            @Override
+            public boolean canStart() {
+                return !BrotecitoEntity.this.isSitting() && super.canStart();
+            }
+        });
+        this.goalSelector.add(10, new LookAroundGoal(this) {
+            @Override
+            public boolean canStart() {
+                return !BrotecitoEntity.this.isSitting() && super.canStart();
+            }
+        });
         if (this.isAgressiveMode()) {
             this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
         } else {
@@ -148,8 +159,24 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
             spawnBreedingParticles();
         } else if (status == 19 || status == 20) {
             spawnSitParticles();
+        } else if (status == 44) {
+            spawnEvolveParticles();
         } else {
             super.handleStatus(status);
+        }
+    }
+
+    private void spawnEvolveParticles() {
+        for (int i = 0; i < 7; ++i) {
+            this.getWorld().addParticle(
+                    ParticleTypes.SMOKE,
+                    this.getParticleX(1.0),
+                    this.getRandomBodyY() + 0.5,
+                    this.getParticleZ(1.0),
+                    (this.random.nextDouble() - 0.5) * 0.1,
+                    0.0,
+                    (this.random.nextDouble() - 0.5) * 0.1
+            );
         }
     }
 
@@ -215,30 +242,49 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
         ItemStack itemStack = player.getStackInHand(hand);
         Item item = itemStack.getItem();
 
-        Item itemForTaming = Items.APPLE;
+        if (this.getWorld().isClient) {
+            boolean canInteract = this.isOwner(player) || this.isTamed() || (itemStack.isOf(Items.APPLE) && !this.isTamed() && !this.hasAngerTime());
+            return canInteract ? ActionResult.CONSUME : ActionResult.PASS;
+        }
+
         if (isBreedingItem(itemStack)) {
             return super.interactMob(player, hand);
         }
 
-        if (item == itemForTaming && !isTamed()) {
-            return this.tame(itemStack, player, hand);
-        }
-
-        if (isTamed() && item instanceof SwordItem) {
-            if (!this.getWorld().isClient) {
-                ItemStack copy = itemStack.copy();
-                copy.setCount(1);
-                this.equipStack(EquipmentSlot.MAINHAND, copy);
-            }
-
+        if (itemStack.isOf(Items.APPLE) && !this.isTamed() && !this.hasAngerTime()) {
             if (!player.getAbilities().creativeMode) {
                 itemStack.decrement(1);
+            }
+
+            if (this.random.nextInt(3) == 0) {
+                this.setOwner(player);
+                this.navigation.stop();
+                this.setTarget(null);
+                this.setSitting(true);
+                this.getWorld().sendEntityStatus(this, (byte)7);
+            } else {
+                this.getWorld().sendEntityStatus(this, (byte)6);
             }
 
             return ActionResult.SUCCESS;
         }
 
+        // Resto de interacciones cuando está domesticado
         if (isTamed()) {
+            if (item instanceof SwordItem) {
+                if (!this.getWorld().isClient) {
+                    ItemStack copy = itemStack.copy();
+                    copy.setCount(1);
+                    this.equipStack(EquipmentSlot.MAINHAND, copy);
+                }
+
+                if (!player.getAbilities().creativeMode) {
+                    itemStack.decrement(1);
+                }
+
+                return ActionResult.SUCCESS;
+            }
+
             if (item == ModItems.BROTENITA_MEAL) {
                 return this.evolve(player, itemStack);
             } else if (!this.getWorld().isClient && hand == Hand.MAIN_HAND) {
@@ -247,29 +293,11 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
             }
         }
 
-        if (itemStack.getItem() == itemForTaming) {
+        if (itemStack.isOf(Items.APPLE)) {
             return ActionResult.PASS;
         }
 
         return super.interactMob(player, hand);
-    }
-
-    private ActionResult tame(ItemStack itemStack, PlayerEntity player, Hand hand) {
-        if (this.getWorld().isClient) {
-            return ActionResult.CONSUME;
-        } else {
-            if (!player.getAbilities().creativeMode) {
-                itemStack.decrement(1);
-            }
-
-            super.setOwner(player);
-            this.navigation.recalculatePath();
-            this.setTarget(null);
-            this.getWorld().sendEntityStatus(this, (byte) 7);
-            setSitting(false);
-
-            return ActionResult.SUCCESS;
-        }
     }
 
     // Método para evolucionar al Brotecito
@@ -281,6 +309,7 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
                 itemStack.decrement(1);
             }
 
+            this.getWorld().sendEntityStatus(this, (byte)44);
             this.increaseEvolutionProgress(1);
             if (this.getEvolutionProgress() >= this.getMaxEvolutionProgress()) {
                 World world = this.getWorld();
@@ -338,18 +367,21 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
     public void readCustomDataFromNbt(@NotNull NbtCompound tag) {
         super.readCustomDataFromNbt(tag);
         setSitting(tag.getBoolean("isSitting"));
+        this.readAngerFromNbt(this.getWorld(), tag);
     }
 
     @Override
     public void writeCustomDataToNbt(@NotNull NbtCompound tag) {
         super.writeCustomDataToNbt(tag);
         tag.putBoolean("isSitting", this.isSitting());
+        this.writeAngerToNbt(tag);
     }
 
     // Método para que el Brotecito pueda sentarse y levantarse
     @Override
     protected void initDataTracker() {
         super.initDataTracker();
+        this.dataTracker.startTracking(DATA_REMAINING_ANGER_TIME, 0);
         this.dataTracker.startTracking(SITTING, false);
     }
 
@@ -396,14 +428,18 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
     }
 
     private <T extends GeoAnimatable> PlayState predicate(AnimationState<T> tAnimationState) {
+        if (this.isSitting()) {
+            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito.sit", Animation.LoopType.HOLD_ON_LAST_FRAME));
+            return PlayState.CONTINUE;
+        }
+
         if (tAnimationState.isMoving()) {
             tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito.walk", Animation.LoopType.LOOP));
             return PlayState.CONTINUE;
-        } else if (!tAnimationState.isMoving() && !this.isInSittingPose()) {
+        }
+
+        if (!tAnimationState.isMoving()) {
             tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito.idle", Animation.LoopType.LOOP));
-            return PlayState.CONTINUE;
-        } else if (this.isInSittingPose()) {
-            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.brotecito.sit", Animation.LoopType.HOLD_ON_LAST_FRAME));
             return PlayState.CONTINUE;
         }
 

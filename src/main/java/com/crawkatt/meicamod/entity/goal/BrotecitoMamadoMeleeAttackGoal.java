@@ -27,6 +27,5 @@ public class BrotecitoMamadoMeleeAttackGoal extends MeleeAttackGoal {
     @Override
     public void stop() {
         super.stop();
-        brotecitoMamadoEntity.stopAttack();
     }
 }

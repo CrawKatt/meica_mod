@@ -292,6 +292,11 @@ public class MeicaEntity extends HostileEntity implements RangedAttackMob {
     /* SOUNDS */
 
     @Override
+    public float getSoundPitch() {
+        return 1.0F;
+    }
+
+    @Override
     protected SoundEvent getDeathSound() {
         return selectRandomDeathSound();
     }
