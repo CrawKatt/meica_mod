@@ -141,6 +141,36 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModItems.BROTENITA_INGOT.get()), has(ModItems.BROTENITA_INGOT.get()))
                 .save(pWriter);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.BROTENITA_HELMET.get())
+                .pattern("BBB")
+                .pattern("B B")
+                .define('B', ModItems.BROTENITA_INGOT.get())
+                .unlockedBy(getHasName(ModItems.BROTENITA_INGOT.get()), has(ModItems.BROTENITA_INGOT.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.BROTENITA_CHESTPLATE.get())
+                .pattern("B B")
+                .pattern("BBB")
+                .pattern("BBB")
+                .define('B', ModItems.BROTENITA_INGOT.get())
+                .unlockedBy(getHasName(ModItems.BROTENITA_INGOT.get()), has(ModItems.BROTENITA_INGOT.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.BROTENITA_LEGGINGS.get())
+                .pattern("BBB")
+                .pattern("B B")
+                .pattern("B B")
+                .define('B', ModItems.BROTENITA_INGOT.get())
+                .unlockedBy(getHasName(ModItems.BROTENITA_INGOT.get()), has(ModItems.BROTENITA_INGOT.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.BROTENITA_BOOTS.get())
+                .pattern("B B")
+                .pattern("B B")
+                .define('B', ModItems.BROTENITA_INGOT.get())
+                .unlockedBy(getHasName(ModItems.BROTENITA_INGOT.get()), has(ModItems.BROTENITA_INGOT.get()))
+                .save(pWriter);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.BROTENITA_MELTER.get())
                 .pattern("LLL")
                 .pattern("FIB")

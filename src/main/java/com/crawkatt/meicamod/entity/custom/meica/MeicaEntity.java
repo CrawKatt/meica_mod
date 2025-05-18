@@ -285,6 +285,11 @@ public class MeicaEntity extends Monster implements RangedAttackMob {
     /* SOUNDS */
 
     @Override
+    public float getVoicePitch() {
+        return 1.0F;
+    }
+
+    @Override
     protected SoundEvent getDeathSound() {
         return selectRandomDeathSound();
     }
