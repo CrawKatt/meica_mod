@@ -27,7 +27,7 @@ public class BrotecitoScreen extends HandledScreen<BrotecitoScreenHandler> {
         context.drawTexture(TEXTURE, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight);
 
         InventoryScreen.drawEntity(context,
-                x + 85,
+                x + 86,
                 y + 70,
                 30,
                 (float)(x + 85) - this.mouseX,
