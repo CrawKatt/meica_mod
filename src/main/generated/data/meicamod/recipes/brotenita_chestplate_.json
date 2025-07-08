@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "meicamod:brotenita_ingot"
+    }
+  },
+  "pattern": [
+    "B B",
+    "BBB",
+    "BBB"
+  ],
+  "result": {
+    "item": "meicamod:brotenita_chestplate"
+  },
+  "show_notification": true
+}
