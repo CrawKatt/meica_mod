@@ -26,15 +26,15 @@ public class ModItems {
     public static final Item MEICA_BOW = registerItem("meica_bow",
             new BowItem(new FabricItemSettings().maxDamage(500)));
     public static final Item BROTENITA_SWORD = registerItem("brotenita_sword",
-            new SwordItem(ModToolMaterial.BROTENITA, 4, -2.4F, new FabricItemSettings()));
+            new SwordItem(ModToolMaterial.BROTENITA, 6, -2.4F, new FabricItemSettings()));
     public static final Item BROTENITA_PICKAXE = registerItem("brotenita_pickaxe",
-            new PickaxeItem(ModToolMaterial.BROTENITA, 4, -2.8F, new FabricItemSettings()));
+            new PickaxeItem(ModToolMaterial.BROTENITA, 1, -2.8F, new FabricItemSettings()));
     public static final Item BROTENITA_AXE = registerItem("brotenita_axe",
-            new AxeItem(ModToolMaterial.BROTENITA, 4.0F, -3.0F, new FabricItemSettings()));
+            new AxeItem(ModToolMaterial.BROTENITA, 5.0F, -3.0F, new FabricItemSettings()));
     public static final Item BROTENITA_SHOVEL = registerItem("brotenita_shovel",
-            new ShovelItem(ModToolMaterial.BROTENITA, 4.0F, -3.0F, new FabricItemSettings()));
+            new ShovelItem(ModToolMaterial.BROTENITA, 1.5F, -3.0F, new FabricItemSettings()));
     public static final Item BROTENITA_HOE = registerItem("brotenita_hoe",
-            new HoeItem(ModToolMaterial.BROTENITA, 4, -3.0F, new FabricItemSettings()));
+            new HoeItem(ModToolMaterial.BROTENITA, -4, 0.0F, new FabricItemSettings()));
 
     public static final Item BROTENITA_HELMET = registerItem("brotenita_helmet",
             new ModArmorItem(ModArmorMaterials.BROTENITA, ArmorItem.Type.HELMET, new FabricItemSettings()));
