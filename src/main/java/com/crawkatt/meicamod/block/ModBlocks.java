@@ -76,6 +76,12 @@ public class ModBlocks {
                     .sounds(BlockSoundGroup.AMETHYST_CLUSTER)
                     .requiresTool()));
 
+    public static final Block MEICA_TEDDY = registerBlock("meica_teddy",
+            new MeicaTeddy(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).nonOpaque()));
+
+    public static final Block ZERO_FIVE_TEDDY = registerBlock("zero_five_teddy",
+            new MeicaTeddy(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).nonOpaque()));
+
     public static final Block STRIPPED_HOLLOW_OAK_LOG = registerBlock("stripped_hollow_oak_log", createStrippedHollowLogBlock(Blocks.STRIPPED_OAK_LOG));
     public static final Block HOLLOW_OAK_LOG = registerBlock("hollow_oak_log", createHollowLogBlock(STRIPPED_HOLLOW_OAK_LOG, Blocks.OAK_LOG));
 

@@ -4,11 +4,12 @@ import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.entity.goal.BrotecitoMateGoal;
 import com.crawkatt.meicamod.item.ModItems;
 import com.crawkatt.meicamod.particle.ModParticles;
+import com.crawkatt.meicamod.screen.BrotecitoScreenHandler;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -21,17 +22,25 @@ import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.mob.GhastEntity;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.SwordItem;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.scoreboard.AbstractTeam;
+import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
@@ -58,10 +67,34 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
     private static final TrackedData<Boolean> SITTING = DataTracker.registerData(BrotecitoEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private boolean aggressiveMode = false;
+    private final SimpleInventory inventory = new SimpleInventory(27);
 
     public BrotecitoEntity(EntityType<? extends TameableEntity> pEntityType, World world) {
         super(pEntityType, world);
         this.setTamed(false);
+    }
+
+    public NamedScreenHandlerFactory createScreenHandlerFactory() {
+        return new ExtendedScreenHandlerFactory() {
+            @Override
+            public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
+                buf.writeInt(BrotecitoEntity.this.getId());
+            }
+
+            @Override
+            public Text getDisplayName() {
+                return Text.translatable("screen.meicamod.brotecito");
+            }
+
+            @Override
+            public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+                if (!isOwner(player)) {
+                    return null;
+                }
+
+                return new BrotecitoScreenHandler(syncId, playerInventory, inventory, BrotecitoEntity.this);
+            }
+        };
     }
 
     public int getEvolutionProgress() {
@@ -271,18 +304,9 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
 
         // Resto de interacciones cuando está domesticado
         if (isTamed()) {
-            if (item instanceof SwordItem) {
-                if (!this.getWorld().isClient) {
-                    ItemStack copy = itemStack.copy();
-                    copy.setCount(1);
-                    this.equipStack(EquipmentSlot.MAINHAND, copy);
-                }
-
-                if (!player.getAbilities().creativeMode) {
-                    itemStack.decrement(1);
-                }
-
-                return ActionResult.SUCCESS;
+            if (player.isSneaking() && hand == Hand.MAIN_HAND) {
+                player.openHandledScreen(this.createScreenHandlerFactory());
+                return ActionResult.CONSUME;
             }
 
             if (item == ModItems.BROTENITA_MEAL) {
@@ -368,6 +392,15 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
         super.readCustomDataFromNbt(tag);
         setSitting(tag.getBoolean("isSitting"));
         this.readAngerFromNbt(this.getWorld(), tag);
+
+        NbtList list = tag.getList("Inventory", NbtElement.COMPOUND_TYPE);
+        for (int i = 0; i < list.size(); i++) {
+            NbtCompound stackTag = list.getCompound(i);
+            int slot = stackTag.getByte("Slot") & 255;
+            if (slot < inventory.size()) {
+                inventory.setStack(slot, ItemStack.fromNbt(stackTag));
+            }
+        }
     }
 
     @Override
@@ -375,6 +408,19 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
         super.writeCustomDataToNbt(tag);
         tag.putBoolean("isSitting", this.isSitting());
         this.writeAngerToNbt(tag);
+
+        NbtList list = new NbtList();
+        for (int i = 0; i < inventory.size(); i++) {
+            ItemStack stack = inventory.getStack(i);
+            if (!stack.isEmpty()) {
+                NbtCompound stackTag = new NbtCompound();
+                stackTag.putByte("Slot", (byte) i);
+                stack.writeNbt(stackTag);
+                list.add(stackTag);
+            }
+        }
+
+        tag.put("Inventory", list);
     }
 
     // Método para que el Brotecito pueda sentarse y levantarse

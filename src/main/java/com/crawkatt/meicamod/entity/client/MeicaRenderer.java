@@ -11,6 +11,7 @@ public class MeicaRenderer extends BipedEntityRenderer<MeicaEntity, MeicaModel<M
 
     public MeicaRenderer(EntityRendererFactory.Context context) {
         super(context, new MeicaModel<>(context.getPart(ModModelLayers.MEICA_LAYER)), 0.5F);
+        this.addFeature(new MagicCircleFeatureRenderer<>(this));
     }
 
     @Override

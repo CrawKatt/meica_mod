@@ -38,6 +38,8 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
         addDrop(ModBlocks.BROTENITA_BUTTON);
         addDrop(ModBlocks.BROTENITA_PRESSURE_PLATE);
         addDrop(ModBlocks.BROTENITA_MELTER);
+        addDrop(ModBlocks.MEICA_TEDDY);
+        addDrop(ModBlocks.ZERO_FIVE_TEDDY);
         addDrop(ModBlocks.HOLLOW_OAK_LOG);
         addDrop(ModBlocks.STRIPPED_HOLLOW_OAK_LOG);
 

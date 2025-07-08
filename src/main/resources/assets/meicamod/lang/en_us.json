@@ -17,6 +17,7 @@
   "item.meicamod.brotecito_spawn_egg": "Brotecito Spawn Egg",
   "item.meicamod.brotecito_mamado_spawn_egg": "Brotecito Mamado Spawn Egg",
   "item.meicamod.meica_spawn_egg": "Meica Spawn Egg",
+  "item.meicamod.05_spawn_egg": "05 Spawn Egg",
   "item.meicamod.player_clone_spawn_egg": "Player Clone Spawn Egg",
   "item.minecraft.potion.effect.blessing_potion": "Blessing Forest Potion",
   "item.minecraft.splash_potion.effect.blessing_potion": "Blessing Forest Splash Potion",
@@ -48,5 +49,6 @@
   "effect.meicamod.paranoia": "Paranoia",
   "itemgroup.brotenita": "MeicaMod",
   "meicamod.tooltip.liquid.amount.with.capacity": "%s / %s mB",
-  "meicamod.tooltip.liquid.amount": "%s mB"
+  "meicamod.tooltip.liquid.amount": "%s mB",
+  "screen.meicamod.brotecito": "Brotecito"
 }

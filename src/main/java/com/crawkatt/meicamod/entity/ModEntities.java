@@ -1,10 +1,7 @@
 package com.crawkatt.meicamod.entity;
 
 import com.crawkatt.meicamod.MeicaMod;
-import com.crawkatt.meicamod.entity.custom.BrotecitoEntity;
-import com.crawkatt.meicamod.entity.custom.BrotecitoMamadoEntity;
-import com.crawkatt.meicamod.entity.custom.MeicaEntity;
-import com.crawkatt.meicamod.entity.custom.PlayerCloneEntity;
+import com.crawkatt.meicamod.entity.custom.*;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
@@ -17,6 +14,11 @@ public class ModEntities {
     public static final EntityType<MeicaEntity> MEICA = Registry.register(Registries.ENTITY_TYPE,
             new Identifier(MeicaMod.MOD_ID, "meica"),
             FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, MeicaEntity::new)
+                    .dimensions(EntityDimensions.fixed(1.0f, 2.0f)).build());
+
+    public static final EntityType<ZeroFiveEntity> ZERO_FIVE = Registry.register(Registries.ENTITY_TYPE,
+            new Identifier(MeicaMod.MOD_ID, "05"),
+            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, ZeroFiveEntity::new)
                     .dimensions(EntityDimensions.fixed(1.0f, 2.0f)).build());
 
     public static final EntityType<BrotecitoEntity> BROTECITO = Registry.register(Registries.ENTITY_TYPE,
@@ -33,6 +35,15 @@ public class ModEntities {
             new Identifier(MeicaMod.MOD_ID, "player_clone"),
             FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, PlayerCloneEntity::new)
                     .dimensions(EntityDimensions.fixed(1.0f, 2.0f)).build());
+
+    public static final EntityType<MagicCircleEntity> MAGIC_CIRCLE = Registry.register(
+            Registries.ENTITY_TYPE,
+            new Identifier(MeicaMod.MOD_ID, "magic_circle"),
+            EntityType.Builder.create(MagicCircleEntity::new, SpawnGroup.MISC)
+                    .setDimensions(0.1f, 0.1f)
+                    .maxTrackingRange(1)
+                    .build("magic_circle")
+    );
 
     public static void registerModEntities() {
         MeicaMod.LOGGER.info("Registering Mod Entities for " + MeicaMod.MOD_ID);

@@ -7,4 +7,7 @@ import net.minecraft.util.Identifier;
 public class ModModelLayers {
     public static final EntityModelLayer MEICA_LAYER =
             new EntityModelLayer(new Identifier(MeicaMod.MOD_ID, "meica"), "main");
+
+    public static final EntityModelLayer ZERO_FIVE_LAYER =
+            new EntityModelLayer(new Identifier(MeicaMod.MOD_ID, "05"), "main");
 }

@@ -47,6 +47,7 @@ public class ModItemGroups {
                         entries.add(ModItems.BROTECITO_SEEDS);
 
                         entries.add(ModItems.MEICA_SPAWN_EGG);
+                        entries.add(ModItems.ZERO_FIVE_SPAWN_EGG);
                         entries.add(ModItems.BROTECITO_SPAWN_EGG);
                         entries.add(ModItems.BROTECITO_MAMADO_SPAWN_EGG);
                         entries.add(ModItems.PLAYER_CLONE_SPAWN_EGG);

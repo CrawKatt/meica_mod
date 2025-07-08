@@ -4,6 +4,7 @@ import com.crawkatt.meicamod.MeicaMod;
 import com.crawkatt.meicamod.block.ModBlocks;
 import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.item.custom.CatalystItem;
+import com.crawkatt.meicamod.item.custom.MeicaBowItem;
 import com.crawkatt.meicamod.item.custom.ModArmorItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
@@ -24,7 +25,7 @@ public class ModItems {
     public static final Item BROTENITA_STAFF = registerItem("brotenita_staff",
             new CatalystItem());
     public static final Item MEICA_BOW = registerItem("meica_bow",
-            new BowItem(new FabricItemSettings().maxDamage(500)));
+            new MeicaBowItem(new FabricItemSettings().maxDamage(500)));
     public static final Item BROTENITA_SWORD = registerItem("brotenita_sword",
             new SwordItem(ModToolMaterial.BROTENITA, 4, -2.4F, new FabricItemSettings()));
     public static final Item BROTENITA_PICKAXE = registerItem("brotenita_pickaxe",
@@ -52,6 +53,8 @@ public class ModItems {
             new SpawnEggItem(ModEntities.BROTECITO, 0x00FF00, 0xFFDAB9, new FabricItemSettings()));
     public static final Item MEICA_SPAWN_EGG = registerItem("meica_spawn_egg",
             new SpawnEggItem(ModEntities.MEICA, 0xA0522D, 0xFFDAB9, new FabricItemSettings()));
+    public static final Item ZERO_FIVE_SPAWN_EGG = registerItem("05_spawn_egg",
+            new SpawnEggItem(ModEntities.ZERO_FIVE, 0x555555, 0xAAAAAA, new FabricItemSettings()));
     public static final Item BROTECITO_MAMADO_SPAWN_EGG = registerItem("brotecito_mamado_spawn_egg",
             new SpawnEggItem(ModEntities.BROTECITO_MAMADO, 0xFFFF00, 0xFFD700, new FabricItemSettings()));
     public static final Item PLAYER_CLONE_SPAWN_EGG = registerItem("player_clone_spawn_egg",

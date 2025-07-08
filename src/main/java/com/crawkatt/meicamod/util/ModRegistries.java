@@ -4,10 +4,7 @@ import com.crawkatt.meicamod.MeicaMod;
 import com.crawkatt.meicamod.block.ModBlocks;
 import com.crawkatt.meicamod.command.SpawnClonesCommand;
 import com.crawkatt.meicamod.entity.ModEntities;
-import com.crawkatt.meicamod.entity.custom.BrotecitoEntity;
-import com.crawkatt.meicamod.entity.custom.BrotecitoMamadoEntity;
-import com.crawkatt.meicamod.entity.custom.MeicaEntity;
-import com.crawkatt.meicamod.entity.custom.PlayerCloneEntity;
+import com.crawkatt.meicamod.entity.custom.*;
 import com.crawkatt.meicamod.event.*;
 import com.crawkatt.meicamod.item.ModItems;
 import com.crawkatt.meicamod.mixin.BrewingRecipeRegistryMixin;
@@ -57,6 +54,7 @@ public class ModRegistries {
         FabricDefaultAttributeRegistry.register(ModEntities.BROTECITO_MAMADO, BrotecitoMamadoEntity.createBrotecitoMamadoAttributes());
         FabricDefaultAttributeRegistry.register(ModEntities.BROTECITO, BrotecitoEntity.createBrotecitoAttributes());
         FabricDefaultAttributeRegistry.register(ModEntities.PLAYER_CLONE, PlayerCloneEntity.createPlayerCloneAttributes());
+        FabricDefaultAttributeRegistry.register(ModEntities.ZERO_FIVE, ZeroFiveEntity.createZeroFiveAttributes());
     }
 
     private static void registerFlammables() {
