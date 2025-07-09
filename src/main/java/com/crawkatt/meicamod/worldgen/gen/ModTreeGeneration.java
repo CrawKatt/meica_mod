@@ -11,7 +11,7 @@ public class ModTreeGeneration {
         BiomeModifications.addFeature(BiomeSelectors.includeByKey(ModBiomes.MEICA_FOREST),
                 GenerationStep.Feature.VEGETAL_DECORATION, ModPlacedFeatures.FALLEN_HOLLOW_LOG_PLACED_KEY);
 
-        BiomeModifications.addFeature(BiomeSelectors.includeByKey(ModBiomes.MEICA_FOREST, ModBiomes.MEICADIM_FOREST),
+        BiomeModifications.addFeature(BiomeSelectors.includeByKey(ModBiomes.MEICA_FOREST),
                 GenerationStep.Feature.VEGETAL_DECORATION, ModPlacedFeatures.BIG_OAK_PLACED_KEY);
     }
 }

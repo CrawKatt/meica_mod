@@ -27,7 +27,6 @@ public class ModBiomes {
 
     public static void boostrap(Registerable<Biome> context) {
         context.register(MEICA_FOREST, meicaForestBiome(context));
-        context.register(MEICADIM_FOREST, meicaForestDimBiome(context));
     }
 
     public static void globalOverworldGeneration(GenerationSettings.LookupBackedBuilder builder) {
@@ -48,21 +47,6 @@ public class ModBiomes {
 
         // Manantiales
         DefaultBiomeFeatures.addSprings(builder);
-
-        // Estructuras superficiales
-        DefaultBiomeFeatures.addFrozenTopLayer(builder);
-    }
-
-    public static void globalDimGeneration(GenerationSettings.LookupBackedBuilder builder) {
-        // Mantener lagos de agua en la superficie si es necesario
-        builder.feature(GenerationStep.Feature.LAKES, MiscPlacedFeatures.SPRING_WATER);
-
-        // Formaciones subterráneas
-        DefaultBiomeFeatures.addDungeons(builder);
-        DefaultBiomeFeatures.addMineables(builder);
-
-        // Manantiales
-        builder.feature(GenerationStep.Feature.FLUID_SPRINGS, MiscPlacedFeatures.SPRING_WATER);
 
         // Estructuras superficiales
         DefaultBiomeFeatures.addFrozenTopLayer(builder);
@@ -93,43 +77,6 @@ public class ModBiomes {
 
         return new Biome.Builder()
                 .precipitation(true)
-                .downfall(0.8f)
-                .temperature(0.7f)
-                .generationSettings(biomeBuilder.build())
-                .spawnSettings(spawnBuilder.build())
-                .effects(new BiomeEffects.Builder()
-                        .waterColor(0x3F76E4)
-                        .waterFogColor(0x050533)
-                        .skyColor(0x77ADFF)
-                        .fogColor(0x0b6623)
-                        .particleConfig(new BiomeParticleConfig(ParticleTypes.SPORE_BLOSSOM_AIR, 0.05f))
-                        .music(MusicType.createIngameMusic(SoundEvents.MUSIC_NETHER_WARPED_FOREST))
-                        .moodSound(BiomeMoodSound.CAVE).build())
-                .build();
-    }
-
-    public static Biome meicaForestDimBiome(Registerable<Biome> context) {
-        SpawnSettings.Builder spawnBuilder = new SpawnSettings.Builder();
-        spawnBuilder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(ModEntities.BROTECITO, 5, 4, 4));
-
-        GenerationSettings.LookupBackedBuilder biomeBuilder =
-                new GenerationSettings.LookupBackedBuilder(context.getRegistryLookup(RegistryKeys.PLACED_FEATURE), context.getRegistryLookup(RegistryKeys.CONFIGURED_CARVER));
-        //we need to follow the same order as vanilla biomes for the BiomeDefaultFeatures
-        // Cavernas y Lagos
-        globalDimGeneration(biomeBuilder);
-
-        // Vegetación base
-        DefaultBiomeFeatures.addSweetBerryBushes(biomeBuilder);
-        DefaultBiomeFeatures.addForestFlowers(biomeBuilder);
-        DefaultBiomeFeatures.addPlainsFeatures(biomeBuilder);
-        DefaultBiomeFeatures.addDefaultOres(biomeBuilder);
-        DefaultBiomeFeatures.addDefaultFlowers(biomeBuilder);
-
-        // Vegetación extra
-        DefaultBiomeFeatures.addDefaultVegetation(biomeBuilder);
-
-        return new Biome.Builder()
-                .precipitation(false)
                 .downfall(0.8f)
                 .temperature(0.7f)
                 .generationSettings(biomeBuilder.build())

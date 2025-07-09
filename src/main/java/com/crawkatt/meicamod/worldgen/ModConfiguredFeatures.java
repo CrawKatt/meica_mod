@@ -7,12 +7,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.structure.rule.RuleTest;
-import net.minecraft.structure.rule.TagMatchRuleTest;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.intprovider.ConstantIntProvider;
-import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.feature.size.ThreeLayersFeatureSize;
 import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
@@ -21,24 +17,13 @@ import net.minecraft.world.gen.foliage.DarkOakFoliagePlacer;
 import net.minecraft.world.gen.stateprovider.BlockStateProvider;
 import net.minecraft.world.gen.trunk.DarkOakTrunkPlacer;
 
-import java.util.List;
 import java.util.OptionalInt;
 
 public class ModConfiguredFeatures {
-    public static final RegistryKey<ConfiguredFeature<?, ?>> OVERWORLD_BROTENITA_ORE_KEY = registerKey("brotenita_ore");
     public static final RegistryKey<ConfiguredFeature<?, ?>> BIG_OAK_KEY = registerKey("big_oak");
-    public static final RegistryKey<ConfiguredFeature<?, ?>> BROTENITA_GEODE_KEY = registerKey("brotenita_geode");
     public static final RegistryKey<ConfiguredFeature<?, ?>> FALLEN_HOLLOW_LOG_KEY = registerKey("fallen_hollow_log");
 
     public static void bootstrap(Registerable<ConfiguredFeature<?, ?>> context) {
-        RuleTest stoneReplaceable = new TagMatchRuleTest(BlockTags.STONE_ORE_REPLACEABLES);
-        RuleTest deepslateReplaceables = new TagMatchRuleTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
-
-        List<OreFeatureConfig.Target> overworldBrotenitaOre = List.of(OreFeatureConfig.createTarget(stoneReplaceable,
-                        ModBlocks.RAW_BROTENITA_BLOCK.getDefaultState()),
-                OreFeatureConfig.createTarget(deepslateReplaceables, ModBlocks.RAW_BROTENITA_BLOCK.getDefaultState()));
-
-        register(context, OVERWORLD_BROTENITA_ORE_KEY, Feature.ORE, new OreFeatureConfig(overworldBrotenitaOre, 9));
 
         register(context, BIG_OAK_KEY, Feature.TREE, new TreeFeatureConfig.Builder(
                 BlockStateProvider.of(Blocks.OAK_LOG), // Define el tronco del árbol
@@ -55,42 +40,6 @@ public class ModConfiguredFeatures {
                 // (OptionalInt.empty() No hay restricción máxima de altura adicional)
                 new ThreeLayersFeatureSize(1, 1, 0, 1, 2, OptionalInt.empty()) // Define el tamaño y la forma del árbol
         ).build());
-
-        // Generación de geodas de brotenita
-        register(context, BROTENITA_GEODE_KEY, Feature.GEODE,
-                new GeodeFeatureConfig(
-                        new GeodeLayerConfig(
-                                // (AIR Bloque de relleno)
-                                BlockStateProvider.of(Blocks.AIR),
-
-                                // Capa de llenado del núcleo de la geoda (usualmente la capa más interna de roca)
-                                BlockStateProvider.of(Blocks.DEEPSLATE),
-
-                                // Capa de material interno (el bloque personalizado RAW_BROTENITA_BLOCK)
-                                BlockStateProvider.of(ModBlocks.RAW_BROTENITA_BLOCK),
-
-                                // Capa intermedia
-                                BlockStateProvider.of(Blocks.MOSS_BLOCK),
-
-                                // Capa de la corteza externa (bloques de "deepslate" para la capa externa)
-                                BlockStateProvider.of(Blocks.DEEPSLATE),
-
-                                // Lista de posibles bloques que aparecerán como cristales en la geoda
-                                List.of(ModBlocks.BROTENITA.getDefaultState()),
-
-                                // Bloques que no pueden ser reemplazados durante la generación de la geoda
-                                BlockTags.FEATURES_CANNOT_REPLACE,
-
-                                // Bloques inválidos para la generación de la geoda
-                                BlockTags.GEODE_INVALID_BLOCKS
-                        ),
-                        new GeodeLayerThicknessConfig(1.7D, 1.2D, 2.5D, 3.5D),
-                        new GeodeCrackConfig(0.25D, 1.5D, 1), 0.5D, 0.1D,
-                        true, UniformIntProvider.create(3, 8),
-                        UniformIntProvider.create(2, 6), UniformIntProvider.create(1, 2),
-                        -18, 18, 0.075D, 1
-                )
-        );
 
         register(context, FALLEN_HOLLOW_LOG_KEY, Feature.TREE, new TreeFeatureConfig.Builder(
                 BlockStateProvider.of(ModBlocks.HOLLOW_OAK_LOG),

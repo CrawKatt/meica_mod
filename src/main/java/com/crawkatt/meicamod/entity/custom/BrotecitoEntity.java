@@ -285,7 +285,7 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
                 return ActionResult.SUCCESS;
             }
 
-            if (item == ModItems.BROTENITA_MEAL) {
+            if (item == Items.BAKED_POTATO) {
                 return this.evolve(player, itemStack);
             } else if (!this.getWorld().isClient && hand == Hand.MAIN_HAND) {
                 this.sitEntity(!this.isSitting());
@@ -352,7 +352,7 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
 
     @Override
     public boolean isTeammate(@NotNull Entity pEntity) {
-        if (isAttacking() || !this.isTamed() && pEntity instanceof MeicaEntity) {
+        if (isAttacking() || !this.isTamed()) {
             return true;
         }
 

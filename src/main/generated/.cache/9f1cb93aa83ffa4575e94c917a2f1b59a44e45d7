@@ -1,2 +1,3 @@
-// 1.20.1	2024-08-20T19:01:07.456683805	Meica Mod/Block Loot Tables
-7acc4437ca544565b14c5ae3c7bb7853b96ac365 data/meicamod/loot_tables/blocks/raw_brotenita.json
+// 1.20.1	2025-06-23T01:49:57.1785735	Meica Mod/Block Loot Tables
+b6f8b61a76bb9703a13168e31dcbc50267767ca4 data\meicamod\loot_tables\blocks\stripped_hollow_oak_log.json
+a4ee13feea017376f6c950f188f5ad13dbdd0db8 data\meicamod\loot_tables\blocks\hollow_oak_log.json

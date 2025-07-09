@@ -16,64 +16,8 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
-        getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)
-                .add(ModBlocks.BROTENITA_BLOCK)
-                .add(ModBlocks.RAW_BROTENITA_BLOCK)
-                .add(ModBlocks.BROTENITA_STAIRS)
-                .add(ModBlocks.BROTENITA_SLAB)
-                .add(ModBlocks.BROTENITA_FENCE)
-                .add(ModBlocks.BROTENITA_FENCE_GATE)
-                .add(ModBlocks.BROTENITA_WALL)
-                .add(ModBlocks.BROTENITA_DOOR)
-                .add(ModBlocks.BROTENITA_TRAPDOOR)
-                .add(ModBlocks.BROTENITA_BUTTON)
-                .add(ModBlocks.BROTENITA_PRESSURE_PLATE)
-                .add(ModBlocks.BROTENITA)
-                .add(ModBlocks.BROTENITA_CROP)
-                .add(ModBlocks.BROTENITA_MELTER);
-
         getOrCreateTagBuilder(BlockTags.AXE_MINEABLE)
                 .add(ModBlocks.HOLLOW_OAK_LOG)
                 .add(ModBlocks.STRIPPED_HOLLOW_OAK_LOG);
-
-        getOrCreateTagBuilder(BlockTags.NEEDS_DIAMOND_TOOL)
-                .add(ModBlocks.BROTENITA_BLOCK)
-                .add(ModBlocks.RAW_BROTENITA_BLOCK)
-                .add(ModBlocks.BROTENITA_STAIRS)
-                .add(ModBlocks.BROTENITA_SLAB)
-                .add(ModBlocks.BROTENITA_FENCE)
-                .add(ModBlocks.BROTENITA_FENCE_GATE)
-                .add(ModBlocks.BROTENITA_WALL)
-                .add(ModBlocks.BROTENITA_DOOR)
-                .add(ModBlocks.BROTENITA_TRAPDOOR)
-                .add(ModBlocks.BROTENITA_BUTTON)
-                .add(ModBlocks.BROTENITA_PRESSURE_PLATE)
-                .add(ModBlocks.BROTENITA)
-                .add(ModBlocks.BROTENITA_CROP)
-                .add(ModBlocks.BROTENITA_MELTER);
-
-        getOrCreateTagBuilder(BlockTags.FENCES)
-                .add(ModBlocks.BROTENITA_FENCE);
-
-        getOrCreateTagBuilder(BlockTags.FENCE_GATES)
-                .add(ModBlocks.BROTENITA_FENCE_GATE);
-
-        getOrCreateTagBuilder(BlockTags.WALLS)
-                .add(ModBlocks.BROTENITA_WALL);
-
-        getOrCreateTagBuilder(BlockTags.DOORS)
-                .add(ModBlocks.BROTENITA_DOOR);
-
-        getOrCreateTagBuilder(BlockTags.TRAPDOORS)
-                .add(ModBlocks.BROTENITA_TRAPDOOR);
-
-        getOrCreateTagBuilder(BlockTags.BUTTONS)
-                .add(ModBlocks.BROTENITA_BUTTON);
-
-        getOrCreateTagBuilder(BlockTags.PRESSURE_PLATES)
-                .add(ModBlocks.BROTENITA_PRESSURE_PLATE);
-
-        getOrCreateTagBuilder(BlockTags.SLABS)
-                .add(ModBlocks.BROTENITA_SLAB);
     }
 }

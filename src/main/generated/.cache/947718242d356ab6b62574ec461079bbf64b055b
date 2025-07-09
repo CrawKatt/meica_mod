@@ -1,4 +1,2 @@
-// 1.20.1	2024-08-20T19:01:07.455464596	Meica Mod/Tags for minecraft:block
-f63996c97376831899d9a40c04b8d115a0eaf6f9 data/fabric/tags/blocks/needs_tool_level_4.json
-0641469dc76c4a3ebdad224c83eb56df15f750fb data/meicamod/tags/blocks/needs_brotenita_tool.json
-f63996c97376831899d9a40c04b8d115a0eaf6f9 data/minecraft/tags/blocks/mineable/pickaxe.json
+// 1.20.1	2025-06-23T01:49:57.177574	Meica Mod/Tags for minecraft:block
+badc102ecb036317e1e82b2145b56034dbe2b4fc data\minecraft\tags\blocks\mineable\axe.json

@@ -26,9 +26,6 @@
 		],
 		"terrablender": [
 			"com.crawkatt.meicamod.worldgen.biome.ModTerraBlenderAPI"
-		],
-		"cardinal-components": [
-			"com.crawkatt.meicamod.component.ModComponents"
 		]
 	},
 	"custom": {
