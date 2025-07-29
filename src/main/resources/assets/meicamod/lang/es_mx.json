@@ -17,11 +17,14 @@
   "item.meicamod.brotecito_spawn_egg": "Generar Brotecito",
   "item.meicamod.brotecito_mamado_spawn_egg": "Generar Brotecito Mamado",
   "item.meicamod.meica_spawn_egg": "Generar Meica",
+  "item.meicamod.05_spawn_egg": "Generar 05",
   "item.meicamod.player_clone_spawn_egg": "Generar Player Clone",
   "item.minecraft.potion.effect.blessing_potion": "Poción de Bendición del Bosque",
   "item.minecraft.splash_potion.effect.blessing_potion": "Poción de Bendición del Bosque Arrojadiza",
   "item.minecraft.lingering_potion.effect.blessing_potion": "Poción de Bendición del Bosque Instantánea",
   "item.minecraft.tipped_arrow.effect.blessing_potion": "Flecha de Bendición del Bosque",
+  "block.meicamod.meica_teddy": "Meica Peluche",
+  "block.meicamod.zero_five_teddy": "05 Peluche",
   "block.meicamod.brotenita_block": "Bloque de Brotenita",
   "block.meicamod.raw_brotenita_block": "Mena de Brotenita",
   "block.meicamod.brotenita": "Brotenita",
@@ -46,7 +49,7 @@
   "effect.meicamod.paranoia": "Paranoia",
   "itemgroup.brotenita": "MeicaMod",
   "meicamod.tooltip.liquid.amount.with.capacity": "%s / %s mB",
-  "meicamod.tooltip.liquid.amount": "%s mB",
   "block.meicamod.hollow_oak_log": "Tronco de roble hueco",
-  "block.meicamod.stripped_hollow_oak_log": "Tronco de roble hueco sin corteza"
+  "block.meicamod.stripped_hollow_oak_log": "Tronco de roble hueco sin corteza",
+  "screen.meicamod.brotecito": "Brotecito"
 }

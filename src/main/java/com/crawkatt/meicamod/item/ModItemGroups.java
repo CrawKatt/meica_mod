@@ -25,6 +25,9 @@ public class ModItemGroups {
                         entries.add(ModBlocks.HOLLOW_OAK_LOG);
                         entries.add(ModBlocks.STRIPPED_HOLLOW_OAK_LOG);
 
+                        entries.add(ModBlocks.MEICA_TEDDY);
+                        entries.add(ModBlocks.ZERO_FIVE_TEDDY);
+
                     }).build());
 
     public static void registerItemGroups() {

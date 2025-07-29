@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "meicamod:block/meica_teddy",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "meicamod:block/meica_teddy"
+    },
+    "facing=south": {
+      "model": "meicamod:block/meica_teddy",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "meicamod:block/meica_teddy",
+      "y": 270
+    }
+  }
+}
