@@ -7,6 +7,7 @@ import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.util.ActionResult;
@@ -20,11 +21,13 @@ import net.minecraft.world.World;
 
 public class MeicaTeddy extends HorizontalFacingBlock {
     private static final VoxelShape SHAPE = Block.createCuboidShape(2, 0, 2, 14, 14.5, 14);
+    private final SoundEvent teddySound;
     public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
 
-    public MeicaTeddy(Settings settings) {
+    public MeicaTeddy(Settings settings, SoundEvent teddySound) {
         super(settings);
         this.setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH));
+        this.teddySound = teddySound;
     }
 
     @Override
@@ -44,7 +47,9 @@ public class MeicaTeddy extends HorizontalFacingBlock {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        player.playSound(ModSounds.MEICA_KILL_ENTITY, 1.0F, 1.0F);
-        return super.onUse(state, world, pos, player, hand, hit);
+        if (!player.getStackInHand(hand).isOf(this.asItem())) {
+            player.playSound(teddySound, 1.0F, 1.0F);
+        }
+        return ActionResult.SUCCESS;
     }
 }

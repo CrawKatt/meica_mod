@@ -2,6 +2,7 @@ package com.crawkatt.meicamod.block;
 
 import com.crawkatt.meicamod.MeicaMod;
 import com.crawkatt.meicamod.block.custom.*;
+import com.crawkatt.meicamod.sound.ModSounds;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
@@ -25,10 +26,10 @@ public class ModBlocks {
     public static final Block HOLLOW_OAK_LOG = registerBlock("hollow_oak_log", createHollowLogBlock(STRIPPED_HOLLOW_OAK_LOG, Blocks.OAK_LOG));
 
     public static final Block MEICA_TEDDY = registerBlock("meica_teddy",
-            new MeicaTeddy(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).nonOpaque()));
+            new MeicaTeddy(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).nonOpaque(), ModSounds.MEICA_TEDDY));
 
     public static final Block ZERO_FIVE_TEDDY = registerBlock("zero_five_teddy",
-            new MeicaTeddy(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).nonOpaque()));
+            new MeicaTeddy(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).nonOpaque(), ModSounds.MEICA_KILL_ENTITY));
 
     private static HollowLogBlock createStrippedHollowLogBlock(AbstractBlock counterpart) {
         return new HollowLogBlock(null, FabricBlockSettings.copy(counterpart));

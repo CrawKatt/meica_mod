@@ -13,6 +13,7 @@ public class ModSounds {
     public static final SoundEvent MEICA_DEATH_2 = registerSoundEvents("meica_death_2");
     public static final SoundEvent MEICA_DEATH_3 = registerSoundEvents("meica_death_3");
     public static final SoundEvent MEICA_LAUGHT = registerSoundEvents("meica_laught");
+    public static final SoundEvent MEICA_TEDDY = registerSoundEvents("meica_teddy");
 
     private static SoundEvent registerSoundEvents(String name) {
         Identifier identifier = new Identifier(MeicaMod.MOD_ID, name);

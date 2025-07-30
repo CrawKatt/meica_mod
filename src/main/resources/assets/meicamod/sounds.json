@@ -40,5 +40,11 @@
     "sounds": [
       "meicamod:meica_hallo"
     ]
+  },
+  "meica_teddy": {
+    "subtitle": "sounds.meicamod.meica_teddy",
+    "sounds": [
+      "meicamod:meica_teddy"
+    ]
   }
 }
