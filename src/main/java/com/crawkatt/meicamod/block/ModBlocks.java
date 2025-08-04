@@ -31,6 +31,9 @@ public class ModBlocks {
     public static final Block ZERO_FIVE_TEDDY = registerBlock("zero_five_teddy",
             new MeicaTeddy(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).nonOpaque(), ModSounds.MEICA_KILL_ENTITY));
 
+    public static final Block MEICA_STATUE = registerBlock("meica_statue",
+            new MeicaStatueBlock(FabricBlockSettings.copyOf(Blocks.STONE).nonOpaque()));
+
     private static HollowLogBlock createStrippedHollowLogBlock(AbstractBlock counterpart) {
         return new HollowLogBlock(null, FabricBlockSettings.copy(counterpart));
     }

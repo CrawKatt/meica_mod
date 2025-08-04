@@ -1,6 +1,8 @@
 package com.crawkatt.meicamod;
 
 import com.crawkatt.meicamod.block.ModBlocks;
+import com.crawkatt.meicamod.block.client.renderer.MeicaStatueBlockRenderer;
+import com.crawkatt.meicamod.block.entity.ModBlockEntities;
 import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.entity.client.*;
 import com.crawkatt.meicamod.particle.ModParticles;
@@ -11,6 +13,7 @@ import com.crawkatt.meicamod.util.ModModelPredicateProvider;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -23,6 +26,7 @@ public class MeicaModClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.BROTECITO_SPROUT, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.MEICA_TEDDY, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.ZERO_FIVE_TEDDY, RenderLayer.getCutout());
+        BlockEntityRendererRegistry.register(ModBlockEntities.MEICA_STATUE_BLOCK_ENTITY, MeicaStatueBlockRenderer::new);
 
         ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> 0xBFEA75, ModBlocks.BROTECITO_SPROUT);
         EntityModelLayerRegistry.registerModelLayer(ModModelLayers.MEICA_LAYER, MeicaModel::createBodyLayer);

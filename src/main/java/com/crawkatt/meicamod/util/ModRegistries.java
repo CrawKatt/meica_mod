@@ -1,13 +1,11 @@
 package com.crawkatt.meicamod.util;
 
 import com.crawkatt.meicamod.block.ModBlocks;
-import com.crawkatt.meicamod.command.LocateCustomBiomeCommand;
 import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.entity.custom.BrotecitoEntity;
 import com.crawkatt.meicamod.entity.custom.BrotecitoMamadoEntity;
 import com.crawkatt.meicamod.entity.custom.MeicaEntity;
 import com.crawkatt.meicamod.event.MeicaEvents;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
@@ -17,7 +15,6 @@ public class ModRegistries {
         registerEvents();
         registerFlammables();
         registerAttributes();
-        registerCommands();
     }
 
     private static void registerAttributes() {
@@ -33,9 +30,5 @@ public class ModRegistries {
 
     private static void registerEvents() {
         ServerLivingEntityEvents.AFTER_DEATH.register(new MeicaEvents());
-    }
-
-    private static void registerCommands() {
-        CommandRegistrationCallback.EVENT.register(LocateCustomBiomeCommand::register);
     }
 }

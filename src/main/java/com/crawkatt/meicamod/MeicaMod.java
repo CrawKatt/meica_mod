@@ -1,6 +1,7 @@
 package com.crawkatt.meicamod;
 
 import com.crawkatt.meicamod.block.ModBlocks;
+import com.crawkatt.meicamod.block.entity.ModBlockEntities;
 import com.crawkatt.meicamod.effect.ModEffects;
 import com.crawkatt.meicamod.entity.ModEntities;
 import com.crawkatt.meicamod.item.ModItemGroups;
@@ -24,6 +25,7 @@ public class MeicaMod implements ModInitializer {
 	public void onInitialize() {
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
+		ModBlockEntities.registerBlockEntities();
 		ModItemGroups.registerItemGroups();
 		ModRegistries.registerModStuffs();
 		ModEffects.registerEffects();
