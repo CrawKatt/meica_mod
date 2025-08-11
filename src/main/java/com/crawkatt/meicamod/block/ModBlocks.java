@@ -26,10 +26,10 @@ public class ModBlocks {
     public static final Block HOLLOW_OAK_LOG = registerBlock("hollow_oak_log", createHollowLogBlock(STRIPPED_HOLLOW_OAK_LOG, Blocks.OAK_LOG));
 
     public static final Block MEICA_TEDDY = registerBlock("meica_teddy",
-            new MeicaTeddy(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).nonOpaque(), ModSounds.MEICA_TEDDY));
+            new MeicaTeddy(FabricBlockSettings.create().nonOpaque().breakInstantly(), ModSounds.MEICA_TEDDY));
 
     public static final Block ZERO_FIVE_TEDDY = registerBlock("zero_five_teddy",
-            new MeicaTeddy(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).nonOpaque(), ModSounds.MEICA_KILL_ENTITY));
+            new MeicaTeddy(FabricBlockSettings.create().nonOpaque().breakInstantly(), ModSounds.MEICA_KILL_ENTITY));
 
     public static final Block MEICA_STATUE = registerBlock("meica_statue",
             new MeicaStatueBlock(FabricBlockSettings.copyOf(Blocks.STONE).nonOpaque()));
