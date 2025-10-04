@@ -2,6 +2,7 @@ package com.crawkatt.meicamod.entity.custom;
 
 import com.crawkatt.meicamod.entity.goal.BrotecitoMamadoMeleeAttackGoal;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.*;
@@ -15,6 +16,9 @@ import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.mob.GhastEntity;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.scoreboard.AbstractTeam;
 import net.minecraft.server.world.ServerWorld;
@@ -139,10 +143,20 @@ public class BrotecitoMamadoEntity extends TameableEntity implements Angerable, 
 
     @Override
     public @NotNull ActionResult interactMob(@NotNull PlayerEntity player, @NotNull Hand hand) {
+        ItemStack itemStack = player.getStackInHand(hand);
+        Item item = itemStack.getItem();
+
         if (isTamed() && !this.getWorld().isClient && hand == Hand.MAIN_HAND) {
             sitEntity(!isSitting());
             return ActionResult.SUCCESS;
         }
+
+        if (item == Items.CARROT) {
+            this.heal((float)item.getFoodComponent().getHunger());
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_POSITIVE_PLAYER_REACTION_PARTICLES);
+            return ActionResult.SUCCESS;
+        }
+
         return super.interactMob(player, hand);
     }
 

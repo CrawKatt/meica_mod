@@ -8,12 +8,13 @@ import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -27,7 +28,6 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.SwordItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -44,6 +44,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.TimeHelper;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.world.EntityView;
 import net.minecraft.world.World;
@@ -60,14 +61,14 @@ import java.util.UUID;
 
 public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEntity {
     @Nullable
-    private UUID persistentAngerTarget;
-    private static final UniformIntProvider PERSISTENT_ANGER_TIME = UniformIntProvider.create(20, 39);
+    private UUID angryAt;
+    private static final TrackedData<Integer> ANGER_TIME = DataTracker.registerData(BrotecitoEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final UniformIntProvider ANGER_TIME_RANGE = TimeHelper.betweenSeconds(20, 39);
+
     private int evolutionProgress = 0;
     private static final int MAX_EVOLUTION_PROGRESS = 5;
-    private static final TrackedData<Integer> DATA_REMAINING_ANGER_TIME = DataTracker.registerData(BrotecitoEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> SITTING = DataTracker.registerData(BrotecitoEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private boolean aggressiveMode = false;
     private final SimpleInventory inventory = new SimpleInventory(27);
 
     public BrotecitoEntity(EntityType<? extends TameableEntity> pEntityType, World world) {
@@ -125,6 +126,14 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
         */
     }
 
+    @Override
+    public void tickMovement() {
+        super.tickMovement();
+        if (!this.getWorld().isClient) {
+            this.tickAngerLogic((ServerWorld)this.getWorld(), true);
+        }
+    }
+
     /**
      * Define el comportamiento de la IA del Brotecito
      */
@@ -149,16 +158,14 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
                 return !BrotecitoEntity.this.isSitting() && super.canStart();
             }
         });
-        if (this.isAgressiveMode()) {
-            this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
-        } else {
-            this.targetSelector.add(1, new TrackOwnerAttackerGoal(this));
-            this.targetSelector.add(2, new AttackWithOwnerGoal(this));
-            this.targetSelector.add(3, new RevengeGoal(this).setGroupRevenge());
-            this.targetSelector.add(6, new UntamedActiveTargetGoal<>(this, TurtleEntity.class, false, TurtleEntity.BABY_TURTLE_ON_LAND_FILTER));
-            this.targetSelector.add(7, new ActiveTargetGoal<>(this, AbstractSkeletonEntity.class, false));
-            this.targetSelector.add(8, new UniversalAngerGoal<>(this, true));
-        }
+
+        this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
+        this.targetSelector.add(1, new TrackOwnerAttackerGoal(this));
+        this.targetSelector.add(2, new AttackWithOwnerGoal(this));
+        this.targetSelector.add(3, new RevengeGoal(this).setGroupRevenge());
+        this.targetSelector.add(6, new UntamedActiveTargetGoal<>(this, TurtleEntity.class, false, TurtleEntity.BABY_TURTLE_ON_LAND_FILTER));
+        this.targetSelector.add(7, new ActiveTargetGoal<>(this, AbstractSkeletonEntity.class, false));
+        this.targetSelector.add(8, new UniversalAngerGoal<>(this, true));
     }
 
     public static DefaultAttributeContainer createBrotecitoAttributes() {
@@ -170,14 +177,6 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
                 .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2f)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2f)
                 .build();
-    }
-
-    public void setAggressiveMode(boolean aggressiveMode) {
-        this.aggressiveMode = aggressiveMode;
-    }
-
-    public boolean isAgressiveMode() {
-        return this.aggressiveMode;
     }
 
     @Nullable
@@ -246,28 +245,42 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
 
     @Override
     public int getAngerTime() {
-        return this.dataTracker.get(DATA_REMAINING_ANGER_TIME);
+        return this.dataTracker.get(ANGER_TIME);
     }
 
     @Override
-    public void setAngerTime(int i) {
-        this.dataTracker.set(DATA_REMAINING_ANGER_TIME, i);
+    public void setAngerTime(int angerTime) {
+        this.dataTracker.set(ANGER_TIME, angerTime);
     }
 
     @Nullable
     @Override
     public UUID getAngryAt() {
-        return this.persistentAngerTarget;
+        return this.angryAt;
     }
 
     @Override
     public void setAngryAt(@Nullable UUID pTarget) {
-        this.persistentAngerTarget = pTarget;
+        this.angryAt = pTarget;
     }
 
     @Override
     public void chooseRandomAngerTime() {
-        this.setAngerTime(PERSISTENT_ANGER_TIME.get(this.random));
+        this.setAngerTime(ANGER_TIME_RANGE.get(this.random));
+    }
+
+    @Override
+    public void onDeath(DamageSource damageSource) {
+        if (!this.getWorld().isClient) {
+            for (int i = 0; i < inventory.size(); i++) {
+                ItemStack stack = inventory.getStack(i);
+                if (!stack.isEmpty()) {
+                    this.dropStack(stack);
+                }
+            }
+            inventory.clear();
+        }
+        super.onDeath(damageSource);
     }
 
     // Método para que el Brotecito pueda ser domado con manzanas y evolucionar con Polvo de Brotenita
@@ -281,29 +294,30 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
             return canInteract ? ActionResult.CONSUME : ActionResult.PASS;
         }
 
-        if (isBreedingItem(itemStack)) {
+        if (this.isBreedingItem(itemStack) && this.getHealth() < this.getMaxHealth()) {
+            if (!player.getAbilities().creativeMode) {
+                itemStack.decrement(1);
+            }
+            this.heal((float)item.getFoodComponent().getHunger());
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_POSITIVE_PLAYER_REACTION_PARTICLES);
+            return ActionResult.SUCCESS;
+        }
+
+        if (this.isBreedingItem(itemStack)) {
             return super.interactMob(player, hand);
         }
 
         if (itemStack.isOf(Items.APPLE) && !this.isTamed() && !this.hasAngerTime()) {
-            if (!player.getAbilities().creativeMode) {
-                itemStack.decrement(1);
-            }
-
-            if (this.random.nextInt(3) == 0) {
-                this.setOwner(player);
-                this.navigation.stop();
-                this.setTarget(null);
-                this.setSitting(true);
-                this.getWorld().sendEntityStatus(this, (byte)7);
-            } else {
-                this.getWorld().sendEntityStatus(this, (byte)6);
-            }
+            tryTame(player, itemStack);
 
             return ActionResult.SUCCESS;
         }
 
         if (isTamed()) {
+            if (!this.isOwner(player)) {
+                return ActionResult.PASS;
+            }
+
             if (player.isSneaking() && hand == Hand.MAIN_HAND) {
                 player.openHandledScreen(this.createScreenHandlerFactory());
                 return ActionResult.CONSUME;
@@ -322,6 +336,25 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
         }
 
         return super.interactMob(player, hand);
+    }
+
+    private void tryTame(PlayerEntity player, ItemStack itemStack) {
+        boolean tameSuccess = this.random.nextInt(3) == 0;
+        if (!player.getAbilities().creativeMode) {
+            itemStack.decrement(1);
+        }
+
+        if (!tameSuccess) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_NEGATIVE_PLAYER_REACTION_PARTICLES);
+            return;
+        }
+
+        this.setOwner(player);
+        this.navigation.stop();
+        this.setTarget(null);
+        this.setSitting(true);
+        this.setHealth(this.getMaxHealth());
+        this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_POSITIVE_PLAYER_REACTION_PARTICLES);
     }
 
     // Método para evolucionar al Brotecito
@@ -390,7 +423,9 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
     @Override
     public void readCustomDataFromNbt(@NotNull NbtCompound tag) {
         super.readCustomDataFromNbt(tag);
-        setSitting(tag.getBoolean("isSitting"));
+        boolean sitting = tag.getBoolean("isSitting");
+        this.dataTracker.set(SITTING, sitting);
+        this.setSitting(sitting);
         this.readAngerFromNbt(this.getWorld(), tag);
 
         NbtList list = tag.getList("Inventory", NbtElement.COMPOUND_TYPE);
@@ -427,7 +462,7 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
     @Override
     protected void initDataTracker() {
         super.initDataTracker();
-        this.dataTracker.startTracking(DATA_REMAINING_ANGER_TIME, 0);
+        this.dataTracker.startTracking(ANGER_TIME, 0);
         this.dataTracker.startTracking(SITTING, false);
     }
 
@@ -438,6 +473,12 @@ public class BrotecitoEntity extends TameableEntity implements Angerable, GeoEnt
             this.playSound(sitting ? SoundEvents.BLOCK_GRAVEL_BREAK : SoundEvents.BLOCK_GRASS_BREAK, 1.0F, 0.8F);
             this.getWorld().sendEntityStatus(this, sitting ? (byte) 19 : (byte) 20);
         }
+    }
+
+    @Override
+    public void setSitting(boolean sitting) {
+        super.setSitting(sitting);
+        this.dataTracker.set(SITTING, sitting);
     }
 
     public boolean isSitting() {

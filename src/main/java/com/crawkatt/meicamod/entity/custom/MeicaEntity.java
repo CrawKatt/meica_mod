@@ -160,7 +160,9 @@ public class MeicaEntity extends HostileEntity implements RangedAttackMob {
                 if (isSafeSpawnPosition(spawnPos)) {
                     BrotecitoEntity brotecito = new BrotecitoEntity(ModEntities.BROTECITO, this.getWorld());
                     brotecito.updatePosition(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
-                    brotecito.setAggressiveMode(true);
+
+                    brotecito.setAngryAt(targetPlayer.getUuid());
+                    brotecito.chooseRandomAngerTime();
                     brotecito.setTarget(targetPlayer);
 
                     this.getWorld().spawnEntity(brotecito);
