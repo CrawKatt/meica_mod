@@ -1,5 +1,5 @@
-// 1.20.1	2025-06-23T01:49:57.1785735	Meica Mod/Recipes
-5b613a300f0ce3b6b64fbc3b5bf2a86fd1b2d024 data\meicamod\advancements\recipes\building_blocks\oak_slab_from_hollow_oak_log.json
-3f4685e73a74d009a6ed44579f4ae2ac69085fdc data\meicamod\recipes\oak_slab_from_hollow_oak_log.json
-4d9241ebdca6257191e9bbb5691bda68396bb73f data\meicamod\recipes\oak_slab_from_stripped_hollow_oak_log.json
-bd3f010877999e111bbbb1e4581db49e7d8885c9 data\meicamod\advancements\recipes\building_blocks\oak_slab_from_stripped_hollow_oak_log.json
+// 1.20.1	2025-10-13T00:25:39.943431889	Meica Mod/Recipes
+bd3f010877999e111bbbb1e4581db49e7d8885c9 data/meicamod/advancements/recipes/building_blocks/oak_slab_from_stripped_hollow_oak_log.json
+5b613a300f0ce3b6b64fbc3b5bf2a86fd1b2d024 data/meicamod/advancements/recipes/building_blocks/oak_slab_from_hollow_oak_log.json
+3f4685e73a74d009a6ed44579f4ae2ac69085fdc data/meicamod/recipes/oak_slab_from_hollow_oak_log.json
+4d9241ebdca6257191e9bbb5691bda68396bb73f data/meicamod/recipes/oak_slab_from_stripped_hollow_oak_log.json

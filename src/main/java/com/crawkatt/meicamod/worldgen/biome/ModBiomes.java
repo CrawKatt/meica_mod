@@ -3,6 +3,7 @@ package com.crawkatt.meicamod.worldgen.biome;
 import com.crawkatt.meicamod.MeicaMod;
 import com.crawkatt.meicamod.entity.ModEntities;
 import net.minecraft.client.sound.MusicType;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registerable;
@@ -14,71 +15,73 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.carver.ConfiguredCarvers;
-import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
-import net.minecraft.world.gen.feature.MiscPlacedFeatures;
+import net.minecraft.world.gen.feature.*;
 
 
 public class ModBiomes {
     public static final RegistryKey<Biome> MEICA_FOREST = RegistryKey.of(RegistryKeys.BIOME,
             new Identifier(MeicaMod.MOD_ID, "meica_forest"));
 
-    public static final RegistryKey<Biome> MEICADIM_FOREST = RegistryKey.of(RegistryKeys.BIOME,
-            new Identifier(MeicaMod.MOD_ID, "meicadim_forest"));
-
     public static void boostrap(Registerable<Biome> context) {
         context.register(MEICA_FOREST, meicaForestBiome(context));
     }
 
     public static void globalOverworldGeneration(GenerationSettings.LookupBackedBuilder builder) {
-        // Carvernas y lagos
+        // Cavernas
         builder.carver(GenerationStep.Carver.AIR, ConfiguredCarvers.CAVE);
         builder.carver(GenerationStep.Carver.AIR, ConfiguredCarvers.CAVE_EXTRA_UNDERGROUND);
         builder.carver(GenerationStep.Carver.AIR, ConfiguredCarvers.CANYON);
 
-        // Mantener lagos de agua en la superficie si es necesario
+        // Lagos
         builder.feature(GenerationStep.Feature.LAKES, MiscPlacedFeatures.SPRING_WATER);
-
-        // Mantener solo lagos de lava subterráneos
         builder.feature(GenerationStep.Feature.LAKES, MiscPlacedFeatures.LAKE_LAVA_UNDERGROUND);
 
-        // Formaciones subterráneas
-        DefaultBiomeFeatures.addDungeons(builder);
+        // Subsuelo y manantiales
         DefaultBiomeFeatures.addMineables(builder);
-
-        // Manantiales
         DefaultBiomeFeatures.addSprings(builder);
-
-        // Estructuras superficiales
-        DefaultBiomeFeatures.addFrozenTopLayer(builder);
     }
 
     public static Biome meicaForestBiome(Registerable<Biome> context) {
         SpawnSettings.Builder spawnBuilder = new SpawnSettings.Builder();
         spawnBuilder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(ModEntities.BROTECITO, 5, 4, 4));
+        spawnBuilder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.WOLF, 2, 1, 3));
+        spawnBuilder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.FOX, 3, 1, 2));
 
-        // Spawn de Mobs
         DefaultBiomeFeatures.addFarmAnimals(spawnBuilder);
+        DefaultBiomeFeatures.addPlainsMobs(spawnBuilder);
         DefaultBiomeFeatures.addBatsAndMonsters(spawnBuilder);
+        DefaultBiomeFeatures.addOceanMobs(spawnBuilder, 5, 4, 4);
 
         GenerationSettings.LookupBackedBuilder biomeBuilder =
-                new GenerationSettings.LookupBackedBuilder(context.getRegistryLookup(RegistryKeys.PLACED_FEATURE), context.getRegistryLookup(RegistryKeys.CONFIGURED_CARVER));
-        //we need to follow the same order as vanilla biomes for the BiomeDefaultFeatures
-        // Cavernas y Lagos
+                new GenerationSettings.LookupBackedBuilder(
+                        context.getRegistryLookup(RegistryKeys.PLACED_FEATURE),
+                        context.getRegistryLookup(RegistryKeys.CONFIGURED_CARVER)
+                );
+
+        // Carvers, lagos, subsuelo
         globalOverworldGeneration(biomeBuilder);
-
-        // Vegetación base
-        DefaultBiomeFeatures.addForestFlowers(biomeBuilder);
-        DefaultBiomeFeatures.addPlainsFeatures(biomeBuilder);
         DefaultBiomeFeatures.addDefaultOres(biomeBuilder);
-        DefaultBiomeFeatures.addDefaultFlowers(biomeBuilder);
+        DefaultBiomeFeatures.addDungeons(biomeBuilder);
 
-        // Vegetación extra
+        // Vegetación terrestre
+        DefaultBiomeFeatures.addPlainsFeatures(biomeBuilder);
+        DefaultBiomeFeatures.addForestFlowers(biomeBuilder);
+        DefaultBiomeFeatures.addDefaultFlowers(biomeBuilder);
         DefaultBiomeFeatures.addDefaultVegetation(biomeBuilder);
+
+        // Vegetación acuática
+        biomeBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION, OceanPlacedFeatures.WARM_OCEAN_VEGETATION);
+        biomeBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION, OceanPlacedFeatures.SEAGRASS_WARM);
+        biomeBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION, OceanPlacedFeatures.SEA_PICKLE);
+        DefaultBiomeFeatures.addKelp(biomeBuilder);
+
+        // Misc
+        DefaultBiomeFeatures.addFrozenTopLayer(biomeBuilder);
 
         return new Biome.Builder()
                 .precipitation(true)
-                .downfall(0.8f)
                 .temperature(0.7f)
+                .downfall(0.8f)
                 .generationSettings(biomeBuilder.build())
                 .spawnSettings(spawnBuilder.build())
                 .effects(new BiomeEffects.Builder()
@@ -88,7 +91,8 @@ public class ModBiomes {
                         .fogColor(0x0b6623)
                         .particleConfig(new BiomeParticleConfig(ParticleTypes.SPORE_BLOSSOM_AIR, 0.05f))
                         .music(MusicType.createIngameMusic(SoundEvents.MUSIC_NETHER_WARPED_FOREST))
-                        .moodSound(BiomeMoodSound.CAVE).build())
+                        .moodSound(BiomeMoodSound.CAVE)
+                        .build())
                 .build();
     }
 }

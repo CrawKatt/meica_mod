@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "meicamod:tree_house",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 564604120,
+    "spacing": 80,
+    "separation": 60,
+    "type": "minecraft:random_spread"
+  }
+}

@@ -26,12 +26,12 @@ public class ModConfiguredFeatures {
     public static void bootstrap(Registerable<ConfiguredFeature<?, ?>> context) {
 
         register(context, BIG_OAK_KEY, Feature.TREE, new TreeFeatureConfig.Builder(
-                BlockStateProvider.of(Blocks.OAK_LOG), // Define el tronco del árbol
+                BlockStateProvider.of(Blocks.DARK_OAK_LOG), // Define el tronco del árbol
                 // (12 Altura base del tronco)
                 // (4 Variación aleatoria en la altura del tronco { puede agregar hasta 4 bloques a la altura base } )
                 // (8 Longitud del tronco antes de ramificarse)
                 new DarkOakTrunkPlacer(6, 4, 8), // Define como se debe generar el tronco del árbol (Trunk Placer)
-                BlockStateProvider.of(Blocks.OAK_LEAVES), // Define el tipo de hojas del árbol
+                BlockStateProvider.of(Blocks.DARK_OAK_LEAVES), // Define el tipo de hojas del árbol
                 // (0 Radio y Desplazamiento vertical. Las Hojas estarán compactas alrededor del tronco, sin extensión adicional)
                 new DarkOakFoliagePlacer(ConstantIntProvider.create(0), ConstantIntProvider.create(0)), // Define como se deben generar las hojas del árbol (Foliage Placer)
                 // (1,1 Dimensiones de la primera y segunda capa )
